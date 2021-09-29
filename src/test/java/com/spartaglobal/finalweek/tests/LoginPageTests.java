@@ -3,6 +3,7 @@ package com.spartaglobal.finalweek.tests;
 import com.spartaglobal.finalweek.base.TestBase;
 import com.spartaglobal.finalweek.pages.LoginPage;
 import com.spartaglobal.finalweek.pages.NavTemplate;
+import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.junit.jupiter.api.*;
 import org.hamcrest.*;
 import org.openqa.selenium.NoSuchElementException;
@@ -10,8 +11,14 @@ import org.openqa.selenium.NoSuchElementException;
 public class LoginPageTests extends NavTemplate {
 
     private LoginPage loginPage;
-    private static final String username = "Alex";
-    private static final String password = "password";
+    private static String username;
+    private static String password;
+
+    @BeforeAll
+    public static void setupAll() {
+        username = PropertiesLoader.getProperties().getProperty("Username");
+        password = PropertiesLoader.getProperties().getProperty("Password");
+    }
 
     @BeforeEach
     public void setup() {
