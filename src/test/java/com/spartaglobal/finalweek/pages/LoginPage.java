@@ -12,7 +12,7 @@ public class LoginPage extends NavTemplate implements URLable {
     WebElement UserName;
     @FindBy(id = "password")
     WebElement PassWord;
-    @FindBy(id = "submit")
+    @FindBy(className = "btn-primary")
     WebElement LoginButton;
 
     public LoginPage() {
