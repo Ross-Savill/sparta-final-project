@@ -1,14 +1,43 @@
 package com.spartaglobal.finalweek.tests.courseTests;
 
+import com.spartaglobal.finalweek.base.TestBase;
+import com.spartaglobal.finalweek.pages.LoginPage;
 import com.spartaglobal.finalweek.pages.NavTemplate;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.spartaglobal.finalweek.pages.SchedulerPage;
+import com.spartaglobal.finalweek.pages.coursePages.CoursePage;
+import com.spartaglobal.finalweek.util.PropertiesLoader;
+import org.junit.jupiter.api.*;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.PageFactory;
+import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
-public class CourseTests extends NavTemplate {
+public class CourseTests  {
+    private NavTemplate navTemplate;
+    private LoginPage loginPage;
+    private SchedulerPage schedulerPage;
+    private CoursePage coursePage;
 
     @BeforeEach
     public void setup() {
+        TestBase.initialisation(); //initialise the web driver
+        loginPage = new LoginPage();
+        schedulerPage = loginPage.login(
+                PropertiesLoader.getProperties().getProperty("Username"),
+                PropertiesLoader.getProperties().getProperty("Password")
+        );
 
+        PageFactory.initElements(webDriver, schedulerPage);
+
+        navTemplate = new NavTemplate();
+        coursePage = navTemplate.goToCoursesPage();
+        coursePage = new CoursePage();
+    }
+
+    @Test
+    @DisplayName("Test AddCourseButton")
+    public void testClickAddCourseButton(){
+        Assertions.assertEquals("http://localhost:8080/addCourse", coursePage.clickAddCourseButton().getURL());
     }
 
     @AfterEach
