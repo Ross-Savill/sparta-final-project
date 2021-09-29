@@ -48,8 +48,7 @@ public class LoginPage extends NavTemplate implements URLable {
     }
 
     public SchedulerPage login(String username, String password) {
-        this.enterUsername(username);
-        this.enterPassword(password);
+        enterAllFields(username, password);
         return this.goToSchedulerPage();
     }
 
@@ -68,6 +67,19 @@ public class LoginPage extends NavTemplate implements URLable {
 
     public WebElement getErrorMessage() {
         return webDriver.findElement(By.id("invalid-credentials-msg"));
+    }
+
+    public boolean isUsernameFieldEmpty() {
+        return UserName.getAttribute("value").isEmpty();
+    }
+
+    public boolean isPasswordFieldEmpty() {
+        return PassWord.getAttribute("value").isEmpty();
+    }
+
+    public boolean areAllFieldsEmpty() {
+        return this.isUsernameFieldEmpty()
+                && this.isPasswordFieldEmpty();
     }
 
     @Override
