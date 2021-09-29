@@ -42,11 +42,15 @@ public class LoginPage extends NavTemplate implements URLable {
         PassWord.sendKeys(password);
     }
 
+    public void enterAllFields(String username, String password) {
+        this.enterUsername(username);
+        this.enterPassword(password);
+    }
+
     public SchedulerPage login(String username, String password) {
         this.enterUsername(username);
         this.enterPassword(password);
         return this.goToSchedulerPage();
-
     }
 
     public SchedulerPage goToSchedulerPage() {
