@@ -16,8 +16,9 @@ public class NavTemplateTests extends NavTemplate {
     public void setup() {
         initialisation(); //initialise the web driver
         loginPage = new LoginPage();
-        //TODO: Get properties for username and password
-        schedulerPage = loginPage.login("Alex", "password");
+        schedulerPage = loginPage.login(
+                PropertiesLoader.getProperties().getProperty("Username"),
+                PropertiesLoader.getProperties().getProperty("Password"));
         PageFactory.initElements(webDriver, schedulerPage);
         navTemplate = new NavTemplate();
     }
