@@ -65,6 +65,14 @@ public class CourseTests  {
         }
     }
 
+    @Test
+    @DisplayName("Testing getCoursesByDiscipline() returns only courses with matching discipline")
+    public void testGetCoursesByDiscipline(){
+        for(int i = 0; i < coursePage.getCoursesByDiscipline("DevOps").size(); i++) {
+            System.out.println(coursePage.getCoursesByDiscipline("DevOps").get(i).getText());
+        }
+    }
+
     @AfterEach
     public void tearDown(){
         webDriver.quit();

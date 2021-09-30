@@ -37,7 +37,6 @@ public class CoursePage implements URLable {
         allCourseNames = new ArrayList<>();
         allCourseNames = this.getAllCoursesNames();
 
-
     }
 
     @FindBy(className = "btn-primary")
@@ -64,8 +63,14 @@ public class CoursePage implements URLable {
     }
 
     public List<WebElement> getCoursesByDiscipline(String disciplineName){
-
-        return null;
+        List<WebElement> allCoursesWithDiscipline = new ArrayList<>();
+        for (WebElement course : allCourses) {
+            if (course.findElement(By.id(Integer.toString(allCourses.indexOf(course)) + "discipline"))
+                    .getText().equals(disciplineName)) {
+                allCoursesWithDiscipline.add(course);
+            }
+        }
+        return allCoursesWithDiscipline;
     }
 
     public List<WebElement> getCoursesByCourseType(String courseType){
