@@ -42,10 +42,11 @@ public class CourseTests  {
     }
 
     @Test
-    @Disabled
+    @Disabled //needs work
     @DisplayName("Test EditCourseButton()")
     public void testClickEditCourseButton(){
-        Assertions.assertTrue(coursePage.clickEditCourseButton().getURL().startsWith("http://localhost:8080/editCourse/"));
+        String courseName = "Engineering 87";
+        Assertions.assertEquals("http://localhost:8080/editCourse/1", coursePage.clickEditCourseButton(courseName).getURL());
     }
 
     @Test

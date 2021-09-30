@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.pagefactory.ByChained;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class CoursePage implements URLable {
 
     private List<WebElement> allCourses;
     private List<WebElement> allCourseNames;
+    private List<WebElement> findCourseName;
     private List<WebElement> allDisciplines;
     private List<WebElement> allCourseTypes;
     private List<WebElement> allLocations;
@@ -41,7 +43,7 @@ public class CoursePage implements URLable {
 
     @FindBy(className = "btn-primary")
     WebElement addCourseButton;
-    @FindBy(linkText = "Edit")
+
     WebElement editCourseButton;
 
     public List<WebElement> getAllCourses(){
@@ -60,6 +62,17 @@ public class CoursePage implements URLable {
         }
 
         return allCourseNames;
+    }
+
+    public List<WebElement> getCoursesByCourseName(String courseName){
+        findCourseName = new ArrayList<>();
+        for (WebElement course : allCourses) {
+            if (course.findElement(By.id(Integer.toString(allCourses.indexOf(course)) + "course"))
+                    .getText().equals(courseName)) {
+                findCourseName.add(course);
+            }
+        }
+        return findCourseName;
     }
 
     public List<WebElement> getCoursesByDiscipline(String disciplineName){
@@ -111,9 +124,16 @@ public class CoursePage implements URLable {
         return new AddCoursePage();
     }
 
-    public EditCoursesPage clickEditCourseButton(){
-        editCourseButton.click();
+    public EditCoursesPage clickEditCourseButton(String courseName){
+
+        getEditButton(courseName).click();
         return new EditCoursesPage();
+    }
+
+    private WebElement getEditButton(String courseName){
+        WebElement editButton;
+        editButton = getCoursesByCourseName(courseName).get(0).findElement(By.className("btn"));
+        return editButton;
     }
 
     @Override
