@@ -3,15 +3,15 @@ package com.spartaglobal.finalweek.pages.coursePages;
 import com.spartaglobal.finalweek.base.TestBase;
 import com.spartaglobal.finalweek.interfaces.URLable;
 import com.spartaglobal.finalweek.pages.NavTemplate;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.ByChained;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
@@ -132,8 +132,65 @@ public class CoursePage implements URLable {
 
     private WebElement getEditButton(String courseName){
         WebElement editButton;
-        editButton = getCoursesByCourseName(courseName).get(0).findElement(By.className("btn"));
+        editButton = getCoursesByCourseName(courseName).get(0).findElement(By.linkText("Edit"));
         return editButton;
+    }
+
+    public boolean areCourseNamesUnique(){
+        Set<WebElement> uniqueList = new HashSet<WebElement>(allCourseNames);
+        return uniqueList.size() == allCourseNames.size();
+    }
+
+    public void deleteCourse(String courseName){
+        getDeleteButton(courseName).click();
+    }
+
+    private WebElement getDeleteButton(String courseName){
+        WebElement deleteButton;
+        deleteButton = getCoursesByCourseName(courseName).get(0).findElement(By.linkText("Delete"));
+        return deleteButton;
+    }
+
+    public boolean isCourseDeleted(String courseName){
+        try {
+            for (WebElement courseIndex : allCourseNames) {
+                if (courseIndex.getText().equals(courseName)) {
+                    return false;
+                }
+            }
+        } catch (StaleElementReferenceException e){
+        }
+        return true;
+    }
+
+    public boolean doesConfirmationBoxAppearOnDelete(String courseName) {
+        try{
+            deleteCourse(courseName);
+            webDriver.switchTo().alert().accept();
+            return true;
+
+        } catch (NoAlertPresentException e){
+            return false;
+        }
+    }
+
+    public boolean confirmDelete() {
+        try{
+            webDriver.switchTo().alert().accept();
+            return true;
+
+        } catch (NoAlertPresentException e){
+            return false;
+        }
+    }
+
+    public boolean cancelDelete() {
+        try {
+            webDriver.switchTo().alert().dismiss();
+            return true;
+        } catch (NoAlertPresentException e){
+            return false;
+        }
     }
 
     @Override

@@ -35,72 +35,143 @@ public class CourseTests  {
         coursePage = new CoursePage();
     }
 
-    @Test
-    @DisplayName("Test AddCourseButton()")
-    public void testClickAddCourseButton(){
-        Assertions.assertEquals("http://localhost:8080/addCourse", coursePage.clickAddCourseButton().getURL());
+    @Nested
+    @DisplayName("Button Tests")
+    class buttonTests {
+
+        @Test
+        @DisplayName("Test AddCourseButton()")
+        public void testClickAddCourseButton() {
+            Assertions.assertEquals("http://localhost:8080/addCourse", coursePage.clickAddCourseButton().getURL());
+        }
+
+        @Test
+        @Disabled //needs work
+        @DisplayName("Test EditCourseButton()")
+        public void testClickEditCourseButton() {
+            String courseName = "Engineering 90";
+            Assertions.assertEquals("http://localhost:8080/editCourse/3", coursePage.clickEditCourseButton(courseName).getURL());
+        }
+
+        @Test
+        @Disabled //needs work
+        @DisplayName("Test DeleteCourse()")
+        public void testDeleteCourse() {
+            String courseName = "Engineering 87";
+            coursePage.deleteCourse(courseName);
+        }
     }
 
-    @Test
-    @Disabled //needs work
-    @DisplayName("Test EditCourseButton()")
-    public void testClickEditCourseButton(){
-        String courseName = "Engineering 87";
-        Assertions.assertEquals("http://localhost:8080/editCourse/1", coursePage.clickEditCourseButton(courseName).getURL());
-    }
+    @Nested
+    @DisplayName("Getter Tests")
+    class getterTests {
 
-    @Test
-    @Disabled
-    @DisplayName("Testing getAllCourses() returns all courses")
-    public void testGetAllCourses(){
-        for(int i = 0; i < coursePage.getAllCourses().size(); i++){
-            System.out.println(coursePage.getAllCourses().get(i).getText());
+        @Test
+        @DisplayName("Testing getAllCourses() returns all courses")
+        public void testGetAllCourses() {
+            for (int i = 0; i < coursePage.getAllCourses().size(); i++) {
+                System.out.println(coursePage.getAllCourses().get(i).getText());
+            }
+            Assertions.assertEquals(14, coursePage.getAllCourses().size());
+        }
+
+        @Test
+        @DisplayName("Testing getAllCourseNames() returns all course names")
+        public void testGetAllCourseNames() {
+            for (int i = 0; i < coursePage.getAllCoursesNames().size(); i++) {
+                System.out.println(coursePage.getAllCoursesNames().get(i).getText());
+            }
+            Assertions.assertEquals(14, coursePage.getAllCoursesNames().size());
+        }
+
+        @Test
+        @DisplayName("Testing getCoursesByCourseName() returns only courses with matching names")
+        public void testGetCoursesByCourseName() {
+            String courseName = "Jedi Training";
+            for (int i = 0; i < coursePage.getCoursesByCourseName(courseName).size(); i++) {
+                System.out.println(coursePage.getCoursesByCourseName(courseName).get(i).getText());
+            }
+            Assertions.assertEquals(1, coursePage.getCoursesByCourseName(courseName).size());
+        }
+
+        @Test
+        @DisplayName("Testing getCoursesByDiscipline() returns only courses with matching discipline")
+        public void testGetCoursesByDiscipline() {
+            String discipline = "DevOps";
+            for (int i = 0; i < coursePage.getCoursesByDiscipline(discipline).size(); i++) {
+                System.out.println(coursePage.getCoursesByDiscipline(discipline).get(i).getText());
+            }
+            Assertions.assertEquals(6, coursePage.getCoursesByDiscipline(discipline).size());
+        }
+
+        @Test
+        @DisplayName("Testing getCoursesByType() returns only courses with matching course types")
+        public void testGetCoursesByType() {
+            String courseType = "Business";
+            for (int i = 0; i < coursePage.getCoursesByCourseType(courseType).size(); i++) {
+                System.out.println(coursePage.getCoursesByCourseType(courseType).get(i).getText());
+            }
+            Assertions.assertEquals(7, coursePage.getCoursesByCourseType(courseType).size());
+        }
+
+        @Test
+        @DisplayName("Testing getCoursesByLocation() returns only courses with matching locations")
+        public void testGetCoursesByLocation() {
+            String location = "Naboo";
+            for (int i = 0; i < coursePage.getCoursesByLocation(location).size(); i++) {
+                System.out.println(coursePage.getCoursesByLocation(location).get(i).getText());
+            }
+            Assertions.assertEquals(2, coursePage.getCoursesByLocation(location).size());
+        }
+
+        @Test
+        @DisplayName("Testing getCoursesByTrainer() returns only courses with matching trainer names")
+        public void testGetCoursesByTrainer() {
+            String trainerName = "Kit Fisto";
+            for (int i = 0; i < coursePage.getCoursesByTrainer(trainerName).size(); i++) {
+                System.out.println(coursePage.getCoursesByTrainer(trainerName).get(i).getText());
+            }
+            Assertions.assertEquals(2, coursePage.getCoursesByTrainer(trainerName).size());
         }
     }
 
     @Test
-    @DisplayName("Testing getAllCourseNames() returns all course names")
-    public void testGetAllCourseNames(){
-        for(int i = 0; i < coursePage.getAllCoursesNames().size(); i++) {
-            System.out.println(coursePage.getAllCoursesNames().get(i).getText());
-        }
+    @DisplayName("Testing if all courses are unique")
+    public void testAreCoursesUnique(){
+        Assertions.assertTrue(coursePage.areCourseNamesUnique());
     }
 
     @Test
-    @DisplayName("Testing getCoursesByDiscipline() returns only courses with matching discipline")
-    public void testGetCoursesByDiscipline(){
-        String discipline =  "DevOps";
-        for(int i = 0; i < coursePage.getCoursesByDiscipline(discipline).size(); i++) {
-            System.out.println(coursePage.getCoursesByDiscipline(discipline).get(i).getText());
+    @DisplayName("Testing if I can tell when a course has been deleted")
+    public void testIsCourseDeleted(){
+        String courseToDelete = "Engineering 87";
+        Assertions.assertTrue(coursePage.isCourseDeleted(courseToDelete));
+    }
+
+    @Nested
+    @DisplayName("Confirmation Box Tests")
+    class confirmationBoxTests {
+
+        @Test
+        @DisplayName("Testing if a confirmation box appears before deleting a course")
+        public void testDoesConfirmationBoxAppearOnDelete() {
+            String courseToDelete = "Engineering 87";
+            Assertions.assertTrue(coursePage.doesConfirmationBoxAppearOnDelete(courseToDelete));
+        }
+
+        @Test
+        @DisplayName("Testing if I can confirm before deleting a course")
+        public void testConfirmDelete() {
+            Assertions.assertTrue(coursePage.confirmDelete());
+        }
+
+        @Test
+        @DisplayName("Testing if I can cancel before deleting a course")
+        public void testCancelDelete() {
+            Assertions.assertTrue(coursePage.cancelDelete());
         }
     }
 
-    @Test
-    @DisplayName("Testing getCoursesByType() returns only courses with matching course types")
-    public void testGetCoursesByType(){
-        String courseType = "Business";
-        for(int i = 0; i < coursePage.getCoursesByCourseType(courseType).size(); i++) {
-            System.out.println(coursePage.getCoursesByCourseType(courseType).get(i).getText());
-        }
-    }
-
-    @Test
-    @DisplayName("Testing getCoursesByLocation() returns only courses with matching locations")
-    public void testGetCoursesByLocation(){
-        String location = "Naboo";
-        for(int i = 0; i < coursePage.getCoursesByLocation(location).size(); i++) {
-            System.out.println(coursePage.getCoursesByLocation(location).get(i).getText());
-        }
-    }
-
-    @Test
-    @DisplayName("Testing getCoursesByTrainer() returns only courses with matching trainer names")
-    public void testGetCoursesByTrainer(){
-        String trainerName = "Kit Fisto";
-        for(int i = 0; i < coursePage.getCoursesByTrainer(trainerName).size(); i++) {
-            System.out.println(coursePage.getCoursesByTrainer(trainerName).get(i).getText());
-        }
-    }
 
     @AfterEach
     public void tearDown(){
