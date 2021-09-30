@@ -81,6 +81,14 @@ public class CourseTests  {
         }
     }
 
+    @Test
+    @DisplayName("Testing getCoursesByLocation() returns only courses with matching locations")
+    public void testGetCoursesByLocation(){
+        for(int i = 0; i < coursePage.getCoursesByLocation("Naboo").size(); i++) {
+            System.out.println(coursePage.getCoursesByLocation("Naboo").get(i).getText());
+        }
+    }
+
     @AfterEach
     public void tearDown(){
         webDriver.quit();
