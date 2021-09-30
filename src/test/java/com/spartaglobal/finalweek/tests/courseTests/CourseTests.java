@@ -8,6 +8,7 @@ import com.spartaglobal.finalweek.pages.coursePages.CoursePage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
@@ -35,9 +36,33 @@ public class CourseTests  {
     }
 
     @Test
-    @DisplayName("Test AddCourseButton")
+    @DisplayName("Test AddCourseButton()")
     public void testClickAddCourseButton(){
         Assertions.assertEquals("http://localhost:8080/addCourse", coursePage.clickAddCourseButton().getURL());
+    }
+
+    @Test
+    @Disabled
+    @DisplayName("Test EditCourseButton()")
+    public void testClickEditCourseButton(){
+        Assertions.assertTrue(coursePage.clickEditCourseButton().getURL().startsWith("http://localhost:8080/editCourse/"));
+    }
+
+    @Test
+    @Disabled
+    @DisplayName("Testing getAllCourses() returns all courses")
+    public void testGetAllCourses(){
+        for(int i = 0; i < coursePage.getAllCourses().size(); i++){
+            System.out.println(coursePage.getAllCourses().get(i).getText());
+        }
+    }
+
+    @Test
+    @DisplayName("Testing getAllCourseNames() returns all course names")
+    public void testGetAllCourseNames(){
+        for(int i = 0; i < coursePage.getAllCoursesNames().size(); i++) {
+            System.out.println(coursePage.getAllCoursesNames().get(i).getText());
+        }
     }
 
     @AfterEach
