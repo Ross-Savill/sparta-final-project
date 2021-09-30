@@ -12,6 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class CentresPage extends NavTemplate implements URLable {
@@ -203,6 +204,18 @@ public class CentresPage extends NavTemplate implements URLable {
             return true;
         }
         return false;
+    }
+
+    public boolean areAllCentresUnique() {
+        HashSet<String> locations = new HashSet<>();
+
+        for (WebElement centre:centres) {
+            if(!locations.add(centre.findElement(By.id(centres.indexOf(centre)+"location_name")).getText())) {
+                return false;
+            }
+        }
+        return true;
+
     }
 
     public boolean cancelDelete() {

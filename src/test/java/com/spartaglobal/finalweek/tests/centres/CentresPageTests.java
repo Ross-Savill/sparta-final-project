@@ -257,10 +257,10 @@ public class CentresPageTests {
         Assertions.assertTrue(centresPage.areAllFieldsPassedOnToEditCentrePage("Hoth"));
     }
 
-    public boolean areAllCentresUnique() {
-
-
-
+    @Test
+    @DisplayName("Test all location names are unique")
+    void testAllLocationNamesAreUnique() {
+       Assertions.assertTrue(centresPage.areAllCentresUnique());
     }
 
     @AfterEach
