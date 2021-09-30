@@ -10,6 +10,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mockito;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -199,7 +200,8 @@ public class CentresPageTests {
                     editLocationPage.getURL());
         }
     }
-    
+
+    //TODO: shout at developers
     @Nested
     @DisplayName("Deleting centres")
     class delete {
@@ -215,7 +217,6 @@ public class CentresPageTests {
         @DisplayName("Test delete centre deletes something")
         void testDeleteCentreDeletesSomething() {
             //TODO: add something to delete
-            //TODO: mock confirmation box
             Assertions.assertTrue(centresPage.isCentreDeleted(centreName));
         }
         @Test
@@ -225,8 +226,42 @@ public class CentresPageTests {
             Assertions.assertTrue(centresPage.isCentreDeleted(centreName));
         }
 
+        @Test
+        @DisplayName("Test delete only happens when I click accept on the pop up")
+        void testDeleteOnlyHappensWhenIClickAcceptOnThePopUp() {
+            int numberOfCentresBefore = centresPage.getAllCentres().size();
+            centresPage.clickDeleteCentreButton(centreName);
+
+            int numberOfCentresAfter = centresPage.getAllCentres().size();
+            Assertions.assertTrue(numberOfCentresAfter < numberOfCentresBefore);
+        }
+        @Test
+        @DisplayName("Test delete does not happen if I dismiss the popup")
+        void testDeleteDoesNotHappenIfIDismissThePopup() {
+            //TODO: add helper method to compact
+
+            CentresPage mockCentres = Mockito.mock(CentresPage.class);
+            Mockito.when(mockCentres.cancelDelete()).thenReturn(true);
+
+            int numberOfCentresBefore = centresPage.getAllCentres().size();
+            centresPage.clickDeleteCentreButton(centreName);
+            centresPage.cancelDelete();
+            int numberOfCentresAfter = centresPage.getAllCentres().size();
+            Assertions.assertEquals(numberOfCentresAfter, numberOfCentresBefore);
+        }
     }
 
+    @Test
+    @DisplayName("Test editLocation transwers all information over")
+    void testEditLocationTranswersAllInformationOver() {
+        Assertions.assertTrue(centresPage.areAllFieldsPassedOnToEditCentrePage("Hoth"));
+    }
+
+    public boolean areAllCentresUnique() {
+
+
+
+    }
 
     @AfterEach
     public void tearDown() {

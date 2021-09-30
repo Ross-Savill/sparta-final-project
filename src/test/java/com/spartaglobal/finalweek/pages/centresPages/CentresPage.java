@@ -158,6 +158,7 @@ public class CentresPage extends NavTemplate implements URLable {
     public boolean isCentreDeleted(String locationName) {
         int numberOfCentresBefore = getAllCentres().size();
         this.clickDeleteCentreButton(locationName);
+        this.confirmDelete();
         int numberOfCentresAfter = getAllCentres().size();
         return numberOfCentresBefore > numberOfCentresAfter;
     }
@@ -181,5 +182,31 @@ public class CentresPage extends NavTemplate implements URLable {
         WebElement centre = this.getCentresByLocationName(centreName).get(0);
         WebElement deleteButton = centre.findElements(By.className("btn")).get(1);
         return deleteButton;
+    }
+
+    public boolean confirmDelete() {
+        webDriver.switchTo().alert().accept();
+        return true;
+
+    }
+
+    public boolean areAllFieldsPassedOnToEditCentrePage(String locationName) {
+        int numberOfRooms = this.getNumberOfRooms(locationName);
+
+        this.clickEditCentreButton(locationName);
+
+        WebElement nameTextField = webDriver.findElement(By.id("location-location"));
+        WebElement numRoomsTextField = webDriver.findElement(By.id("location-no-of-rooms"));
+
+        if(locationName.equals(nameTextField.getAttribute("value"))
+            && numberOfRooms == Integer.parseInt(numRoomsTextField.getAttribute("value"))) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean cancelDelete() {
+        webDriver.switchTo().alert().dismiss();
+        return true;
     }
 }
