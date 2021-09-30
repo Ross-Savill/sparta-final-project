@@ -203,29 +203,34 @@ public class CentresPageTests {
     @Nested
     @DisplayName("Deleting centres")
     class delete {
+        private final String centreName = "Hoth";
+
+        @Test
+        @DisplayName("Test confirmation box appears on delete")
+        void testConfirmationBoxAppears() {
+            Assertions.assertTrue(centresPage.doesConfirmationBoxAppearOnDelete(centreName));
+        }
+
         @Test
         @DisplayName("Test delete centre deletes something")
         void testDeleteCentreDeletesSomething() {
             //TODO: add something to delete
-            String centreName = "Hoth";
-
-            int numberOfCentresBefore = centresPage.getCentresByLocationName(centreName).size();
-            centresPage.deleteCentre(centreName);
-            int numberOfCentresAfter = centresPage.getCentresByLocationName(centreName).size();
-
-            Assertions.assertTrue(numberOfCentresAfter < numberOfCentresBefore);
+            //TODO: mock confirmation box
+            Assertions.assertTrue(centresPage.isCentreDeleted(centreName));
         }
         @Test
-        @DisplayName("Test delete centre deletes the right centre")
-        void testDeleteCentre() {
-
+        @DisplayName("Test delete centre hypertext deletes something")
+        void testDeleteCentreHypertextDeletesSomething() {
+            //TODO: add something to delete
+            Assertions.assertTrue(centresPage.isCentreDeleted(centreName));
         }
+
     }
 
 
     @AfterEach
     public void tearDown() {
-        //webDriver.quit();
+        webDriver.quit();
     }
 
 }

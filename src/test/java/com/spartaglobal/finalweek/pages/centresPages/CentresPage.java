@@ -28,8 +28,7 @@ public class CentresPage extends NavTemplate implements URLable {
     public CentresPage(){
         PageFactory.initElements(webDriver, this);
 
-        centres = centreTable.findElement(By.tagName("tbody"))
-                .findElements(By.tagName("tr"));
+        this.getCentres();
 
         locationNames = new ArrayList<>();
         locationNames = this.getAllLocationNames();
@@ -38,7 +37,13 @@ public class CentresPage extends NavTemplate implements URLable {
     }
 
     public List<WebElement> getAllCentres() {
-        return this.centres;
+        return this.getCentres();
+    }
+
+    private List<WebElement> getCentres() {
+        centres = centreTable.findElement(By.tagName("tbody"))
+                .findElements(By.tagName("tr"));
+        return centres;
     }
 
     public List<WebElement> getAllLocationNames() {
@@ -130,22 +135,31 @@ public class CentresPage extends NavTemplate implements URLable {
         return new EditLocationPage();
     }
 
-    public void deleteCentre(String centreName) {
-        WebElement centre = this.getCentresByLocationName(centreName).get(0);
-        WebElement deleteButton = centre.findElements(By.id("btn")).get(1);
-
-        getEditButton(centreName).click();
+    public void clickDeleteCentreButton(String centreName) {
+        this.getDeleteButton(centreName).click();
     }
 
-    public void deleteCentre(int xOffset, int yOffset, String centreName) {
-        WebElement centre = this.getCentresByLocationName(centreName).get(0);
-        WebElement deleteButton = centre.findElements(By.id("btn")).get(1);
-
+    public void clickDeleteCentreButton(int xOffset, int yOffset, String centreName) {
+        WebElement deleteButton = this.getDeleteButton(centreName);
         this.clickButton(xOffset, yOffset, deleteButton);
     }
 
-    public boolean isCentreDeleted() {
-        return false;
+    public boolean doesConfirmationBoxAppearOnDelete(String locationName) {
+        this.clickDeleteCentreButton(locationName);
+//        WebElement popUp = webDriver.findElement(By.id("PopUp"));
+//        return popUp != null;
+        String alertText = webDriver.switchTo().alert().getText();
+        if(alertText == null || alertText.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isCentreDeleted(String locationName) {
+        int numberOfCentresBefore = getAllCentres().size();
+        this.clickDeleteCentreButton(locationName);
+        int numberOfCentresAfter = getAllCentres().size();
+        return numberOfCentresBefore > numberOfCentresAfter;
     }
 
     @Override
@@ -162,5 +176,10 @@ public class CentresPage extends NavTemplate implements URLable {
         WebElement button;
         button = getCentresByLocationName(centreName).get(0).findElement(By.className("btn"));
         return button;
+    }
+    private WebElement getDeleteButton(String centreName) {
+        WebElement centre = this.getCentresByLocationName(centreName).get(0);
+        WebElement deleteButton = centre.findElements(By.className("btn")).get(1);
+        return deleteButton;
     }
 }
