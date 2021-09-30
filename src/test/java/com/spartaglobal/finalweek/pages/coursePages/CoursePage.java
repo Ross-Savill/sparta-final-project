@@ -63,19 +63,25 @@ public class CoursePage implements URLable {
     }
 
     public List<WebElement> getCoursesByDiscipline(String disciplineName){
-        List<WebElement> allCoursesWithDiscipline = new ArrayList<>();
+        allDisciplines = new ArrayList<>();
         for (WebElement course : allCourses) {
             if (course.findElement(By.id(Integer.toString(allCourses.indexOf(course)) + "discipline"))
                     .getText().equals(disciplineName)) {
-                allCoursesWithDiscipline.add(course);
+                allDisciplines.add(course);
             }
         }
-        return allCoursesWithDiscipline;
+        return allDisciplines;
     }
 
     public List<WebElement> getCoursesByCourseType(String courseType){
-
-        return null;
+        allCourseTypes = new ArrayList<>();
+        for (WebElement course : allCourses) {
+            if (course.findElement(By.id(Integer.toString(allCourses.indexOf(course)) + "course_type"))
+                    .getText().equals(courseType)) {
+                allCourseTypes.add(course);
+            }
+        }
+        return allCourseTypes;
     }
 
     public List<WebElement> getCoursesByLocation(String location){

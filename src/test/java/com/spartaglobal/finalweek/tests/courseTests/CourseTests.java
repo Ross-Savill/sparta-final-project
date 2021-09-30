@@ -73,6 +73,14 @@ public class CourseTests  {
         }
     }
 
+    @Test
+    @DisplayName("Testing getCoursesByType() returns only courses with matching course types")
+    public void testGetCoursesByType(){
+        for(int i = 0; i < coursePage.getCoursesByCourseType("Business").size(); i++) {
+            System.out.println(coursePage.getCoursesByCourseType("Business").get(i).getText());
+        }
+    }
+
     @AfterEach
     public void tearDown(){
         webDriver.quit();
