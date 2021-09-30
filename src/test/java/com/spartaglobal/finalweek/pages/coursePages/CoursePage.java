@@ -96,8 +96,14 @@ public class CoursePage implements URLable {
     }
 
     public List<WebElement> getCoursesByTrainer(String trainerName){
-
-        return null;
+        allTrainers = new ArrayList<>();
+        for (WebElement course : allCourses) {
+            if (course.findElement(By.id(Integer.toString(allCourses.indexOf(course)) + "trainer_name"))
+                    .getText().equals(trainerName)) {
+                allTrainers.add(course);
+            }
+        }
+        return allTrainers;
     }
 
     public AddCoursePage clickAddCourseButton(){

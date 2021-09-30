@@ -68,24 +68,36 @@ public class CourseTests  {
     @Test
     @DisplayName("Testing getCoursesByDiscipline() returns only courses with matching discipline")
     public void testGetCoursesByDiscipline(){
-        for(int i = 0; i < coursePage.getCoursesByDiscipline("DevOps").size(); i++) {
-            System.out.println(coursePage.getCoursesByDiscipline("DevOps").get(i).getText());
+        String discipline =  "DevOps";
+        for(int i = 0; i < coursePage.getCoursesByDiscipline(discipline).size(); i++) {
+            System.out.println(coursePage.getCoursesByDiscipline(discipline).get(i).getText());
         }
     }
 
     @Test
     @DisplayName("Testing getCoursesByType() returns only courses with matching course types")
     public void testGetCoursesByType(){
-        for(int i = 0; i < coursePage.getCoursesByCourseType("Business").size(); i++) {
-            System.out.println(coursePage.getCoursesByCourseType("Business").get(i).getText());
+        String courseType = "Business";
+        for(int i = 0; i < coursePage.getCoursesByCourseType(courseType).size(); i++) {
+            System.out.println(coursePage.getCoursesByCourseType(courseType).get(i).getText());
         }
     }
 
     @Test
     @DisplayName("Testing getCoursesByLocation() returns only courses with matching locations")
     public void testGetCoursesByLocation(){
-        for(int i = 0; i < coursePage.getCoursesByLocation("Naboo").size(); i++) {
-            System.out.println(coursePage.getCoursesByLocation("Naboo").get(i).getText());
+        String location = "Naboo";
+        for(int i = 0; i < coursePage.getCoursesByLocation(location).size(); i++) {
+            System.out.println(coursePage.getCoursesByLocation(location).get(i).getText());
+        }
+    }
+
+    @Test
+    @DisplayName("Testing getCoursesByTrainer() returns only courses with matching trainer names")
+    public void testGetCoursesByTrainer(){
+        String trainerName = "Kit Fisto";
+        for(int i = 0; i < coursePage.getCoursesByTrainer(trainerName).size(); i++) {
+            System.out.println(coursePage.getCoursesByTrainer(trainerName).get(i).getText());
         }
     }
 
