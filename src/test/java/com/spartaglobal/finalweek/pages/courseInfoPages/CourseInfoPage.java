@@ -1,17 +1,20 @@
 package com.spartaglobal.finalweek.pages.courseInfoPages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
-import com.spartaglobal.finalweek.pages.NavTemplate;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import java.util.List;
+import java.util.*;
 
-public class CourseInfoPage extends NavTemplate implements URLable {
+import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
-    @FindBy () WebElement courseTypeElements;
-    @FindBy () WebElement disciplinesElements;
+public class CourseInfoPage implements URLable {
+
+    @FindBy (id = "courseTypeTable") List<WebElement> courseTypeElements;
+    @FindBy (id = "disciplineTable") List<WebElement> disciplinesElements;
     @FindBy (id = "CourseTypePageLink") WebElement addCourseTypeButton;
     @FindBy (css = "#courseTypeTable > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement editCourseTypeButton;
     @FindBy (css = "#courseTypeTable > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement deleteCourseTypeButton;
@@ -24,97 +27,241 @@ public class CourseInfoPage extends NavTemplate implements URLable {
         PageFactory.initElements(webDriver, this);
     }
 
-//    public List<WebElement> getCourseTypeElements() {
-//
-//    }
+    public List<WebElement> getCourseTypeElements() {
+        return courseTypeElements;
+    }
 
-//    public List<String> getCourseTypesNames() {
-//
-//    }
+    public List<String> getCourseTypesNames() {
+        List<String> courseTypesNames = new ArrayList<>();
+        boolean notNull = true;
+        int currentRow = 0;
 
-//    public WebElement getCourseTypeWebElement(String courseType) {
-//
-//    }
+        while(notNull) {
+            try {
+                String searchID = (currentRow + "coursetype");
+                courseTypesNames.add(webDriver.findElement(new By.ById(searchID)).getText());
+                currentRow++;
+            } catch (NoSuchElementException e) {
+                notNull = false;
+            }
+        }
 
-//    public int getCourseTypeCount() {
-//
-//    }
+        return courseTypesNames;
+    }
 
-//    public List<WebElement> getDisciplinesElements() {
-//
-//    }
+    public WebElement getCourseTypeWebElement(String courseType) {
+        boolean notNull = true;
+        int currentRow = 0;
 
-//    public List<String> getDisciplineNames() {
-//
-//    }
+        while(notNull) {
+            try {
+                String searchID = (currentRow + "coursetype");
+                WebElement rowName = webDriver.findElement(new By.ById(searchID));
+                if(rowName.getText().equals(courseType)) {
+                    return webDriver.findElement(new By.ById(currentRow + "row"));
+                }
+                currentRow++;
+            } catch (NoSuchElementException e) {
+                notNull = false;
+            }
+        }
+        return null;
+    }
 
-//    public int getDisciplineCount() {
-//
-//    }
+    public int getCourseTypeCount() {
+        return getCourseTypesNames().size();
+    }
 
-//    public WebElement getDisciplineElement(int rowID) {
-//
-//    }
+    public List<WebElement> getDisciplinesElements() {
+        return disciplinesElements;
+    }
 
-//    public String getDisciplineName(int rowID) {
-//
-//    }
+    public List<String> getDisciplineNames() {
+        List<String> disciplineNames = new ArrayList<>();
+        boolean notNull = true;
+        int currentRow = 0;
 
-//    public List<WebElement> getDisciplinesElementsWithDuration(int duration) {
-//
-//    }
+        while(notNull) {
+            try {
+                String searchID = (currentRow + "discipline");
+                disciplineNames.add(webDriver.findElement(new By.ById(searchID)).getText());
+                currentRow++;
+            } catch (NoSuchElementException e) {
+                notNull = false;
+            }
+        }
 
-//    public List<String> getDisciplinesNames(int duration) {
-//
-//    }
+        return disciplineNames;
+    }
 
-//    public List<WebElement> getDisciplinesElementsBetweenDurations(int lowestDuration, int highestDuration) {
-//
-//    }
+    public int getDisciplineCount() {
+        return getDisciplineNames().size();
+    }
 
-//    public List<String> getDisciplineNamesBetweenDurations(int lowestDuration, int highestDuration) {
-//
-//    }
+    public WebElement getDisciplineElement(int rowID) {
+        try {
+            String searchID = (rowID + "discipline");
+            return(webDriver.findElement(new By.ById(searchID)));
+        } catch (NoSuchElementException e) {
+            return null;
+        }
+    }
 
-//    public AddDisciplinePage clickAddDisciplineButton() {
-//
-//    }
+    public WebElement getDisciplineElement(String disciplineName) {
+        boolean notNull = true;
+        int currentRow = 0;
 
-//    public AddCourseTypePage clickAddCourseTypeButton() {
-//
-//    }
+        while(notNull) {
+            try {
+                String searchID = (currentRow + "discipline");
+                WebElement rowName = webDriver.findElement(new By.ById(searchID));
+                if(rowName.getText().equals(disciplineName)) {
+                    return webDriver.findElement(new By.ById(currentRow + "row"));
+                }
+                currentRow++;
+            } catch (NoSuchElementException e) {
+                notNull = false;
+            }
+        }
+        return null;
+    }
 
-//    public EditCourseTypePage clickEditCourseTypeButton(String courseTypeName) {
-//
-//    }
+    public String getDisciplineName(int rowID) {
+        return getDisciplineNames().get(rowID);
+    }
 
-//    public EditDisciplinePage clickEditDisciplineButton(String disciplineName) {
-//
-//    }
+    public List<WebElement> getDisciplinesElementsWithDuration(int duration) {
+        List<WebElement> disciplineElements = new ArrayList<>();
+        boolean notNull = true;
+        int currentRow = 0;
 
-//    public boolean clickDeleteCourseTypeButton (String courseTypeName) {
-//
-//    }
+        while(notNull) {
+            try {
+                String searchID = (currentRow + "duration");
+                int currentRowDuration = Integer.parseInt(webDriver.findElement(new By.ById(searchID)).getText().replaceAll("[^0-9]", ""));
+                if (currentRowDuration == duration) {
+                    disciplineElements.add(webDriver.findElement(new By.ById(currentRow + "row")));
+                }
+                currentRow++;
+            } catch (NoSuchElementException e) {
+                notNull = false;
+            }
+        }
+        return disciplineElements;
+    }
 
-//    public boolean clickDeleteDisciplineButton(String disciplineName) {
-//
-//    }
+    public List<String> getDisciplinesNamesWithDuration(int duration) {
+        List<String> disciplineNames = new ArrayList<>();
+        boolean notNull = true;
+        int currentRow = 0;
 
-//    public boolean areCourseTypesUnique() {
-//
-//    }
+        while(notNull) {
+            try {
+                String searchID = (currentRow + "duration");
+                int currentRowDuration = Integer.parseInt(webDriver.findElement(new By.ById(searchID)).getText().replaceAll("[^0-9]", ""));
+                if (currentRowDuration == duration) {
+                    disciplineNames.add(webDriver.findElement(new By.ById(currentRow + "discipline")).getText());
+                }
+                currentRow++;
+            } catch (NoSuchElementException e) {
+                notNull = false;
+            }
+        }
+        return disciplineNames;
+    }
 
-//    public boolean areDisciplinesUnique() {
-//
-//    }
+    public List<WebElement> getDisciplinesElementsBetweenDurations(int lowestDuration, int highestDuration) {
+        List<WebElement> disciplineElements = new ArrayList<>();
+        boolean notNull = true;
+        int currentRow = 0;
+
+        while(notNull) {
+            try {
+                String searchID = (currentRow + "duration");
+                int currentRowDuration = Integer.parseInt(webDriver.findElement(new By.ById(searchID)).getText().replaceAll("[^0-9]", ""));
+                if (currentRowDuration > lowestDuration && currentRowDuration < highestDuration) {
+                    disciplineElements.add(webDriver.findElement(new By.ById(currentRow + "row")));
+                }
+                currentRow++;
+            } catch (NoSuchElementException e) {
+                notNull = false;
+            }
+        }
+        return disciplineElements;
+    }
+
+    public List<String> getDisciplineNamesBetweenDurations(int lowestDuration, int highestDuration) {
+        List<String> disciplineNames = new ArrayList<>();
+        boolean notNull = true;
+        int currentRow = 0;
+
+        while(notNull) {
+            try {
+                String searchID = (currentRow + "duration");
+                int currentRowDuration = Integer.parseInt(webDriver.findElement(new By.ById(searchID)).getText().replaceAll("[^0-9]", ""));
+                if (currentRowDuration > lowestDuration && currentRowDuration < highestDuration) {
+                    disciplineNames.add(webDriver.findElement(new By.ById(currentRow + "discipline")).getText());
+                }
+                currentRow++;
+            } catch (NoSuchElementException e) {
+                notNull = false;
+            }
+        }
+        return disciplineNames;
+    }
+
+    public AddDisciplinePage clickAddDisciplineButton() {
+        addDisciplineButton.click();
+        return new AddDisciplinePage();
+    }
+
+    public AddCourseTypePage clickAddCourseTypeButton() {
+        addCourseTypeButton.click();
+        return new AddCourseTypePage();
+    }
+
+    public EditCourseTypePage clickEditCourseTypeButton(String courseTypeName) {
+        WebElement row = getCourseTypeWebElement(courseTypeName);
+        row.findElement(new By.ByLinkText("Edit")).click();
+        return new EditCourseTypePage();
+    }
+
+    public EditDisciplinePage clickEditDisciplineButton(String disciplineName) {
+        WebElement row = getCourseTypeWebElement(disciplineName);
+        row.findElement(new By.ByLinkText("Edit")).click();
+        return new EditDisciplinePage();
+    }
+
+    public boolean clickDeleteCourseTypeButton (String courseTypeName) {
+        WebElement row = getCourseTypeWebElement(courseTypeName);
+        row.findElement(new By.ByLinkText("Delete")).click();
+        return true;
+        // TODO: 30/09/2021 REVIEW THIS!!!
+    }
+
+    public boolean clickDeleteDisciplineButton(String disciplineName) {
+        WebElement row = getCourseTypeWebElement(disciplineName);
+        row.findElement(new By.ByLinkText("Delete")).click();
+        return true;
+    }
+
+    public boolean areCourseTypesUnique() {
+        Set<String> nameSet = new HashSet<String>(getCourseTypesNames());
+        return nameSet.size() >= getCourseTypesNames().size();
+    }
+
+    public boolean areDisciplinesUnique() {
+        Set<String> nameSet = new HashSet<String>(getDisciplineNames());
+        return nameSet.size() >= getDisciplineNames().size();
+    }
 
 //    public boolean isNameValidForCourseType(String courseTypeName) {
 //
 //    }
 
-//    public boolean isDurationValidForDiscipline(int duration) {
-//
-//    }
+    public boolean isDurationValidForDiscipline(int duration) {
+        return (duration > 0);
+    }
 
 //    public boolean isNameValidForDiscipline(String disciplineName) {
 //
