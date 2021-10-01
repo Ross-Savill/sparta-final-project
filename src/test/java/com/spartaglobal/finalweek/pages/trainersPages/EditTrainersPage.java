@@ -66,56 +66,49 @@ public class EditTrainersPage extends NavTemplate implements URLable {
 
     private boolean isSubmitSuccessful(){
         submitTrainer();
-        if(getURL() == "http://localhost:8080/trainerPage")
-        {
+        if(getURL() == trainersPageURL) {
             return true;
         }
         return false;
     }
 
     private boolean isFirstNameEmpty(){
-        if(getFirstName() == null)
-        {
+        if(getFirstName() == null) {
             return true;
         }
         return false;
     }
 
     private boolean isLastNameEmpty(){
-        if(getLastName() == null)
-        {
+        if(getLastName() == null) {
             return true;
         }
         return false;
     }
 
     private boolean areAllFieldsEmpty(){
-        if(isFirstNameEmpty() == true && isLastNameEmpty() == true )
-        {
+        if(isFirstNameEmpty() == true && isLastNameEmpty() == true ) {
             return true;
         }
         return false;
     }
 
     private boolean isFirstNameValid(){
-        if(getFirstName().matches("/^[a-z 0-9 ,.'-]+$/i"))
-        {
+        if(getFirstName().matches("/^[a-z 0-9 ,.'-]+$/i")) {
             return true;
         }
         return false;
     }
 
     private boolean isLastNameValid(){
-        if(getLastName().matches("/^[a-z 0-9 ,.'-]+$/i"))
-        {
+        if(getLastName().matches("/^[a-z 0-9 ,.'-]+$/i")) {
             return true;
         }
         return false;
     }
 
     private boolean areAllFieldsValid(){
-        if(isFirstNameValid() == true && isLastNameValid() == true )
-        {
+        if(isFirstNameValid() == true && isLastNameValid() == true ) {
             return true;
         }
         return false;

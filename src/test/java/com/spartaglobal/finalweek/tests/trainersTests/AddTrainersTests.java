@@ -66,9 +66,10 @@ private AddTrainersPage addTrainersPage;
 
     @Test
     @DisplayName("Check if Trainer was created")
-    void checkIfNewTrainerMade() {
-        Assertions.assertEquals(trainersPage.getFirstName())
+    void checkIfNewTrainerFirstNameEntered() {
+        Assertions.assertEquals(trainersPage.getFirstName(),"FirstExample");
     }
+
 
     @AfterEach
     public void tearDown(){
