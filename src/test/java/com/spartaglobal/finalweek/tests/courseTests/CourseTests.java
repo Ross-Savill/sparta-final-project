@@ -4,6 +4,7 @@ import com.spartaglobal.finalweek.base.TestBase;
 import com.spartaglobal.finalweek.pages.LoginPage;
 import com.spartaglobal.finalweek.pages.NavTemplate;
 import com.spartaglobal.finalweek.pages.SchedulerPage;
+import com.spartaglobal.finalweek.pages.coursePages.AddCoursePage;
 import com.spartaglobal.finalweek.pages.coursePages.CoursePage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.junit.jupiter.api.*;
@@ -11,6 +12,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
+
+import java.time.LocalDate;
+
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
 public class CourseTests  {
@@ -18,6 +22,7 @@ public class CourseTests  {
     private LoginPage loginPage;
     private SchedulerPage schedulerPage;
     private CoursePage coursePage;
+    private AddCoursePage addCoursePage;
 
     @BeforeEach
     public void setup() {
@@ -33,6 +38,8 @@ public class CourseTests  {
         navTemplate = new NavTemplate();
         coursePage = navTemplate.goToCoursesPage();
         coursePage = new CoursePage();
+//        addCoursePage = coursePage.clickAddCourseButton();
+//        addCoursePage = new AddCoursePage();
     }
 
     @Nested
@@ -50,14 +57,18 @@ public class CourseTests  {
         @DisplayName("Test EditCourseButton()")
         public void testClickEditCourseButton() {
             String courseName = "Engineering 90";
-            Assertions.assertEquals("http://localhost:8080/editCourse/3", coursePage.clickEditCourseButton(courseName).getURL());
+            Assertions.assertTrue(coursePage.clickEditCourseButton(courseName).getURL().startsWith("http://localhost:8080/editCourse/"));
         }
 
         @Test
         @Disabled //needs work
         @DisplayName("Test DeleteCourse()")
         public void testDeleteCourse() {
-            String courseName = "Engineering 87";
+            String courseName = "Engineering 101";
+            LocalDate courseStartDate = LocalDate.now();
+//            addCoursePage.enterCourseName(courseName);
+//            addCoursePage.enterStartDate(courseStartDate);
+//            addCoursePage.clickSubmit();
             coursePage.deleteCourse(courseName);
         }
     }
@@ -142,13 +153,24 @@ public class CourseTests  {
     }
 
     @Test
+    @Disabled
     @DisplayName("Testing if I can tell when a course has been deleted")
     public void testIsCourseDeleted(){
-        String courseToDelete = "Engineering 87";
-        Assertions.assertTrue(coursePage.isCourseDeleted(courseToDelete));
+        String courseToDelete = "Engineering 101";
+        LocalDate courseStartDate = LocalDate.now();
+//        addCoursePage.enterCourseName(courseToDelete);
+//        addCoursePage.enterStartDate(courseStartDate);
+//        addCoursePage.clickSubmit();
+
+        boolean firstAttempt = coursePage.isCourseDeleted(courseToDelete);
+        coursePage.deleteCourse(courseToDelete);
+        boolean secondAttempt = coursePage.isCourseDeleted(courseToDelete);
+        //Assertions.assertTrue(coursePage.isCourseDeleted(courseToDelete));
+        Assertions.assertTrue(!firstAttempt && secondAttempt);
     }
 
     @Nested
+    @Disabled
     @DisplayName("Confirmation Box Tests")
     class confirmationBoxTests {
 
