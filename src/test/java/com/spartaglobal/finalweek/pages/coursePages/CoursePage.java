@@ -4,14 +4,18 @@ import com.spartaglobal.finalweek.base.TestBase;
 import com.spartaglobal.finalweek.interfaces.URLable;
 import com.spartaglobal.finalweek.pages.NavTemplate;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.ByChained;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
@@ -75,6 +79,19 @@ public class CoursePage implements URLable {
         return findCourseName;
     }
 
+    public int getCourseIndexByCourseName(String courseName){
+        findCourseName = new ArrayList<>();
+        int count = 0;
+        for (WebElement course : allCourses) {
+            if (course.findElement(By.id(Integer.toString(allCourses.indexOf(course)) + "course"))
+                    .getText().equals(courseName)) {
+                return count;
+            }
+            count++;
+        }
+        return -1;
+    }
+
     public List<WebElement> getCoursesByDiscipline(String disciplineName){
         allDisciplines = new ArrayList<>();
         for (WebElement course : allCourses) {
@@ -124,16 +141,32 @@ public class CoursePage implements URLable {
         return new AddCoursePage();
     }
 
-    public EditCoursesPage clickEditCourseButton(String courseName){
-
+    public EditCoursesPage clickEditCourseButton(String courseName) throws InterruptedException {
         getEditButton(courseName).click();
         return new EditCoursesPage();
     }
 
-    private WebElement getEditButton(String courseName){
-        WebElement editButton;
-        editButton = getCoursesByCourseName(courseName).get(0).findElement(By.linkText("Edit"));
-        return editButton;
+    private WebElement getEditButton(String courseName) throws InterruptedException {
+        if(getCourseIndexByCourseName(courseName) < 5){
+            WebElement editButton;
+            editButton = getCoursesByCourseName(courseName).get(0).findElement(By.linkText("Edit"));
+            scroll(By.linkText("Edit"), By.id((getCourseIndexByCourseName(courseName)) + "row"));
+            return editButton;
+        }
+        else {
+            scroll(By.linkText("Edit"), By.id((getCourseIndexByCourseName(courseName)) + "row"));
+            WebElement editButton;
+            editButton = getCoursesByCourseName(courseName).get(0).findElement(By.linkText("Edit"));
+            return editButton;
+        }
+    }
+
+    private void scroll(By by, By index) throws InterruptedException {
+        WebElement element = webDriver.findElement(index).findElement(by);
+        int elementPosition = element.getLocation().getY();
+        String js = String.format("window.scrollTo(0, %s)", elementPosition);
+        ((JavascriptExecutor)webDriver).executeScript(js);
+        TimeUnit.SECONDS.sleep(1);
     }
 
     public boolean areCourseNamesUnique(){
