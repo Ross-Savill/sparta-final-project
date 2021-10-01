@@ -42,7 +42,6 @@ public class EditLocationPage extends NavTemplate implements URLable {
 
     public CentresPage goToCentresPage(int xOffset, int yOffset) {
         clickButton(getUpdateButton(), xOffset, yOffset);
-        getUpdateButton().click();
         return new CentresPage();
     }
 

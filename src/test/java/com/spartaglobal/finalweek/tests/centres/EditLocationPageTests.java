@@ -1,7 +1,8 @@
-package com.spartaglobal.finalweek.tests.centresTests;
+package com.spartaglobal.finalweek.tests.centres;
 
 import com.spartaglobal.finalweek.base.TestBase;
 import com.spartaglobal.finalweek.pages.LoginPage;
+import com.spartaglobal.finalweek.pages.centresPages.AddLocationPage;
 import com.spartaglobal.finalweek.pages.centresPages.CentresPage;
 import com.spartaglobal.finalweek.pages.centresPages.EditLocationPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
@@ -20,9 +21,11 @@ public class EditLocationPageTests {
 
     private EditLocationPage editLocationPage;
     private CentresPage centresPage;
+    private AddLocationPage addLocationPage;
     private final String centreName = "Hoth";
     private final int centreNumOfRooms = 5;
     private final String centreUrl = "http://localhost:8080/centres";
+    private final String dummyCentreName = "You won't be able to delete me muhaha";
 
     @BeforeEach
     void setup() {
@@ -69,7 +72,7 @@ public class EditLocationPageTests {
     @DisplayName("Test Buttons")
     class buttons {
         private final int xOffset = 0;
-        private final int yOffset = 10;
+        private final int yOffset = 7;
 
         @Nested
         @DisplayName("Test Update button")
@@ -88,6 +91,16 @@ public class EditLocationPageTests {
         @Nested
         @DisplayName("Test delete button")
         class deleteButton {
+
+            @BeforeEach
+            void createCentreToDelete(){
+                centresPage = editLocationPage.goToCentresPage();
+                addLocationPage = centresPage.clickAddCentreButton();
+                addLocationPage.isSubmitSuccessful(dummyCentreName, centreNumOfRooms);
+                centresPage = addLocationPage.goToCentresPage();
+                centresPage.clickSpecificButton(dummyCentreName,"edit").click();
+            }
+
             @Test
             @DisplayName("Test delete button works")
             void testDeleteButtonWorks() {
@@ -99,10 +112,6 @@ public class EditLocationPageTests {
                 Assertions.assertEquals(centreUrl, editLocationPage.clickDeleteButton().getURL());
             }
 
-            @AfterEach
-            void tearDown() {
-                //TODO: ree-add removed centres
-            }
         }
     }
 
@@ -163,11 +172,22 @@ public class EditLocationPageTests {
         @Nested
         @DisplayName("Test Delete Process")
         class deleteProcess {
+
+            @BeforeEach
+            void createCentreToDelete(){
+
+                centresPage = editLocationPage.goToCentresPage();
+                addLocationPage = centresPage.clickAddCentreButton();
+                addLocationPage.isSubmitSuccessful(dummyCentreName, centreNumOfRooms);
+                centresPage = addLocationPage.goToCentresPage();
+                centresPage.clickSpecificButton(dummyCentreName,"edit").click();
+            }
+
             @Test
             @DisplayName("Test centre is removed on CentresPage if deleted on EditLocationPage")
             void testCentreIsRemovedOnCentresPageIfDeletedOnEditLocationPage() {
                 centresPage = editLocationPage.clickDeleteButton();
-                Assertions.assertTrue(editLocationPage.isDeleteSuccessful(centreName, centreNumOfRooms));
+                Assertions.assertTrue(editLocationPage.isDeleteSuccessful(dummyCentreName, centreNumOfRooms));
             }
 
             @AfterEach

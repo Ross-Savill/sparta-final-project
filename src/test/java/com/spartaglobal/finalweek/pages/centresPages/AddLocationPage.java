@@ -81,18 +81,6 @@ public class AddLocationPage extends NavTemplate implements URLable {
         return isLocationNameEmpty() && isNumberOfRoomsEmpty();
     }
 
-/*    public boolean isLocationNameValid(){
-        return !(nameTextField.getAttribute("value").equals("") || nameTextField.getAttribute("value").equals(null));
-    }
-
-    public boolean isNumberOfRoomsValid(){
-        return !(numRoomsTextField.getAttribute("value").equals("") || numRoomsTextField.getAttribute("value").equals(null));
-    }
-
-    public boolean areAllFieldsValid(){
-        return isLocationNameValid() || isNumberOfRoomsValid();
-    }*/
-
     @Override
     public String getURL() {
         return webDriver.getCurrentUrl();

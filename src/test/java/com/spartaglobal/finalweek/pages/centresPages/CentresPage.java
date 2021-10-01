@@ -2,6 +2,7 @@ package com.spartaglobal.finalweek.pages.centresPages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
 import com.spartaglobal.finalweek.pages.NavTemplate;
+import io.cucumber.java.bs.A;
 import io.cucumber.java.sl.Ce;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -72,7 +73,7 @@ public class CentresPage extends NavTemplate implements URLable {
         List<WebElement> foundCentres = new ArrayList<>();
 
         for (WebElement centre:centres) {
-            if(centre.getText().contains(Integer.toString(roomNumber))) {
+            if(centre.findElement(By.id(centres.indexOf(centre)+"number_of_rooms")).getText().equals(Integer.toString(roomNumber))) {
                 foundCentres.add(centre);
             }
         }
@@ -108,12 +109,19 @@ public class CentresPage extends NavTemplate implements URLable {
         List<WebElement> foundCentres;
 
         foundCentres = this.getCentresByLocationName(centreName);
-
+        try{
         WebElement centre = foundCentres.get(0);
         WebElement numberOfRooms = centre.findElement(
                 By.id(Integer.toString(centres.indexOf(centre))+"number_of_rooms"));
 
         return Integer.parseInt(numberOfRooms.getText());
+        }catch(IndexOutOfBoundsException iOOB){
+            return 0;
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+
     }
 
     public AddLocationPage clickAddCentreButton(int xOffset, int yOffset) {
@@ -223,4 +231,30 @@ public class CentresPage extends NavTemplate implements URLable {
         webDriver.switchTo().alert().dismiss();
         return true;
     }
+
+    private List<WebElement> getButtonsByName(String locationName){
+        List<WebElement> foundButtons = new ArrayList<>();
+
+        for (WebElement centre:centres) {
+            if(centre.findElement(By.id(Integer.toString(centres.indexOf(centre))+"location_name")).getText().equals(locationName)) {
+                foundButtons.addAll(centre.findElements(By.className("btn")));
+                return foundButtons;
+            }
+
+        }
+        return foundButtons;
+    }
+
+    public WebElement clickSpecificButton(String locationName, String buttonType){
+        List<WebElement> buttons = getButtonsByName(locationName);
+        if(buttonType.equals("edit")){
+            return buttons.get(0);
+        }
+        else if(buttonType.equals("delete")){
+            return buttons.get(1);
+        }
+        else return null;
+    }
+
 }
+

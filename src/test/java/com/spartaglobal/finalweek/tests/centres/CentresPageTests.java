@@ -2,6 +2,7 @@ package com.spartaglobal.finalweek.tests.centres;
 
 import com.spartaglobal.finalweek.base.TestBase;
 import com.spartaglobal.finalweek.pages.LoginPage;
+import com.spartaglobal.finalweek.pages.NavTemplate;
 import com.spartaglobal.finalweek.pages.centresPages.AddLocationPage;
 import com.spartaglobal.finalweek.pages.centresPages.CentresPage;
 import com.spartaglobal.finalweek.pages.centresPages.EditLocationPage;
@@ -11,12 +12,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-import static com.spartaglobal.finalweek.base.TestBase.Properties;
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
 public class CentresPageTests {
@@ -119,13 +118,13 @@ public class CentresPageTests {
             Assertions.assertEquals(0, centresPage.getCentresByNumberOfRooms(lowerBound, higherBound).size());
         }
         @ParameterizedTest
-        @ValueSource(strings = "Hoth, Naboo")
+        @ValueSource(strings = {"Hoth","Naboo"})
         @DisplayName("Test getNumberOfRooms returns number of rooms")
         void testGetNumberOfRoomsReturnsNumberOfRooms(String locationName) {
             Assertions.assertTrue(centresPage.getNumberOfRooms(locationName) >= 0);
         }
         @ParameterizedTest
-        @ValueSource(strings = "Hoth, Naboo")
+        @ValueSource(strings = {"Doesn't","Exist"})
         @DisplayName("Test getNumberOfRooms returns 0 if room doesn't exist")
         void testGetNumberOfRoomsReturns0IfRoomDoesnTExist(String locationName) {
             Assertions.assertEquals(0, centresPage.getNumberOfRooms(locationName));
@@ -134,13 +133,6 @@ public class CentresPageTests {
         @DisplayName("Test getNumberOfRooms returns an int value")
         void testGetNumberOfRoomsReturnsAnIntValue() {
             Assertions.assertTrue(centresPage.getNumberOfRooms("Hoth") > 0);
-        }
-        @Disabled
-        @Test
-        @DisplayName("Test getNumberOfRooms returns the number of rooms for the first centre found if there are duplicates")
-        void testGetNumberOfRoomsReturnsTheNumberOfRoomsForTheFirstCentreFoundIfThereAreDuplicates() {
-            //Assumptions.assumeFalse(centresPage.areAllCentresUnique());
-
         }
     }
 
@@ -205,33 +197,42 @@ public class CentresPageTests {
     @Nested
     @DisplayName("Deleting centres")
     class delete {
-        private final String centreName = "Hoth";
+        private final String dummyCentreName = "Delete Me!";
+        private final int dummyCentreRooms = 8;
+        AddLocationPage addLocationPage;
+
+        @BeforeEach
+        void addDummyCentre(){
+            addLocationPage = centresPage.clickAddCentreButton();
+            addLocationPage.isSubmitSuccessful(dummyCentreName,dummyCentreRooms);
+            centresPage = addLocationPage.goToCentresPage();
+        }
 
         @Test
         @DisplayName("Test confirmation box appears on delete")
         void testConfirmationBoxAppears() {
-            Assertions.assertTrue(centresPage.doesConfirmationBoxAppearOnDelete(centreName));
+            Assertions.assertTrue(centresPage.doesConfirmationBoxAppearOnDelete(dummyCentreName));
         }
 
         @Test
         @DisplayName("Test delete centre deletes something")
         void testDeleteCentreDeletesSomething() {
             //TODO: add something to delete
-            Assertions.assertTrue(centresPage.isCentreDeleted(centreName));
+            Assertions.assertTrue(centresPage.isCentreDeleted(dummyCentreName));
         }
         @Test
         @DisplayName("Test delete centre hypertext deletes something")
         void testDeleteCentreHypertextDeletesSomething() {
             //TODO: add something to delete
-            Assertions.assertTrue(centresPage.isCentreDeleted(centreName));
+            Assertions.assertTrue(centresPage.isCentreDeleted(dummyCentreName));
         }
 
         @Test
         @DisplayName("Test delete only happens when I click accept on the pop up")
         void testDeleteOnlyHappensWhenIClickAcceptOnThePopUp() {
             int numberOfCentresBefore = centresPage.getAllCentres().size();
-            centresPage.clickDeleteCentreButton(centreName);
-
+            centresPage.clickDeleteCentreButton(dummyCentreName);
+            centresPage.confirmDelete();
             int numberOfCentresAfter = centresPage.getAllCentres().size();
             Assertions.assertTrue(numberOfCentresAfter < numberOfCentresBefore);
         }
@@ -240,11 +241,8 @@ public class CentresPageTests {
         void testDeleteDoesNotHappenIfIDismissThePopup() {
             //TODO: add helper method to compact
 
-            CentresPage mockCentres = Mockito.mock(CentresPage.class);
-            Mockito.when(mockCentres.cancelDelete()).thenReturn(true);
-
             int numberOfCentresBefore = centresPage.getAllCentres().size();
-            centresPage.clickDeleteCentreButton(centreName);
+            centresPage.clickDeleteCentreButton(dummyCentreName);
             centresPage.cancelDelete();
             int numberOfCentresAfter = centresPage.getAllCentres().size();
             Assertions.assertEquals(numberOfCentresAfter, numberOfCentresBefore);
