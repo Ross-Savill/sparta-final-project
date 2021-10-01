@@ -53,6 +53,9 @@ public class CoursePage implements URLable {
     WebElement editCourseButton;
     WebElement editCourseHyperlink;
 
+    WebElement deleteCourseButton;
+    WebElement deleteCourseHyperlink;
+
     public List<WebElement> getAllCourses(){
         return this.allCourses;
     }
@@ -194,9 +197,8 @@ public class CoursePage implements URLable {
     }
 
     private WebElement getDeleteButton(String courseName){
-        WebElement deleteButton;
-        deleteButton = getCoursesByCourseName(courseName).get(0).findElement(By.linkText("Delete"));
-        return deleteButton;
+        deleteCourseButton = getCoursesByCourseName(courseName).get(0).findElement(By.linkText("Delete"));
+        return deleteCourseButton;
     }
 
     public boolean isCourseDeleted(String courseName){
