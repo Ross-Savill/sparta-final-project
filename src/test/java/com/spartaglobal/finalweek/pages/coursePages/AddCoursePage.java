@@ -28,6 +28,8 @@ public class AddCoursePage implements URLable {
     private WebElement trainerId;
     private ArrayList<WebElement> trainerStartWeeks = new ArrayList<>();
     private WebElement trainerStartWeek;
+    private ArrayList<WebElement> trainerEndWeeks = new ArrayList<>();
+    private WebElement trainerEndWeek;
     private @FindBy (id = "inputButton")
     WebElement submitButton;
 
@@ -80,6 +82,19 @@ public class AddCoursePage implements URLable {
         return getTrainerStartWeekElements().get(row-1);
     }
 
+    public ArrayList<WebElement> getTrainerEndWeekElements(){
+        for(int i = 0; i < Integer.parseInt(getNumberOfTrainers()); i++){
+            String trainerEndWeekString = "trainer_end_week"+i;
+            trainerEndWeek = webDriver.findElement(By.id(trainerEndWeekString));
+            trainerEndWeeks.add(trainerEndWeek);
+        }
+        return trainerEndWeeks;
+    }
+
+    public WebElement getTrainerEndWeekElement(int row){
+        return getTrainerEndWeekElements().get(row-1);
+    }
+
     public String getCourseName(){
         return getCourseNameElement().getAttribute("value");
     }
@@ -94,6 +109,10 @@ public class AddCoursePage implements URLable {
 
     public String getTrainerStartWeek(int row){
         return getTrainerStartWeekElement(row).getAttribute("value");
+    }
+
+    public String getTrainerEndWeek(int row){
+        return getTrainerEndWeekElement(row).getAttribute("value");
     }
 
     public void enterCourseName(String courseName){
@@ -123,6 +142,11 @@ public class AddCoursePage implements URLable {
         getTrainerStartWeekElement(row).sendKeys(Integer.toString(startWeek));
     }
 
+    public void enterTrainerEndWeek(int row ,int endWeek){
+        getTrainerEndWeekElement(row).clear();
+        getTrainerEndWeekElement(row).sendKeys(Integer.toString(endWeek));
+    }
+
     public boolean isCourseNameEmpty(){
         return getCourseName().isEmpty();
     }
@@ -135,6 +159,10 @@ public class AddCoursePage implements URLable {
         return getTrainerStartWeek(row).isEmpty();
     }
 
+    public boolean isTrainerEndWeekEmpty(int row){
+        return getTrainerEndWeek(row).isEmpty();
+    }
+
     public boolean isNumberOfTrainersValid(){
         return Integer.parseInt(getNumberOfTrainers())>MAX_NUMBER_TRAINERS||
                 Integer.parseInt(getNumberOfTrainers())<MIN_NUMBER_TRAINERS?false:true;
@@ -143,6 +171,11 @@ public class AddCoursePage implements URLable {
     public boolean isTrainerStartWeekValid(int row){
         return Integer.parseInt(getTrainerStartWeek(row))>MAX_TRAINER_START_END_WEEK||
                 Integer.parseInt(getTrainerStartWeek(row))<MIN_TRAINER_START_END_WEEK?false:true;
+    }
+
+    public boolean isTrainerEndWeekValid(int row){
+        return Integer.parseInt(getTrainerEndWeek(row))>MAX_TRAINER_START_END_WEEK||
+                Integer.parseInt(getTrainerEndWeek(row))<MIN_TRAINER_START_END_WEEK?false:true;
     }
 
     public boolean isAlertDisplayed(){
