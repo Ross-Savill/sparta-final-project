@@ -9,6 +9,7 @@ import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
@@ -53,6 +54,39 @@ public class AddCoursesTests{
         void testEmptyEnterCourseNameField() {
             addCoursePage.enterCourseName("");
             Assertions.assertEquals("", addCoursePage.getCourseName());
+        }
+    }
+
+    @Nested
+    @DisplayName("Testing increment, decrement, Enter and Getter methods for number of trainers field")
+    class GettingAndEnteringNumberOfTrainersFields {
+
+        @Test
+        @DisplayName("Test getting default number of trainers is 1")
+        void testDefaultNumberOfTrainersField() {
+            Assertions.assertEquals(1, Integer.parseInt(addCoursePage.getNumberOfTrainers()));
+        }
+
+        @Test
+        @DisplayName("Test increment  number of trainers")
+        void testIncrementNumberOfTrainerValue() {
+            addCoursePage.incrementNumberOfTrainers();
+            Assertions.assertEquals(2, Integer.parseInt(addCoursePage.getNumberOfTrainers()));
+        }
+
+        @Test
+        @DisplayName("Test decrement number of trainers")
+        void testDecrementNumberOfTrainerValue() {
+            addCoursePage.incrementNumberOfTrainers();
+            addCoursePage.decrementNumberOfTrainers();
+            Assertions.assertEquals(1, Integer.parseInt(addCoursePage.getNumberOfTrainers()));
+        }
+
+        @Test
+        @DisplayName("Test enter number of trainers")
+        void testEnterNumberOfTrainers() {
+            addCoursePage.enterNumberOfTrainers(6);
+            Assertions.assertEquals(6, Integer.parseInt(addCoursePage.getNumberOfTrainers()));
         }
     }
 
@@ -135,35 +169,21 @@ public class AddCoursesTests{
     }
 
     @Nested
-    @DisplayName("Testing increment, decrement, Enter and Getter methods for number of trainers field")
-    class GettingAndEnteringNumberOfTrainersFields {
+    @DisplayName("Testing Getters and Selectors for Discipline Field")
+    class GettingAndSelectingDiscipline {
 
         @Test
-        @DisplayName("Test getting default number of trainers is 1")
-        void testDefaultNumberOfTrainersField() {
-            Assertions.assertEquals(1, Integer.parseInt(addCoursePage.getNumberOfTrainers()));
+        @DisplayName("Testing getting discipline returns default value C#")
+        void testingGettingDisciplineReturnsDefaultValueC() {
+            Assertions.assertEquals("C#",  addCoursePage.getDiscipline());
         }
 
         @Test
-        @DisplayName("Test increment  number of trainers")
-        void testIncrementNumberOfTrainerValue() {
-            addCoursePage.incrementNumberOfTrainers();
-            Assertions.assertEquals(2, Integer.parseInt(addCoursePage.getNumberOfTrainers()));
-        }
-
-        @Test
-        @DisplayName("Test decrement number of trainers")
-        void testDecrementNumberOfTrainerValue() {
-            addCoursePage.incrementNumberOfTrainers();
-            addCoursePage.decrementNumberOfTrainers();
-            Assertions.assertEquals(1, Integer.parseInt(addCoursePage.getNumberOfTrainers()));
-        }
-
-        @Test
-        @DisplayName("Test enter number of trainers")
-        void testEnterNumberOfTrainers() {
-            addCoursePage.enterNumberOfTrainers(6);
-            Assertions.assertEquals(6, Integer.parseInt(addCoursePage.getNumberOfTrainers()));
+        @DisplayName("Testing select methods.")
+        void testingSelectMethods() {
+            addCoursePage.selectDiscipline("DevOps");
+            System.out.println(addCoursePage.getDiscipline());
+            Assertions.assertEquals("DevOps",  addCoursePage.getDiscipline());
         }
     }
 
