@@ -58,7 +58,7 @@ public class CourseInfoPage implements URLable {
                 String searchID = (currentRow + "coursetype");
                 WebElement rowName = webDriver.findElement(new By.ById(searchID));
                 if(rowName.getText().equals(courseType)) {
-                    return webDriver.findElement(new By.ById(currentRow + "row"));
+                    return webDriver.findElement(new By.ById("courseTypeTable")).findElement(new By.ById(currentRow + "row"));
                 }
                 currentRow++;
             } catch (NoSuchElementException e) {
@@ -66,6 +66,15 @@ public class CourseInfoPage implements URLable {
             }
         }
         return null;
+    }
+
+    public String getCourseTypeName(int rowID) {
+        try {
+            String searchID = (rowID + "coursetype");
+            return(webDriver.findElement(new By.ById(searchID)).getText());
+        } catch (NoSuchElementException e) {
+            return null;
+        }
     }
 
     public int getCourseTypeCount() {
@@ -101,7 +110,7 @@ public class CourseInfoPage implements URLable {
     public WebElement getDisciplineElement(int rowID) {
         try {
             String searchID = (rowID + "discipline");
-            return(webDriver.findElement(new By.ById(searchID)));
+            return(webDriver.findElement(new By.ById("disciplineTable"))).findElement(new By.ById(rowID + "row"));
         } catch (NoSuchElementException e) {
             return null;
         }
@@ -116,7 +125,7 @@ public class CourseInfoPage implements URLable {
                 String searchID = (currentRow + "discipline");
                 WebElement rowName = webDriver.findElement(new By.ById(searchID));
                 if(rowName.getText().equals(disciplineName)) {
-                    return webDriver.findElement(new By.ById(currentRow + "row"));
+                    return webDriver.findElement(new By.ById("disciplineTable")).findElement(new By.ById(currentRow + "row"));
                 }
                 currentRow++;
             } catch (NoSuchElementException e) {
@@ -232,17 +241,26 @@ public class CourseInfoPage implements URLable {
         return new EditDisciplinePage();
     }
 
-    public boolean clickDeleteCourseTypeButton (String courseTypeName) {
+    public void clickDeleteCourseTypeButton (String courseTypeName) {
         WebElement row = getCourseTypeWebElement(courseTypeName);
         row.findElement(new By.ByLinkText("Delete")).click();
-        return true;
-        // TODO: 30/09/2021 REVIEW THIS!!!
     }
 
-    public boolean clickDeleteDisciplineButton(String disciplineName) {
+    public boolean isCourseTypeDeleted(String courseTypeName) {
+        //Method actually only checks if a courseType is not present,
+        //however may be useful in conjunction with testing the delete button
+        return !getCourseTypesNames().contains(courseTypeName);
+    }
+
+    public void clickDeleteDisciplineButton(String disciplineName) {
         WebElement row = getCourseTypeWebElement(disciplineName);
         row.findElement(new By.ByLinkText("Delete")).click();
-        return true;
+    }
+
+    public boolean isDisciplineDeleted(String disciplineName) {
+        //Method actually only checks if a courseType is not present,
+        //however may be useful in conjunction with testing the delete button
+        return !getDisciplineNames().contains(disciplineName);
     }
 
     public boolean areCourseTypesUnique() {
@@ -255,16 +273,24 @@ public class CourseInfoPage implements URLable {
         return nameSet.size() >= getDisciplineNames().size();
     }
 
-//    public boolean isNameValidForCourseType(String courseTypeName) {
-//
-//    }
+    public boolean isNameValidForCourseType(String courseTypeName) {
+        return courseTypeName.matches("[a-zA-Z0-9-& #+]*");
+    }
 
     public boolean isDurationValidForDiscipline(int duration) {
         return (duration > 0);
     }
 
-//    public boolean isNameValidForDiscipline(String disciplineName) {
+    public boolean isNameValidForDiscipline(String disciplineName) {
+        return disciplineName.matches("[a-zA-Z0-9-& #+]*");
+    }
+
+//    public boolean areAllFieldsPassedOnToEditCourseTypePage() {
+//        // TODO: 30/09/2021 Implement This
+//    }
 //
+//    public boolean areAllFieldsPassedOnToEditDisciplinePage() {
+//        // TODO: 30/09/2021 Implement This
 //    }
 
     @Override
