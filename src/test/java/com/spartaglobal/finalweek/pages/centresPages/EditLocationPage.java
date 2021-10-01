@@ -40,10 +40,6 @@ public class EditLocationPage extends NavTemplate implements URLable {
         locationNumRoomsTextField.sendKeys(Integer.toString(numOfRooms));
     }
 
-    public boolean isUpdateSuccessful() {
-        return false;
-    }
-
     public CentresPage goToCentresPage(int xOffset, int yOffset) {
         clickButton(getUpdateButton(), xOffset, yOffset);
         getUpdateButton().click();
@@ -53,6 +49,50 @@ public class EditLocationPage extends NavTemplate implements URLable {
     public CentresPage goToCentresPage() {
         getUpdateButton().click();
         return new CentresPage();
+    }
+
+    public CentresPage clickDeleteButton() {
+        getDeleteButton().click();
+        return new CentresPage();
+    }
+
+    public CentresPage clickDeleteButton(int xOffset, int yOffset) {
+        getDeleteButton().click();
+        return new CentresPage();
+    }
+
+    public boolean isDeleteSuccessful(String locationName, int numberOfRooms) {
+        List<WebElement> centres = webDriver.findElements(By.id("locationTable"));
+        for (WebElement centre:centres) {
+            WebElement nameTextField = webDriver.findElement(By.id(centres.indexOf(centre)+"location_name"));
+            WebElement numRoomsTextField = webDriver.findElement(By.id(centres.indexOf(centre)+"number_of_rooms"));
+
+            if(locationName.equals(nameTextField.getText())
+                    && numberOfRooms == Integer.parseInt(numRoomsTextField.getText())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isUpdateSuccessful(String updatedLocationName, int updatedLocationNumOfRooms) {
+
+        List<WebElement> centres = webDriver.findElements(By.id("locationTable"));
+        for (WebElement centre:centres) {
+            WebElement nameTextField = webDriver.findElement(By.id(centres.indexOf(centre)+"location_name"));
+            WebElement numRoomsTextField = webDriver.findElement(By.id(centres.indexOf(centre)+"number_of_rooms"));
+
+            if(updatedLocationName.equals(nameTextField.getText())
+                    && updatedLocationNumOfRooms == Integer.parseInt(numRoomsTextField.getText())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public String getURL() {
+        return webDriver.getCurrentUrl();
     }
 
     private void clickButton(WebElement button, int xOffset, int yOffset) {
@@ -65,27 +105,8 @@ public class EditLocationPage extends NavTemplate implements URLable {
         return buttons.get(0);
     }
 
-    public boolean isDeleteSuccessful() {
-        return false;
-    }
-
-    public boolean hasUpdatedFieldsTransferred() {
-
-        List<WebElement> centres = webDriver.findElements(By.id("locationTable"));
-        for (WebElement centre:centres) {
-            WebElement nameTextField = webDriver.findElement(By.id(centres.indexOf(centre)+"location_name"));
-            WebElement numRoomsTextField = webDriver.findElement(By.id(centres.indexOf(centre)+"number_of_rooms"));
-
-            if(getLocationName().equals(nameTextField.getAttribute("value"))
-                    && getNumOfRooms() == Integer.parseInt(numRoomsTextField.getAttribute("value"))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public String getURL() {
-        return webDriver.getCurrentUrl();
+    private WebElement getDeleteButton() {
+        List<WebElement> buttons =  webDriver.findElements(By.className("btn-primary"));
+        return buttons.get(1);
     }
 }
