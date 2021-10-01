@@ -55,11 +55,13 @@ public class CourseTests  {
         }
 
         @ParameterizedTest
-        @Disabled //needs work
-        @ValueSource(strings = {"Engineering 90", "Jedi Training", "Engineering 87", "SDET 34"})
+        @ValueSource(strings = {"Jedi Training", "Engineering 87", "Engineering 90", "SDET 34",
+                "Engineering 51", "Sith Training", "Business 31", "Maintenance 12", "Padawan Training",
+                "SDET 54", "Business 65", "Engineering 62", "Business 12", "Hacking 4"}
+        )
+        //@ValueSource(strings = {"Sith Training", "Business 31", "Engineering 51", "Engineering 90", "Jedi Training", "Engineering 87", "SDET 34"})
         @DisplayName("Test EditCourseButton()")
-        public void testClickEditCourseButton(String courseName) {
-            //String courseName = "Engineering 90";
+        public void testClickEditCourseButton(String courseName) throws InterruptedException {
             Assertions.assertTrue(coursePage.clickEditCourseButton(courseName).getURL().startsWith("http://localhost:8080/editCourse/"));
         }
 
@@ -107,6 +109,13 @@ public class CourseTests  {
                 System.out.println(coursePage.getCoursesByCourseName(courseName).get(i).getText());
             }
             Assertions.assertEquals(1, coursePage.getCoursesByCourseName(courseName).size());
+        }
+
+        @Test
+        @DisplayName("Testing getCourseIndexByCourseName() returns the correct index")
+        public void testGetCourseIndexByCourseName(){
+            String courseName = "Sith Training";
+            Assertions.assertEquals(5, coursePage.getCourseIndexByCourseName(courseName));
         }
 
         @Test
