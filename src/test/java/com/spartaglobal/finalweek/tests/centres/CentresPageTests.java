@@ -252,8 +252,8 @@ public class CentresPageTests {
     }
 
     @Test
-    @DisplayName("Test editLocation transwers all information over")
-    void testEditLocationTranswersAllInformationOver() {
+    @DisplayName("Test editLocation transfers all information over")
+    void testEditLocationTransfersAllInformationOver() {
         Assertions.assertTrue(centresPage.areAllFieldsPassedOnToEditCentrePage("Hoth"));
     }
 
