@@ -119,7 +119,7 @@ public class SchedulerPageTests {
 
 
     @Test
-    @DisplayName("Test able to get Course ")
+    @DisplayName("Test able to get Course ,TrainingCourse,Trainer,CourseLocation")
     void testAbleToGetCourses() throws InterruptedException {
        Assertions.assertTrue(  schedulerPage.isTrainingCourseTrainerCourseLocationContains("Engineering 51","Mike Wazowski","Naboo"));
     }
