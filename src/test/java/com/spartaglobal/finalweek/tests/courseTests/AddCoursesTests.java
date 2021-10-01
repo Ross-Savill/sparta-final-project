@@ -111,6 +111,27 @@ public class AddCoursesTests{
             addCoursePage.enterTrainerStartWeek(numberOfTrainers, trainerStartWeekNum);
             Assertions.assertEquals(trainerStartWeekNum, Integer.parseInt(addCoursePage.getTrainerStartWeek(numberOfTrainers)));
         }
+
+        @Test
+        @DisplayName("Test enter end week")
+        void testEnterEndWeek() {
+            addCoursePage.enterTrainerEndWeek(1, 12);
+            Assertions.assertEquals(12, Integer.parseInt(addCoursePage.getTrainerEndWeek(1)));
+        }
+
+        @ParameterizedTest
+        @CsvSource(value = {"1, 12", "2, 6", "3, 52"})
+        @DisplayName("Test adding multiple trainers and getting trainer id")
+        void testMultipleTrainerEndWeeks(String row, String trainerEndWeek) {
+            int numberOfTrainers = Integer.parseInt(row);
+            int trainerEndWeekNum = Integer.parseInt(trainerEndWeek);
+
+            for (int i = 1; i < numberOfTrainers; i++){
+                addCoursePage.incrementNumberOfTrainers();
+            }
+            addCoursePage.enterTrainerEndWeek(numberOfTrainers, trainerEndWeekNum);
+            Assertions.assertEquals(trainerEndWeekNum, Integer.parseInt(addCoursePage.getTrainerEndWeek(numberOfTrainers)));
+        }
     }
 
     @Nested
@@ -175,6 +196,19 @@ public class AddCoursesTests{
         void emptyTrainerStartWeekReturnsFalse() {
             Assertions.assertFalse(addCoursePage.isTrainerStartWeekEmpty(1));
         }
+
+        @Test
+        @DisplayName("empty trainer end week returns true")
+        void emptyTrainerEndWeekReturnsTrue() {
+            addCoursePage.getTrainerEndWeekElement(1).clear();
+            Assertions.assertTrue(addCoursePage.isTrainerEndWeekEmpty(1));
+        }
+
+        @Test
+        @DisplayName("empty trainer end week returns false")
+        void emptyTrainerEndWeekReturnsFalse() {
+            Assertions.assertFalse(addCoursePage.isTrainerEndWeekEmpty(1));
+        }
     }
 
     @Nested
@@ -237,9 +271,30 @@ public class AddCoursesTests{
 
         @Test
         @DisplayName("Invalid high number of Trainer Start Week returns false")
-        void InvalidHighNumberOfTrainerStartWeekReturnsFalse() {
+        void InvalidHighNumberOfTrainerEndWeekReturnsFalse() {
             addCoursePage.enterTrainerStartWeek(1, 53);
             Assertions.assertFalse(addCoursePage.isTrainerStartWeekValid(1));
+        }
+
+        @Test
+        @DisplayName("Valid number of Trainer End Week returns true")
+        void validNumberOfTrainerEndWeekReturnsTrue() {
+            addCoursePage.enterTrainerEndWeek(1, 12);
+            Assertions.assertTrue(addCoursePage.isTrainerEndWeekValid(1));
+        }
+
+        @Test
+        @DisplayName("Invalid low number of Trainer End Week returns false")
+        void InvalidLowNumberOfTrainerEndWeekReturnsFalse() {
+            addCoursePage.enterTrainerEndWeek(1, 0);
+            Assertions.assertFalse(addCoursePage.isTrainerEndWeekValid(1));
+        }
+
+        @Test
+        @DisplayName("Invalid high number of Trainer End Week returns false")
+        void InvalidHighNumberOfTrainerStartWeekReturnsFalse() {
+            addCoursePage.enterTrainerEndWeek(1, 53);
+            Assertions.assertFalse(addCoursePage.isTrainerEndWeekValid(1));
         }
     }
 
