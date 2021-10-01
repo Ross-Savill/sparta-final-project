@@ -76,13 +76,13 @@ public class SchedulerPageTests {
         Assertions.assertEquals("Discipline DevOps",schedulerPage.getDicipline());
     }
 
-    @DisplayName("Test able to get Course Type text ")
+    @DisplayName("Test able to get Course Type text")
     @Test
     public void testAbleTogetCourseTypeText() {
         Assertions.assertEquals(schedulerPage.getCourseType(),"Course Type Business");
     }
 
-    @DisplayName("Test able to get StartOfCourse text ")
+    @DisplayName("Test able to get StartOfCourse text")
     @Test
     public void testAbleTogetStartOfCourseText() {
         Assertions.assertEquals(schedulerPage.getStartOfCourse(),"Start of Course 26-04-21");
