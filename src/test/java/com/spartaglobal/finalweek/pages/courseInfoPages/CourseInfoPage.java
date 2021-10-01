@@ -253,7 +253,7 @@ public class CourseInfoPage implements URLable {
     }
 
     public void clickDeleteDisciplineButton(String disciplineName) {
-        WebElement row = getCourseTypeWebElement(disciplineName);
+        WebElement row = getDisciplineElement(disciplineName);
         row.findElement(new By.ByLinkText("Delete")).click();
     }
 

@@ -173,7 +173,7 @@ public class CourseInfoTests extends NavTemplate {
     @DisplayName("clickDeleteCourseTypeButton Test")
     void clickDeleteCourseTypeButtonTest() {
         courseInfoPage.clickDeleteCourseTypeButton("Business");
-        courseInfoPage.isCourseTypeDeleted("Business");
+        Assertions.assertTrue(courseInfoPage.isCourseTypeDeleted("Business"));
     }
 
     @Test
@@ -187,7 +187,7 @@ public class CourseInfoTests extends NavTemplate {
     @DisplayName("clickDeleteDisciplineButton Test")
     void clickDeleteDisciplineButtonTest() {
         courseInfoPage.clickDeleteDisciplineButton("Java");
-        courseInfoPage.isCourseTypeDeleted("Java");
+        Assertions.assertTrue(courseInfoPage.isDisciplineDeleted("Java"));
     }
 
     @Test
