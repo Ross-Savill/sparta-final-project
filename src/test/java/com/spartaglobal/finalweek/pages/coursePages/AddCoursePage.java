@@ -24,17 +24,14 @@ public class AddCoursePage implements URLable {
     WebElement numberOfTrainersIncrement;
     private @FindBy (xpath = "//*[@id=\"add_course_form\"]/div[2]/span[1]/button")
     WebElement numberOfTrainersDecrement;
-    private ArrayList<WebElement> trainerIDs = new ArrayList<>();
-    private WebElement trainerId;
-    private ArrayList<WebElement> trainerStartWeeks = new ArrayList<>();
-    private WebElement trainerStartWeek;
-    private ArrayList<WebElement> trainerEndWeeks = new ArrayList<>();
-    private WebElement trainerEndWeek;
+    private final ArrayList<WebElement> trainerIDs = new ArrayList<>();
+    private final ArrayList<WebElement> trainerStartWeeks = new ArrayList<>();
+    private final ArrayList<WebElement> trainerEndWeeks = new ArrayList<>();
+    private @FindBy (id = "discipline_id")
+    WebElement discipline;
     private @FindBy (id = "inputButton")
     WebElement submitButton;
 
-    private final int MAX_NUMBER_TRAINERS = 10;
-    private final int MIN_NUMBER_TRAINERS = 1;
     private final int MAX_TRAINER_START_END_WEEK = 52;
     private final int MIN_TRAINER_START_END_WEEK = 1;
 
@@ -58,21 +55,20 @@ public class AddCoursePage implements URLable {
     public ArrayList<WebElement> getTrainerIDElements(){
         for(int i = 0; i < Integer.parseInt(getNumberOfTrainers()); i++){
             String trainerIDString = "trainer_id"+i;
-            trainerId = webDriver.findElement(By.id(trainerIDString));
+            WebElement trainerId = webDriver.findElement(By.id(trainerIDString));
             trainerIDs.add(trainerId);
         }
         return trainerIDs;
     }
 
     public WebElement getTrainerIDElement(int row){
-        Select selector = new Select(getTrainerIDElements().get(row-1));
-        return selector.getFirstSelectedOption();
+        return getTrainerIDElements().get(row-1);
     }
 
     public ArrayList<WebElement> getTrainerStartWeekElements(){
         for(int i = 0; i < Integer.parseInt(getNumberOfTrainers()); i++){
             String trainerStartWeekString = "trainer_start_week"+i;
-            trainerStartWeek = webDriver.findElement(By.id(trainerStartWeekString));
+            WebElement trainerStartWeek = webDriver.findElement(By.id(trainerStartWeekString));
             trainerStartWeeks.add(trainerStartWeek);
         }
         return trainerStartWeeks;
@@ -85,7 +81,7 @@ public class AddCoursePage implements URLable {
     public ArrayList<WebElement> getTrainerEndWeekElements(){
         for(int i = 0; i < Integer.parseInt(getNumberOfTrainers()); i++){
             String trainerEndWeekString = "trainer_end_week"+i;
-            trainerEndWeek = webDriver.findElement(By.id(trainerEndWeekString));
+            WebElement trainerEndWeek = webDriver.findElement(By.id(trainerEndWeekString));
             trainerEndWeeks.add(trainerEndWeek);
         }
         return trainerEndWeeks;
@@ -93,6 +89,10 @@ public class AddCoursePage implements URLable {
 
     public WebElement getTrainerEndWeekElement(int row){
         return getTrainerEndWeekElements().get(row-1);
+    }
+
+    public WebElement getDisciplineElement(){
+        return this.discipline;
     }
 
     public String getCourseName(){
@@ -104,7 +104,8 @@ public class AddCoursePage implements URLable {
     }
 
     public String getTrainerID(int row){
-        return getTrainerIDElement(row).getText();
+        Select selector = new Select(getTrainerIDElement(row));
+        return selector.getFirstSelectedOption().getText();
     }
 
     public String getTrainerStartWeek(int row){
@@ -113,6 +114,11 @@ public class AddCoursePage implements URLable {
 
     public String getTrainerEndWeek(int row){
         return getTrainerEndWeekElement(row).getAttribute("value");
+    }
+
+    public String getDiscipline(){
+        Select selector = new Select(getDisciplineElement());
+        return selector.getFirstSelectedOption().getText();
     }
 
     public void enterCourseName(String courseName){
@@ -147,6 +153,11 @@ public class AddCoursePage implements URLable {
         getTrainerEndWeekElement(row).sendKeys(Integer.toString(endWeek));
     }
 
+    public void selectDiscipline(String courseType){
+        Select selector = new Select(getDisciplineElement());
+        selector.selectByVisibleText(courseType);
+    }
+
     public boolean isCourseNameEmpty(){
         return getCourseName().isEmpty();
     }
@@ -164,18 +175,20 @@ public class AddCoursePage implements URLable {
     }
 
     public boolean isNumberOfTrainersValid(){
-        return Integer.parseInt(getNumberOfTrainers())>MAX_NUMBER_TRAINERS||
-                Integer.parseInt(getNumberOfTrainers())<MIN_NUMBER_TRAINERS?false:true;
+        int MAX_NUMBER_TRAINERS = 10;
+        int MIN_NUMBER_TRAINERS = 1;
+        return Integer.parseInt(getNumberOfTrainers()) <= MAX_NUMBER_TRAINERS &&
+                Integer.parseInt(getNumberOfTrainers()) >= MIN_NUMBER_TRAINERS;
     }
 
     public boolean isTrainerStartWeekValid(int row){
-        return Integer.parseInt(getTrainerStartWeek(row))>MAX_TRAINER_START_END_WEEK||
-                Integer.parseInt(getTrainerStartWeek(row))<MIN_TRAINER_START_END_WEEK?false:true;
+        return Integer.parseInt(getTrainerStartWeek(row)) <= MAX_TRAINER_START_END_WEEK &&
+                Integer.parseInt(getTrainerStartWeek(row)) >= MIN_TRAINER_START_END_WEEK;
     }
 
     public boolean isTrainerEndWeekValid(int row){
-        return Integer.parseInt(getTrainerEndWeek(row))>MAX_TRAINER_START_END_WEEK||
-                Integer.parseInt(getTrainerEndWeek(row))<MIN_TRAINER_START_END_WEEK?false:true;
+        return Integer.parseInt(getTrainerEndWeek(row)) <= MAX_TRAINER_START_END_WEEK &&
+                Integer.parseInt(getTrainerEndWeek(row)) >= MIN_TRAINER_START_END_WEEK;
     }
 
     public boolean isAlertDisplayed(){
