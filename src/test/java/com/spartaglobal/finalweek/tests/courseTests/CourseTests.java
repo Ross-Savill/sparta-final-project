@@ -8,6 +8,8 @@ import com.spartaglobal.finalweek.pages.coursePages.AddCoursePage;
 import com.spartaglobal.finalweek.pages.coursePages.CoursePage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -52,19 +54,21 @@ public class CourseTests  {
             Assertions.assertEquals("http://localhost:8080/addCourse", coursePage.clickAddCourseButton().getURL());
         }
 
-        @Test
+        @ParameterizedTest
         @Disabled //needs work
+        @ValueSource(strings = {"Engineering 90", "Jedi Training", "Engineering 87", "SDET 34"})
         @DisplayName("Test EditCourseButton()")
-        public void testClickEditCourseButton() {
-            String courseName = "Engineering 90";
+        public void testClickEditCourseButton(String courseName) {
+            //String courseName = "Engineering 90";
             Assertions.assertTrue(coursePage.clickEditCourseButton(courseName).getURL().startsWith("http://localhost:8080/editCourse/"));
         }
 
-        @Test
+        @ParameterizedTest
         @Disabled //needs work
+        @ValueSource(strings = {"Engineering 101", "Data 100", "SDET Stream"})
         @DisplayName("Test DeleteCourse()")
-        public void testDeleteCourse() {
-            String courseName = "Engineering 101";
+        public void testDeleteCourse(String courseName) {
+            //String courseName = "Engineering 101";
             LocalDate courseStartDate = LocalDate.now();
 //            addCoursePage.enterCourseName(courseName);
 //            addCoursePage.enterStartDate(courseStartDate);
@@ -152,11 +156,12 @@ public class CourseTests  {
         Assertions.assertTrue(coursePage.areCourseNamesUnique());
     }
 
-    @Test
+    @ParameterizedTest
     @Disabled
+    @ValueSource(strings = {"Engineering 101", "Data 100", "SDET Stream"})
     @DisplayName("Testing if I can tell when a course has been deleted")
-    public void testIsCourseDeleted(){
-        String courseToDelete = "Engineering 101";
+    public void testIsCourseDeleted(String courseToDelete){
+        //String courseToDelete = "Engineering 101";
         LocalDate courseStartDate = LocalDate.now();
 //        addCoursePage.enterCourseName(courseToDelete);
 //        addCoursePage.enterStartDate(courseStartDate);
