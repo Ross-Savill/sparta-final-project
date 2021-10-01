@@ -188,6 +188,42 @@ public class AddCoursesTests{
     }
 
     @Nested
+    @DisplayName("Testing Getters and Selectors for CourseType Field")
+    class GettingAndSelectingCourseType {
+
+        @Test
+        @DisplayName("Testing getting CourseType returns default value Business")
+        void testingGettingCourseTypeReturnsDefaultValueC() {
+            Assertions.assertEquals("Business",  addCoursePage.getCourseType());
+        }
+
+        @Test
+        @DisplayName("Testing select methods.")
+        void testingSelectMethods() {
+            addCoursePage.selectCourseType("Technology");
+            Assertions.assertEquals("Technology",  addCoursePage.getCourseType());
+        }
+    }
+
+    @Nested
+    @DisplayName("Testing Getters and Selectors for Location Field")
+    class GettingAndSelectingLocation {
+
+        @Test
+        @DisplayName("Testing getting Location returns default value Business")
+        void testingGettingLocationReturnsDefaultValueC() {
+            Assertions.assertEquals("Hoth",  addCoursePage.getLocation());
+        }
+
+        @Test
+        @DisplayName("Testing select methods.")
+        void testingSelectMethods() {
+            addCoursePage.selectLocation("Coruscant");
+            Assertions.assertEquals("Coruscant",  addCoursePage.getLocation());
+        }
+    }
+
+    @Nested
     @DisplayName("Empty entries test")
     class EmptyTests {
 
