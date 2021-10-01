@@ -48,9 +48,10 @@ public class CoursePage implements URLable {
     @FindBy(className = "btn-primary")
     WebElement addCourseButton;
     @FindBy(id = "CoursePageLink")
-    WebElement addCourseHyperLink;
+    WebElement addCourseHyperlink;
 
     WebElement editCourseButton;
+    WebElement editCourseHyperlink;
 
     public List<WebElement> getAllCourses(){
         return this.allCourses;
@@ -144,20 +145,27 @@ public class CoursePage implements URLable {
     }
 
     public AddCoursePage clickAddCourseHyperlink(){
-        addCourseHyperLink.click();
+        addCourseHyperlink.click();
         return new AddCoursePage();
     }
 
     public EditCoursesPage clickEditCourseButton(String courseName) throws InterruptedException {
-        getEditButton(courseName).click();
+        By editButtonMethod = By.className("btn");
+        getEditButton(courseName, editButtonMethod).click();
         return new EditCoursesPage();
     }
 
-    private WebElement getEditButton(String courseName) throws InterruptedException {
+    public EditCoursesPage clickEditCourseHyperlink(String courseName) throws InterruptedException {
+        By editHyperlinkMethod = By.linkText("Edit");
+        getEditButton(courseName, editHyperlinkMethod).click();
+        return new EditCoursesPage();
+    }
+
+    private WebElement getEditButton(String courseName, By method) throws InterruptedException {
         if(getCourseIndexByCourseName(courseName) < 5){
             WebElement editButton;
-            editButton = getCoursesByCourseName(courseName).get(0).findElement(By.linkText("Edit"));
-            scroll(By.linkText("Edit"), By.id((getCourseIndexByCourseName(courseName)) + "row"));
+            editButton = getCoursesByCourseName(courseName).get(0).findElement(method); //By.linkText("Edit") | By.className("btn")
+            scroll(method, By.id((getCourseIndexByCourseName(courseName)) + "row"));
             return editButton;
         }
         else {

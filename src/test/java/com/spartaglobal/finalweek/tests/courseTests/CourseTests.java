@@ -83,9 +83,19 @@ public class CourseTests  {
     class hyperlinkTests{
 
         @Test
-        @DisplayName("Test the AddCourseHyperlink")
+        @DisplayName("Test the addCourseHyperlink")
         public void testClickAddCourseHyperlink(){
             Assertions.assertEquals("http://localhost:8080/addCourse", coursePage.clickAddCourseHyperlink().getURL());
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"Jedi Training", "Engineering 87", "Engineering 90", "SDET 34",
+                "Engineering 51", "Sith Training", "Business 31", "Maintenance 12", "Padawan Training",
+                "SDET 54", "Business 65", "Engineering 62", "Business 12", "Hacking 4"}
+        )
+        @DisplayName("Test the clickEditCourseHyperlink()")
+        public void testClickEditCourseHyperlink(String courseName) throws InterruptedException {
+            Assertions.assertTrue(coursePage.clickEditCourseHyperlink(courseName).getURL().startsWith("http://localhost:8080/editCourse/"));
         }
     }
 
