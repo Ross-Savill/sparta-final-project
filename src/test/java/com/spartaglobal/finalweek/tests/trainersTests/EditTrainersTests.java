@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 public class EditTrainersTests extends NavTemplate {
 
+
     @BeforeEach
     public void setup() {
 
