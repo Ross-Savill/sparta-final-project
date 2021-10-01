@@ -2,6 +2,7 @@ package com.spartaglobal.finalweek.pages.courseInfoPages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
 import com.spartaglobal.finalweek.pages.NavTemplate;
+import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,49 +13,52 @@ public class AddDisciplinePage extends NavTemplate implements URLable {
 
     @FindBy(id = "discipline-name") WebElement disciplineNameTextField;
     @FindBy(id = "discipline-duration") WebElement durationTextField;
-    @FindBy(id = "btn-primary") WebElement submitButton;
+    @FindBy(className ="btn btn-primary") WebElement submitButton;
 
     public AddDisciplinePage() {
         PageFactory.initElements(webDriver, this);
     }
 
     public String getDisciplineNameTextField() {
-        return webDriver.findElement(By.id("disciplineNameTextField")).getAttribute("value");
+        return disciplineNameTextField.getAttribute("value");
     }
 
-    public String getDurationTextField() {
-        return webDriver.findElement(By.id("durationTextField")).getAttribute("value");
+    public int getDurationTextField() {
+        return Integer.parseInt(durationTextField.getAttribute("value"));
     }
 
     public void enterDisciplineName(String name) {
         disciplineNameTextField.sendKeys(name);
     }
 
-    public void enterDuration(String duration) {
-        durationTextField.sendKeys(duration);
+    public void enterDuration(int duration) {
+        String strDuration = String.valueOf(duration);
+        durationTextField.sendKeys(strDuration);
     }
 
     public boolean submitSuccessful() {
         submitButton.click();
-        return submitButton.isEnabled();
+        return webDriver.getCurrentUrl().equals(PropertiesLoader.getProperties().getProperty("courseInfoPageURL"));
     }
 
-    public CourseInfoPage goToCourseInfoPage() {
-        courseInfoPageLink.click();
-        return new CourseInfoPage();
-    }
+//    public CourseInfoPage goToCourseInfoPage() {
+//        courseInfoPageLink.click();
+//        return new CourseInfoPage();
+//    }
 
     public boolean isDisciplineNameValid() {
-        String durationTextFieldAttribute = durationTextField.getAttribute("value");
-        String durationReg = "[AZ]{20}";
-        return (durationTextFieldAttribute.matches(durationReg));
+        String disciplineNameTextFieldAttribute = disciplineNameTextField.getAttribute("value");
+        String durationReg = "[a-zA-Z]+";
+        return (disciplineNameTextFieldAttribute.matches(durationReg));
     }
 
     public boolean isDisciplineDurationValid() {
         int maxDuration = 1000;
-        String durationTextFieldAttribute = durationTextField.getAttribute("value");
-        int durationInt = Integer.parseInt(durationTextFieldAttribute);
-        return (durationInt<=maxDuration);
+        int minDuration = 0;
+        int durationTextFieldAttribute = Integer.parseInt(durationTextField.getAttribute("value"));
+
+        String regex = "[0-9]{3}+";
+        return (durationTextFieldAttribute>=minDuration && durationTextFieldAttribute<=maxDuration);
     }
 
     public boolean areAllFieldsValid() {

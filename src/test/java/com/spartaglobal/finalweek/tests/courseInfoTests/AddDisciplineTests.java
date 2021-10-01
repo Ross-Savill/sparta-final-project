@@ -11,10 +11,13 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.net.URL;
+
 public class AddDisciplineTests extends NavTemplate {
 
     private static final String userName = PropertiesLoader.getProperties().getProperty("Username");
     private static final String password =PropertiesLoader.getProperties().getProperty("Password");
+    private static final String courseInfoPageURL = PropertiesLoader.getProperties().getProperty("courseInfoPageURL");
 
     private LoginPage loginPage;
     private SchedulerPage schedulerPage;
@@ -27,16 +30,13 @@ public class AddDisciplineTests extends NavTemplate {
 
         loginPage = new LoginPage();
         schedulerPage = loginPage.login(userName,password);
-
         schedulerPage = new SchedulerPage();
-        NavTemplate navTemplate = new NavTemplate();
 
         courseInfoPage = schedulerPage.goToCourseInfoPage();
         courseInfoPage = new CourseInfoPage();
 
-        addDisciplinePage = courseInfoPage.goToAddDisciplinePage();
+        addDisciplinePage = courseInfoPage.clickAddDisciplineButton();
         addDisciplinePage = new AddDisciplinePage();
-
     }
 
     @Test
@@ -50,14 +50,17 @@ public class AddDisciplineTests extends NavTemplate {
     @Test
     @DisplayName("Check if duration field can be passed a value.")
     void testDurationField(){
-        String duration = "13";
+        int duration = 13;
         addDisciplinePage.enterDuration(duration);
         Assertions.assertEquals(duration,addDisciplinePage.getDurationTextField());
     }
 
+
     @Test
     @DisplayName("Check Submission Button is Clickable.")
     void testSubmissionIsClicked(){
+        addDisciplinePage.enterDisciplineName("Ruby");
+        addDisciplinePage.enterDuration(13);
         Assertions.assertTrue(addDisciplinePage.submitSuccessful());
     }
 
@@ -70,24 +73,40 @@ public class AddDisciplineTests extends NavTemplate {
     }
 
     @ParameterizedTest
-    @ValueSource (strings = {"200", "1", "999", "1000"})
+    @ValueSource (ints = {200,1000, 1})
     @DisplayName("Duration Field must be numbers only.")
     void testFieldIsNumbersOnly(){
-        Assertions.assertTrue(addDisciplinePage.submitSuccessful());
+        Assertions.assertTrue(addDisciplinePage.isDisciplineDurationValid());
     }
 
     @Test
     @ParameterizedTest
-    @ValueSource (strings = {"-1", "0", "1", "1000", "1001"})
-    @DisplayName("Duration Field must less than or equal to 1000.")
-    void testFieldIsLessThanOneThousand(){
+    @ValueSource (ints = {-1, 0, 1, 1000, 1001})
+    @DisplayName("Duration Field must between 0 and 1000.")
+    void testDurationBounds(int values){
+        addDisciplinePage.enterDuration(values);
+        Assertions.assertTrue(addDisciplinePage.isDisciplineDurationValid());
+    }
 
+    @ParameterizedTest
+    @ValueSource (strings = {"", "Python12"})
+    @DisplayName("Check Discipline name is empty.")
+    void testDisciplineNameIsEmpty(String names){
+        addDisciplinePage.enterDisciplineName(names);
+        Assertions.assertTrue(addDisciplinePage.isDisciplineNameEmpty());
+    }
+
+    @ParameterizedTest
+    @ValueSource (ints = { 1,2,3,5,1000 })
+    @DisplayName("Check Discipline Duration is empty.")
+    void testDisciplineDurationIsEmpty(int durations){
+        addDisciplinePage.enterDuration(durations);
+        Assertions.assertFalse(addDisciplinePage.isDisciplineDurationEmpty());
     }
 
     @Test
-    @DisplayName("Duration Field must less than or equal to 1000.")
+    @DisplayName("Test if Name and Duration are Empty.")
     void testFieldAreEmpty(){
-        addDisciplinePage.enterDuration("");
         addDisciplinePage.enterDisciplineName("");
         Assertions.assertTrue(addDisciplinePage.areAllFieldsEmpty());
     }
