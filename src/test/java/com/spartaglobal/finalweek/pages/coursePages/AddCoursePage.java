@@ -153,9 +153,9 @@ public class AddCoursePage implements URLable {
         getTrainerEndWeekElement(row).sendKeys(Integer.toString(endWeek));
     }
 
-    public void selectDiscipline(String courseType){
+    public void selectDiscipline(String discipline){
         Select selector = new Select(getDisciplineElement());
-        selector.selectByVisibleText(courseType);
+        selector.selectByVisibleText(discipline);
     }
 
     public boolean isCourseNameEmpty(){
