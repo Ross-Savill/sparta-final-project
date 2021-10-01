@@ -47,6 +47,8 @@ public class CoursePage implements URLable {
 
     @FindBy(className = "btn-primary")
     WebElement addCourseButton;
+    @FindBy(id = "CoursePageLink")
+    WebElement addCourseHyperLink;
 
     WebElement editCourseButton;
 
@@ -138,6 +140,11 @@ public class CoursePage implements URLable {
 
     public AddCoursePage clickAddCourseButton(){
         addCourseButton.click();
+        return new AddCoursePage();
+    }
+
+    public AddCoursePage clickAddCourseHyperlink(){
+        addCourseHyperLink.click();
         return new AddCoursePage();
     }
 

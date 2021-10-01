@@ -59,14 +59,13 @@ public class CourseTests  {
                 "Engineering 51", "Sith Training", "Business 31", "Maintenance 12", "Padawan Training",
                 "SDET 54", "Business 65", "Engineering 62", "Business 12", "Hacking 4"}
         )
-        //@ValueSource(strings = {"Sith Training", "Business 31", "Engineering 51", "Engineering 90", "Jedi Training", "Engineering 87", "SDET 34"})
         @DisplayName("Test EditCourseButton()")
         public void testClickEditCourseButton(String courseName) throws InterruptedException {
             Assertions.assertTrue(coursePage.clickEditCourseButton(courseName).getURL().startsWith("http://localhost:8080/editCourse/"));
         }
 
         @ParameterizedTest
-        @Disabled //needs work
+        @Disabled //needs methods from AddCoursePage()
         @ValueSource(strings = {"Engineering 101", "Data 100", "SDET Stream"})
         @DisplayName("Test DeleteCourse()")
         public void testDeleteCourse(String courseName) {
@@ -76,6 +75,17 @@ public class CourseTests  {
 //            addCoursePage.enterStartDate(courseStartDate);
 //            addCoursePage.clickSubmit();
             coursePage.deleteCourse(courseName);
+        }
+    }
+
+    @Nested
+    @DisplayName("Hyperlink tests")
+    class hyperlinkTests{
+
+        @Test
+        @DisplayName("Test the AddCourseHyperlink")
+        public void testClickAddCourseHyperlink(){
+            Assertions.assertEquals("http://localhost:8080/addCourse", coursePage.clickAddCourseHyperlink().getURL());
         }
     }
 
@@ -166,7 +176,7 @@ public class CourseTests  {
     }
 
     @ParameterizedTest
-    @Disabled
+    @Disabled //needs methods from AddCoursePage()
     @ValueSource(strings = {"Engineering 101", "Data 100", "SDET Stream"})
     @DisplayName("Testing if I can tell when a course has been deleted")
     public void testIsCourseDeleted(String courseToDelete){
