@@ -29,6 +29,10 @@ public class AddCoursePage implements URLable {
     private final ArrayList<WebElement> trainerEndWeeks = new ArrayList<>();
     private @FindBy (id = "discipline_id")
     WebElement discipline;
+    private @FindBy (id = "type_id")
+    WebElement courseType;
+    private @FindBy (id = "location_id")
+    WebElement location;
     private @FindBy (id = "inputButton")
     WebElement submitButton;
 
@@ -95,6 +99,14 @@ public class AddCoursePage implements URLable {
         return this.discipline;
     }
 
+    public WebElement getCourseTypeElement(){
+        return this.courseType;
+    }
+
+    public WebElement getLocationElement(){
+        return this.location;
+    }
+
     public String getCourseName(){
         return getCourseNameElement().getAttribute("value");
     }
@@ -118,6 +130,16 @@ public class AddCoursePage implements URLable {
 
     public String getDiscipline(){
         Select selector = new Select(getDisciplineElement());
+        return selector.getFirstSelectedOption().getText();
+    }
+
+    public String getCourseType(){
+        Select selector = new Select(getCourseTypeElement());
+        return selector.getFirstSelectedOption().getText();
+    }
+
+    public String getLocation(){
+        Select selector = new Select(getLocationElement());
         return selector.getFirstSelectedOption().getText();
     }
 
@@ -156,6 +178,16 @@ public class AddCoursePage implements URLable {
     public void selectDiscipline(String discipline){
         Select selector = new Select(getDisciplineElement());
         selector.selectByVisibleText(discipline);
+    }
+
+    public void selectCourseType(String courseType){
+        Select selector = new Select(getCourseTypeElement());
+        selector.selectByVisibleText(courseType);
+    }
+
+    public void selectLocation(String location){
+        Select selector = new Select(getLocationElement());
+        selector.selectByVisibleText(location);
     }
 
     public boolean isCourseNameEmpty(){
