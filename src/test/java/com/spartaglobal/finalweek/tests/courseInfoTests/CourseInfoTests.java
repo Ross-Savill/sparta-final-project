@@ -33,8 +33,14 @@ public class CourseInfoTests extends NavTemplate {
     @Test
     @DisplayName("getCourseTypeElements Test")
     void getCourseTypeElementsTest() {
-        // TODO: 30/09/2021 Implement Test
-
+        boolean found = false;
+        List<WebElement> testWebElements = courseInfoPage.getCourseTypeElements();
+        for (WebElement testWebElement: testWebElements) {
+            if (testWebElement != null && testWebElement.getText().contains("Course Type")) {
+                found = true;
+            }
+        }
+        Assertions.assertTrue(found);
     }
 
     @Test
@@ -66,7 +72,14 @@ public class CourseInfoTests extends NavTemplate {
     @Test
     @DisplayName("getDisciplineElements Test")
     void getDisciplineElementsTest() {
-        // TODO: 30/09/2021 Implement Test
+        boolean found = false;
+        List<WebElement> testWebElements = courseInfoPage.getDisciplinesElements();
+        for (WebElement testWebElement: testWebElements) {
+            if (testWebElement != null && testWebElement.getText().contains("Discipline")) {
+                found = true;
+            }
+        }
+        Assertions.assertTrue(found);
     }
 
     @Test
@@ -105,7 +118,7 @@ public class CourseInfoTests extends NavTemplate {
     @Test
     @DisplayName("getDisciplineElementsWithDuration Test")
     void getDisciplineElementsWithDurationTest() {
-        // TODO: 30/09/2021 Implement Test
+        Assertions.assertEquals(5, courseInfoPage.getDisciplinesElementsWithDuration(12).size());
     }
 
     @Test
@@ -118,8 +131,7 @@ public class CourseInfoTests extends NavTemplate {
     @Test
     @DisplayName("getDisciplinesElementsBetweenDurations Test")
     void getDisciplinesElementsBetweenDurationsTest() {
-        // TODO: 30/09/2021 Implement Test
-        System.out.println(courseInfoPage.getDisciplinesElementsBetweenDurations(10, 15));
+        Assertions.assertEquals(5, courseInfoPage.getDisciplinesElementsBetweenDurations(10,15).size());
     }
 
     @Test
@@ -160,99 +172,111 @@ public class CourseInfoTests extends NavTemplate {
     @Test
     @DisplayName("clickDeleteCourseTypeButton Test")
     void clickDeleteCourseTypeButtonTest() {
-        // TODO: 30/09/2021 Implement Test
+        courseInfoPage.clickDeleteCourseTypeButton("Business");
+        courseInfoPage.isCourseTypeDeleted("Business");
     }
 
     @Test
     @DisplayName("isCourseTypeDeleted Test")
     void isCourseTypeDeletedTest() {
-        // TODO: 30/09/2021 Implement Test
+        //Tests that an item is not present
+        courseInfoPage.isCourseTypeDeleted("TESTCOURSE");
     }
 
     @Test
     @DisplayName("clickDeleteDisciplineButton Test")
     void clickDeleteDisciplineButtonTest() {
-        // TODO: 30/09/2021 Implement Test
+        courseInfoPage.clickDeleteDisciplineButton("Java");
+        courseInfoPage.isCourseTypeDeleted("Java");
     }
 
     @Test
     @DisplayName("isDisciplineDeleted Test")
     void isDisciplineDeletedTest() {
-        // TODO: 30/09/2021 Implement Test
+        //Tests that an item is not present
+        courseInfoPage.isDisciplineDeleted("TESTCOURSE");
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = "")
+    @Test
     @DisplayName("areCourseTypesUnique Valid Test")
     void areCourseTypesUniqueValidTest() {
-        // TODO: 30/09/2021 Implement Test
+        Assertions.assertTrue(courseInfoPage.areCourseTypesUnique());
     }
 
     @Test
     @DisplayName("areCourseTypesUnique Invalid Test")
     void areCourseTypesUniqueInvalidTest() {
         // TODO: 30/09/2021 Implement Test
+        // Need AddCourseTypePage to be implemented
     }
 
     @Test
     @DisplayName("areDisciplinesUnique Valid Test")
     void areDisciplinesUniqueValidTest() {
-        // TODO: 30/09/2021 Implement Test
+        Assertions.assertTrue(courseInfoPage.areDisciplinesUnique());
     }
 
     @Test
     @DisplayName("areDisciplinesUnique Invalid Test")
     void areDisciplinesUniqueInvalidTest() {
         // TODO: 30/09/2021 Implement Test
+        // Need AddCourseTypePage to be implemented
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {"Java", "C#", "Programming & Testing", "Objective-C"})
     @DisplayName("isNameValidForCourseType Valid Test")
-    void isNameValidForCourseTypeValidTest() {
-        // TODO: 30/09/2021 Implement Test
+    void isNameValidForCourseTypeValidTest(String name) {
+        Assertions.assertTrue(courseInfoPage.isNameValidForCourseType(name));
     }
 
-    @Test
-    @DisplayName("isNameValidForCourseType Invalid Test")
-    void isNameValidForCourseTypeInvalidTest() {
-        // TODO: 30/09/2021 Implement Test
+    @ParameterizedTest
+    @ValueSource(strings = {"!!!", "C!", "???", "abc^"})
+    @DisplayName("isNameValidForCourseType Valid Test")
+    void isNameValidForCourseTypeInvalidTest(String name) {
+        Assertions.assertFalse(courseInfoPage.isNameValidForCourseType(name));
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(ints = {1,12,24,1000})
     @DisplayName("isDurationValidForDiscipline Valid Test")
-    void isDurationValidForDisciplineValidTest() {
-        // TODO: 30/09/2021 Implement Test
+    void isDurationValidForDisciplineValidTest(int duration) {
+        Assertions.assertTrue(courseInfoPage.isDurationValidForDiscipline(duration));
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(ints = {-1000,-1,0})
     @DisplayName("isDurationValidForDiscipline Invalid Test")
-    void isNameDurationForDisciplineInvalidTest() {
-        // TODO: 30/09/2021 Implement Test
+    void isNameDurationForDisciplineInvalidTest(int duration) {
+        Assertions.assertFalse(courseInfoPage.isDurationValidForDiscipline(duration));
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {"Data", "Technology", "Business"})
     @DisplayName("isNameValidForDiscipline Valid Test")
-    void isNameValidForDisciplineValidTest() {
-
+    void isNameValidForDisciplineValidTest(String name) {
+        Assertions.assertTrue(courseInfoPage.isNameValidForDiscipline(name));
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {"!!!", "AB ! CD!", "?^C"})
     @DisplayName("isNameValidForDiscipline Invalid Test")
-    void isNameValidForDisciplineInvalidTest() {
-
+    void isNameValidForDisciplineInvalidTest(String name) {
+        Assertions.assertFalse(courseInfoPage.isNameValidForDiscipline(name));
     }
 
     @Test
     @DisplayName("areAllFieldsPassedOnToEditCourseTypePage Test")
     void areAllFieldsPassedOnToEditCourseTypePageTest() {
-
+        // TODO: 01/10/2021 Implement Test
+        //Need Edit Course Type Page to be implemented
     }
 
     @Test
     @DisplayName("areAllFieldsPassedOnToEditDisciplinePage Test")
     void areAllFieldsPassedOnToEditDisciplinePageTest() {
-
-
+        // TODO: 01/10/2021 Implement Test
+        //Need Edit Discipline Page to be implemented
     }
     @AfterEach
     public void tearDown(){
