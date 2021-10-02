@@ -1,6 +1,7 @@
 package com.spartaglobal.finalweek.pages.coursePages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
+import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -13,7 +14,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
@@ -35,10 +35,10 @@ public class AddCoursePage implements URLable {
     WebElement courseType;
     private @FindBy (id = "location_id")
     WebElement location;
+    private @FindBy(id = "start_date")
+    WebElement startDate;
     private @FindBy (id = "inputButton")
     WebElement submitButton;
-    private @FindBy(id = "start_date")
-    WebElement startDateButton;
 
     private final int MAX_TRAINER_START_END_WEEK = 52;
     private final int MIN_TRAINER_START_END_WEEK = 1;
@@ -111,6 +111,10 @@ public class AddCoursePage implements URLable {
         return this.location;
     }
 
+    public WebElement getStartDateElement(){
+        return this.startDate;
+    }
+
     public String getCourseName(){
         return getCourseNameElement().getAttribute("value");
     }
@@ -147,6 +151,10 @@ public class AddCoursePage implements URLable {
         return selector.getFirstSelectedOption().getText();
     }
 
+    public String getStartDate(){
+        return getStartDateElement().getAttribute("value");
+    }
+
     public void enterCourseName(String courseName){
         getCourseNameElement().click();
         getCourseNameElement().sendKeys(courseName);
@@ -179,6 +187,23 @@ public class AddCoursePage implements URLable {
         getTrainerEndWeekElement(row).sendKeys(Integer.toString(endWeek));
     }
 
+    public void enterStartDate(LocalDate date) {
+        int day =  date.getDayOfMonth();
+        int month = date.getMonthValue();
+        int year = date.getYear();
+        String dayString = Integer.toString(day);
+        String monthString = Integer.toString(month);
+        if(day < 10){
+            dayString = String.format("%02d", day);
+        }
+
+        if(month < 10){
+            monthString = String.format("%02d", month);
+        }
+
+        startDate.sendKeys(dayString, monthString, Integer.toString(year));
+    }
+
     public void selectDiscipline(String discipline){
         Select selector = new Select(getDisciplineElement());
         selector.selectByVisibleText(discipline);
@@ -192,6 +217,18 @@ public class AddCoursePage implements URLable {
     public void selectLocation(String location){
         Select selector = new Select(getLocationElement());
         selector.selectByVisibleText(location);
+    }
+
+    public void enterAllFields(CoursePageObject coursePageObject){
+        enterCourseName(coursePageObject.getCourseName());
+        enterNumberOfTrainers(coursePageObject.getNumberOfTrainers());
+        selectTrainerID(coursePageObject.getRow(), coursePageObject.getTrainerID());
+        enterTrainerStartWeek(coursePageObject.getRow(), coursePageObject.getTrainerStartWeek());
+        enterTrainerEndWeek(coursePageObject.getRow(), coursePageObject.getTrainerEndWeek());
+        selectDiscipline(coursePageObject.getDiscipline());
+        selectCourseType(coursePageObject.getTypeOfCourse());
+        selectLocation(coursePageObject.getLocation());
+        enterStartDate(coursePageObject.getStartDate());
     }
 
     public boolean isCourseNameEmpty(){
@@ -234,6 +271,12 @@ public class AddCoursePage implements URLable {
                 alert.getText().equals("Sorry, the minimum value was reached");
     }
 
+    public boolean isSubmissionSuccessful(){
+        return submitReturnsCoursePage()
+                .getURL()
+                .equals(PropertiesLoader.getProperties().getProperty("coursesPageURL"));
+    }
+
     //TODO(1): Grab required attribute value?, or other ways to grab message "Please fill in this field."
     /*public String getEmptyErrorMessage(){
         return getCourseNameElement().getAttribute("required");
@@ -243,26 +286,8 @@ public class AddCoursePage implements URLable {
         submitButton.click();
     }
 
-    public void enterStartDate(LocalDate date) throws InterruptedException {
-        int day =  date.getDayOfMonth();
-        int month = date.getMonthValue();
-        int year = date.getYear();
-        String dayString = Integer.toString(day);
-        String monthString = Integer.toString(month);
-        if(day < 10){
-            dayString = String.format("%02d", day);
-        }
-
-        if(month < 10){
-            monthString = String.format("%02d", month);
-        }
-
-        startDateButton.sendKeys(dayString, monthString, Integer.toString(year));
-        TimeUnit.SECONDS.sleep(1);
-    }
-
     public CoursePage submitReturnsCoursePage(){
-        submitButton.click();
+        clickSubmit();
         return new CoursePage();
     }
 }
