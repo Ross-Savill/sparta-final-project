@@ -40,8 +40,7 @@ public class CourseTests  {
         navTemplate = new NavTemplate();
         coursePage = navTemplate.goToCoursesPage();
         coursePage = new CoursePage();
-//        addCoursePage = coursePage.clickAddCourseButton();
-//        addCoursePage = new AddCoursePage();
+
     }
 
     @Nested
@@ -226,6 +225,20 @@ public class CourseTests  {
         public void testCancelDelete() {
             Assertions.assertTrue(coursePage.cancelDelete());
         }
+    }
+
+    @Test
+    @DisplayName("Test the EnterStartDate() method")
+    public void testEnterStartDate() throws InterruptedException {
+        String courseName = "Engineering 999";
+        LocalDate startDate = LocalDate.now();
+
+        addCoursePage = coursePage.clickAddCourseButton();
+        addCoursePage = new AddCoursePage();
+        addCoursePage.enterCourseName(courseName);
+        addCoursePage.enterStartDate(startDate);
+        coursePage = addCoursePage.clickSubmit();
+
     }
 
 
