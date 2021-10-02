@@ -15,18 +15,19 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
 public class TraineesPage implements URLable {
 
     @FindBy(id = "traineePageLink") WebElement addTraineeButton;
-    @FindBy(id = "accordion-button") WebElement courseFilterDropDownButton;
+    @FindBy(className = "accordion-button") WebElement courseFilterDropDownButton;
     @FindBy(id = "course") List<WebElement> coursesWithinFilter;
     @FindBy(css = "#\30 row > td:nth-child(4) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement editTraineeButton;
     @FindBy(css = "#\\30 row > td:nth-child(5) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement deleteTraineeButton;
     @FindBy(css = "#\\30 row > td:nth-child(6) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement addQualityGateButton;
-    @FindBy() WebElement qualityGateHistory; // Not sure how/what to grab here
 
     public TraineesPage() {
         PageFactory.initElements(webDriver, this);
@@ -201,86 +202,193 @@ public class TraineesPage implements URLable {
                 qualityGateTable = tableBody.findElement(By.className("footable-details"));
                 totalTableDataElements = qualityGateTable.findElements(By.tagName("td"));
                 for(WebElement element : totalTableDataElements) {
-                    if(element.getText() != null) {
-                        System.out.println("STARTING HERE " + element.getText());
+                    if(!element.getText().isEmpty()) {
+                        qualityGateData.add(element);
                     }
                 }
+            }
+        }
+        return qualityGateData;
+    }
+
+    public List<String> getQualityGateHistoryDetails(String rowID) {
+        WebElement traineesTable;
+        WebElement tableBody;
+        List<WebElement> allTraineeRows;
+        traineesTable = webDriver.findElement(By.id("traineeTable"));
+        tableBody = traineesTable.findElement(By.tagName("tbody"));
+        WebDriverWait wait = new WebDriverWait(webDriver,10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("tr")));
+        allTraineeRows = tableBody.findElements(By.tagName("tr"));
+
+        WebElement qualityGateTable;
+        List<WebElement> totalTableDataElements;
+        List<String> qualityGateDataStrings = new ArrayList<>();
+        for(WebElement row : allTraineeRows) {
+            if(row.getAttribute("id").equals(rowID)) {
+                row.findElement(By.tagName("td")).click();
+                qualityGateTable = tableBody.findElement(By.className("footable-details"));
+                totalTableDataElements = qualityGateTable.findElements(By.tagName("td"));
+                for(WebElement element : totalTableDataElements) {
+                    if(!element.getText().isEmpty()) {
+                        qualityGateDataStrings.add(element.getText());
+                    }
+                }
+            }
+        }
+        return qualityGateDataStrings;
+    }
+
+    public List<WebElement> getCoursesElements() {
+        courseFilterDropDownButton.click();
+        WebElement filterBody = webDriver.findElement(By.className("accordion-body"));
+        return filterBody.findElements(By.id("course"));
+    }
+
+    public List<String> getCoursesStrings() {
+        List<String> courseStrings = new ArrayList<>();
+        courseFilterDropDownButton.click();
+        WebElement filterBody = webDriver.findElement(By.className("accordion-body"));
+        List<WebElement> courseElements = filterBody.findElements(By.id("course"));
+        for(WebElement courseElement : courseElements) {
+            courseStrings.add(courseElement.getText());
+        }
+        return courseStrings;
+    }
+
+    public void applyCourseFilter(String courseName) {
+        courseFilterDropDownButton.click();
+        WebElement filterBody = webDriver.findElement(By.className("accordion-body"));
+        List<WebElement> courseElements = filterBody.findElements(By.id("course"));
+        for(WebElement courseElement : courseElements) {
+            if(courseElement.getText().equals(courseName)) {
+                courseElement.click();
+            }
+        }
+    }
+
+    public AddTraineesPage clickAddTrainee() {
+        addTraineeButton.click();
+        return new AddTraineesPage();
+    }
+
+    public EditTraineesPage clickEditTrainee(String rowID) {
+        List<WebElement> allTraineeRows = getAllTraineesElements();
+        for(WebElement row : allTraineeRows) {
+            if(row.getAttribute("id").equals(rowID)) {
+                row.findElement(By.linkText("Edit")).click();
+                return new EditTraineesPage();
             }
         }
         return null;
     }
 
-//    public String getQualityGateHistoryDetails(int rowID) {
-//
-//    }
+    public void clickDeleteTrainee(String rowID) {
+        List<WebElement> allTraineeRows = getAllTraineesElements();
+        for(WebElement row : allTraineeRows) {
+            if(row.getAttribute("id").equals(rowID)) {
+                row.findElement(By.linkText("Delete")).click();
+                break;
+            }
+        }
+    }
 
-//    public List<WebElement> getCoursesElements() {
-//
-//    }
+    public AddQualityGatePage clickAddQualityGate(String rowID) {
+        List<WebElement> allTraineeRows = getAllTraineesElements();
+        for(WebElement row : allTraineeRows) {
+            if(row.getAttribute("id").equals(rowID)) {
+                row.findElement(By.linkText("Add")).click();
+                return new AddQualityGatePage();
+            }
+        }
+        return null;
+    }
 
-//    public List<String> getCoursesWithinFilter() {
-//
-//    }
+    public boolean isQualityGateStatusPassed(String rowID) {
+        return getTraineeQualityGateStatus(rowID).equals("Passed");
+    }
 
-//    public void applyCourseFilter(String courseName) {
-//
-//    }
+    public boolean isQualityGateStatusPending(String rowID) {
+        return getTraineeQualityGateStatus(rowID).equals("Pending");
+    }
 
-//    public AddTraineesPage clickAddTrainee() {
-//
-//    }
+    public boolean isQualityGateStatusFailed(String rowID) {
+        return getTraineeQualityGateStatus(rowID).equals("Failed");
+    }
 
-//    public EditTraineesPage clickEditTrainee(int rowID) {
-//
-//    }
+    public boolean isQualityGateStatusFailedNeedsHelp(String rowID) {
+        return getTraineeQualityGateStatus(rowID).equals("Failed-Needs Help");
+    }
 
-//    public void clickDeleteTrainee(int rowID) {
-//
-//    }
+    public boolean isTraineeFirstNameValid(String rowID) {
+        List<WebElement> allTraineeRows = getAllTraineesElements();
+        for(WebElement row : allTraineeRows) {
+            if(row.getAttribute("id").equals(rowID)) {
+                Pattern regex = Pattern.compile("^[a-zA-Z0-9'-,.]+$");
+                String name = row.findElement(By.id(allTraineeRows.indexOf(row)+"name")).getText();
+                return regex.matcher(name).find();
+            }
+        }
+        return false;
+    }
 
-//    public AddQualityGatePage clickAddQualityGate(int rowID) {
-//
-//    }
+    public boolean isTraineeLastNameValid(String rowID) {
+        List<WebElement> allTraineeRows = getAllTraineesElements();
+        for(WebElement row : allTraineeRows) {
+            if(row.getAttribute("id").equals(rowID)) {
+                Pattern regex = Pattern.compile("^[a-zA-Z0-9'-,.]+$");
+                String name = row.findElement(By.id(allTraineeRows.indexOf(row)+"surname")).getText();
+                return regex.matcher(name).find();
+            }
+        }
+        return false;
+    }
 
-//    public boolean isQualityGateStatusPassed() {
-//
-//    }
+    public boolean areAllTraineesFirstNamesValid() {
+        List<WebElement> allTraineeRows = getAllTraineesElements();
+        Pattern regex = Pattern.compile("^[a-zA-Z0-9',.-]+$");
+        for(WebElement row : allTraineeRows) {
+            String name = row.findElement(By.id(allTraineeRows.indexOf(row)+"name")).getText();
+            if(!regex.matcher(name).find()) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-//    public boolean isQualityGateStatusPending() {
-//
-//    }
+    public boolean areAllTraineesLastNamesValid() {
+        List<WebElement> allTraineeRows = getAllTraineesElements();
+        Pattern regex = Pattern.compile("^[a-zA-Z0-9',.-]+$");
+        for(WebElement row : allTraineeRows) {
+            String name = row.findElement(By.id(allTraineeRows.indexOf(row)+"surname")).getText();
+            if(!regex.matcher(name).find()) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-//    public boolean isQualityGateStatusFailed() {
-//
-//    }
+    public boolean isTraineeQualityGateStatusValid(String rowID) {
+        String[] qualityGateStatusOptions = {"Passed", "Pending", "Failed", "Failed-Needs Help"};
+        for(String option : qualityGateStatusOptions) {
+            if(getTraineeQualityGateStatus(rowID).equals(option)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-//    public boolean isQualityGateStatusFailedNeedsHelp() {
-//
-//    }
-
-//    public boolean isTraineeFirstNameValid() {
-//
-//    }
-
-//    public boolean isTraineeLastNameValid() {
-//
-//    }
-
-//    public boolean areAllTraineesFirstNamesValid() {
-//
-//    }
-
-//    public boolean areAllTraineesLastNamesValid() {
-//
-//    }
-
-//    public boolean isTraineeQualityGateStatusValid() {
-//
-//    }
-
-//    public boolean areCoursesUnique() {
-//
-//    }
+    public boolean areCoursesUnique() {
+        List<String> allCourses = getCoursesStrings();
+        for(int i = 0; i < allCourses.size() - 1; i++) {
+            for(int j = 0; j < allCourses.size() - 1; j++) {
+                if(i != j && allCourses.get(i).equals(allCourses.get(j))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     @Override
     public String getURL() {

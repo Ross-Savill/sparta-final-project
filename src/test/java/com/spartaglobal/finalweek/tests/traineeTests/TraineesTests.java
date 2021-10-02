@@ -41,8 +41,8 @@ public class TraineesTests extends NavTemplate {
     }
 
     @Test
-    public void getAllTrainees() {
-        System.out.println(traineesPage.getQualityGateHistoryDetailsElements("0row"));
+    public void clickDeleteTrainee() {
+        System.out.println(traineesPage.areCoursesUnique());
     }
 
     @AfterEach
