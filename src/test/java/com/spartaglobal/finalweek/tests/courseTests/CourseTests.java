@@ -237,8 +237,7 @@ public class CourseTests  {
         addCoursePage = new AddCoursePage();
         addCoursePage.enterCourseName(courseName);
         addCoursePage.enterStartDate(startDate);
-        coursePage = addCoursePage.clickSubmit();
-
+        coursePage = addCoursePage.submitReturnsCoursePage();
     }
 
 
