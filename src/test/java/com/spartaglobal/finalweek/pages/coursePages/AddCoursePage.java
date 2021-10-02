@@ -11,7 +11,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
@@ -35,6 +37,8 @@ public class AddCoursePage implements URLable {
     WebElement location;
     private @FindBy (id = "inputButton")
     WebElement submitButton;
+    private @FindBy(id = "start_date")
+    WebElement startDateButton;
 
     private final int MAX_TRAINER_START_END_WEEK = 52;
     private final int MIN_TRAINER_START_END_WEEK = 1;
@@ -237,5 +241,28 @@ public class AddCoursePage implements URLable {
 
     public void clickSubmit(){
         submitButton.click();
+    }
+
+    public void enterStartDate(LocalDate date) throws InterruptedException {
+        int day =  date.getDayOfMonth();
+        int month = date.getMonthValue();
+        int year = date.getYear();
+        String dayString = Integer.toString(day);
+        String monthString = Integer.toString(month);
+        if(day < 10){
+            dayString = String.format("%02d", day);
+        }
+
+        if(month < 10){
+            monthString = String.format("%02d", month);
+        }
+
+        startDateButton.sendKeys(dayString, monthString, Integer.toString(year));
+        TimeUnit.SECONDS.sleep(1);
+    }
+
+    public CoursePage submitReturnsCoursePage(){
+        submitButton.click();
+        return new CoursePage();
     }
 }

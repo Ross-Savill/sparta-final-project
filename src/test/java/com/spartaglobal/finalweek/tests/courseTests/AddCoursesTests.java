@@ -11,6 +11,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.LocalDate;
+
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
 public class AddCoursesTests{
@@ -352,6 +354,17 @@ public class AddCoursesTests{
             addCoursePage.enterTrainerEndWeek(1, 53);
             Assertions.assertFalse(addCoursePage.isTrainerEndWeekValid(1));
         }
+    }
+
+    @Test
+    @DisplayName("Test the EnterStartDate() method")
+    public void testEnterStartDate() throws InterruptedException {
+        String courseName = "Engineering 999";
+        LocalDate startDate = LocalDate.now();
+
+        addCoursePage.enterCourseName(courseName);
+        addCoursePage.enterStartDate(startDate);
+        coursePage = addCoursePage.submitReturnsCoursePage();
     }
 
     //TODO(2): Dependant on database having maximum of 1 course.
