@@ -5,6 +5,7 @@ import com.spartaglobal.finalweek.pages.LoginPage;
 import com.spartaglobal.finalweek.pages.NavTemplate;
 import com.spartaglobal.finalweek.pages.coursePages.AddCoursePage;
 import com.spartaglobal.finalweek.pages.coursePages.CoursePage;
+import com.spartaglobal.finalweek.pages.coursePages.CoursePageObject;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,6 +36,8 @@ public class AddCoursesTests{
         
         coursePage = navTemplate.goToCoursesPage();
         coursePage = new CoursePage();
+
+        //TODO: Delete all courses on courses page.
 
         addCoursePage = coursePage.clickAddCourseButton();
         addCoursePage = new AddCoursePage();
@@ -226,6 +229,28 @@ public class AddCoursesTests{
     }
 
     @Nested
+    @DisplayName("Testing Getters and Enter methods for Start Date Field")
+    class GettingAndSelectingStartDate {
+
+        @Test
+        @DisplayName("GetStartDate returns todays date")
+        void getStartDateReturnsDateNow() {
+            LocalDate startDate = LocalDate.now();
+            addCoursePage.enterStartDate(startDate);
+            Assertions.assertEquals(startDate.toString(), addCoursePage.getStartDate());
+        }
+
+        @ParameterizedTest
+        @CsvSource(value = {"1997, 9, 22", "2021, 10, 2", "2021, 10, 26"})
+        @DisplayName("Test EnterStartDate() method returns 22/09/1997")
+        public void testEnterStartDate(int year, int month, int day) {
+            LocalDate startDate = LocalDate.of(year, month, day);
+            addCoursePage.enterStartDate(startDate);
+            Assertions.assertEquals(startDate.toString(), addCoursePage.getStartDate());
+        }
+    }
+
+    @Nested
     @DisplayName("Empty entries test")
     class EmptyTests {
 
@@ -356,17 +381,6 @@ public class AddCoursesTests{
         }
     }
 
-    @Test
-    @DisplayName("Test the EnterStartDate() method")
-    public void testEnterStartDate() throws InterruptedException {
-        String courseName = "Engineering 999";
-        LocalDate startDate = LocalDate.now();
-
-        addCoursePage.enterCourseName(courseName);
-        addCoursePage.enterStartDate(startDate);
-        coursePage = addCoursePage.submitReturnsCoursePage();
-    }
-
     //TODO(2): Dependant on database having maximum of 1 course.
     /*@Nested
     @DisplayName("EmptyErrorMessage warning test")
@@ -414,6 +428,33 @@ public class AddCoursesTests{
             addCoursePage.enterNumberOfTrainers(0);
             addCoursePage.clickSubmit();
             Assertions.assertTrue(addCoursePage.isAlertDisplayed());
+        }
+    }
+
+    @Nested
+    @DisplayName("Testing submission")
+    class SubmissionTest {
+
+        @Test
+        @DisplayName("Test submit button navigates to courses page.")
+        void testSubmitButtonNavigatesToCoursesPage() {
+            CoursePageObject emptyCoursePageObject = new CoursePageObject();
+            CoursePageObject defaultCoursePageObject = new CoursePageObject(emptyCoursePageObject);
+            addCoursePage.enterAllFields(defaultCoursePageObject);
+            coursePage = addCoursePage.submitReturnsCoursePage();
+            coursePage = new CoursePage();
+            Assertions.assertEquals(
+                    PropertiesLoader.getProperties().getProperty("coursesPageURL"),
+                    coursePage.getURL());
+        }
+
+        @Test
+        @DisplayName("Test is submission successful")
+        void testIsSubmissionSuccessful() {
+            CoursePageObject emptyCoursePageObject = new CoursePageObject();
+            CoursePageObject defaultCoursePageObject = new CoursePageObject(emptyCoursePageObject);
+            addCoursePage.enterAllFields(defaultCoursePageObject);
+            Assertions.assertTrue(addCoursePage.isSubmissionSuccessful());
         }
     }
 
