@@ -71,7 +71,7 @@ public class AddTrainersTests extends NavTemplate {
         addTrainersPage.enterFirstName("FirstExample");
         addTrainersPage.enterLastName("LastExample");
         addTrainersPage.submitTrainer();
-        Assertions.assertNotEquals(-1,trainersPage.findMyTrainerName("FirstExample","LastExample"));
+        Assertions.assertNotEquals(-1,trainersPage.findByTrainerName("FirstExample","LastExample"));
     }
 
     @Test
