@@ -13,7 +13,7 @@ import org.openqa.selenium.WebElement;
 public class TrainersTests extends NavTemplate {
 
     private TrainersPage trainersPage;
-    private EditTrainersPage editTrainersPage = new EditTrainersPage();
+    private EditTrainersPage editTrainersPage;
 
     @BeforeEach
     public void setup() {
@@ -138,7 +138,7 @@ public class TrainersTests extends NavTemplate {
     void clickDeleteTrainer() {
         int initialSize = trainersPage.getAllTrainersFirstName().size();
         trainersPage.getAllTrainersFirstName().clear();
-        trainersPage.clickDeleteTrainer();
+        trainersPage.deleteTrainer();
         Assertions.assertEquals(11, trainersPage.getAllTrainersFirstName().size() - 1);
     }
 
@@ -185,22 +185,38 @@ public class TrainersTests extends NavTemplate {
     @DisplayName("are All Fields Passed On To Edit Trainers Page")
     void areAllFieldsPassedOnToEditTrainersPage() {
         Assertions.assertTrue(trainersPage.areAllFieldsPassedOnToEditTrainersPage());
+
     }
 
     @Test
     @DisplayName("submitTrainerByRow")
     void submitTrainerByRow() {
-//        System.out.println("---------");
-//
-//        System.out.println(editTrainersPage.
-//                getFirstName() + "---------" + editTrainersPage.getLastName());
-//        System.out.println("---------");
 
-//        System.out.println(trainersPage.submitTrainerByRow(0).getFirstName() + " " + trainersPage.submitTrainerByRow(0).getFirstName());
-//        Assertions.assertEquals(editTrainersPage.
-//                        getFirstName()+" "+ editTrainersPage.getLastName()
-//                , trainersPage.submitTrainerByRow(3).getFirstName() + " " + trainersPage.submitTrainerByRow(3).getFirstName());
+        String trainerName = trainersPage.getTrainerFirstName(0) + " + " + trainersPage.getTrainerLastName(0);
+        editTrainersPage = trainersPage.submitTrainerByRow(1);
+        String editTrainerName = editTrainersPage.getFirstName() + " + " + editTrainersPage.getLastName();
+        Assertions.assertEquals(trainerName, editTrainerName);
 
+    }
+
+
+    @Test
+    @DisplayName("does Confirmation Box Appear On Delete")
+    void doesConfirmationBoxAppearOnDelete() {
+        Assertions.assertTrue(trainersPage.doesConfirmationBoxAppearOnDelete());
+    }
+
+    @Test
+    @DisplayName("confirm Delete")
+    void confirmDelete() {
+        Assertions.assertTrue(trainersPage.confirmDelete());
+
+    }
+
+    @Test
+    @DisplayName("cancel Delete")
+    void cancelDelete() {
+        Assertions.assertTrue(trainersPage.cancelDelete());
     }
 
 

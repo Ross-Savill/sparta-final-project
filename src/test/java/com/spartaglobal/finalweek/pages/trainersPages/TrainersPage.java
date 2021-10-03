@@ -5,16 +5,22 @@ import com.spartaglobal.finalweek.interfaces.URLable;
 import com.spartaglobal.finalweek.pages.NavTemplate;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 public class TrainersPage extends NavTemplate implements URLable {
 
@@ -41,10 +47,6 @@ public class TrainersPage extends NavTemplate implements URLable {
 
     public TrainersPage() {
         PageFactory.initElements(webDriver, this);
-        cellElementsString = new ArrayList<>();
-        cellElements = new ArrayList<>();
-        trElements = new ArrayList<>();
-        trElementString = new ArrayList<>();
     }
 
 
@@ -55,9 +57,10 @@ public class TrainersPage extends NavTemplate implements URLable {
 
 
     private List<String> iterateThroughTableRows(String cellName) {
+        cellElementsString = new ArrayList<>();
         for (int i = 0; i < allTrainers.size() - 1; i++) {
             String newId = i + cellName;
-            cellElementsString.add(TestBase.webDriver.findElement(By.id(newId)).getText());
+            cellElementsString.add(webDriver.findElement(By.id(newId)).getText());
 
         }
         return cellElementsString;
@@ -65,14 +68,18 @@ public class TrainersPage extends NavTemplate implements URLable {
     }
 
     private List<WebElement> iterateThroughTableRowsReturnElements(String cellName) {
+        cellElements = new ArrayList<>();
+
         for (int i = 0; i < allTrainers.size() - 1; i++) {
             String newId = i + cellName;
-            cellElements.add(TestBase.webDriver.findElement(By.id(newId)));
+            cellElements.add(webDriver.findElement(By.id(newId)));
         }
         return cellElements;
     }
 
     private List<WebElement> allTableRows() {
+        trElements = new ArrayList<>();
+
         for (WebElement we : allTrainers) {
             trElements.add(we);
         }
@@ -119,7 +126,6 @@ public class TrainersPage extends NavTemplate implements URLable {
 
     public WebElement getTrainerColourElement(int id) {
         return findElement(id, "Hex");
-
     }
 
     public String getTrainerFirstName(int rowID) {
@@ -128,12 +134,10 @@ public class TrainersPage extends NavTemplate implements URLable {
 
     public String getTrainerLastName(int rowID) {
         return findElement(rowID, "trainer-lastname").getText();
-
     }
 
     public String getTrainerColour(int rowID) {
         return findElement(rowID, "Hex").getAttribute("style");
-
     }
 
     public AddTrainersPage clickAddTrainer() {
@@ -146,7 +150,7 @@ public class TrainersPage extends NavTemplate implements URLable {
         return new EditTrainersPage();
     }
 
-    public void clickDeleteTrainer() {
+    public void deleteTrainer() {
         deleteTrainerButton.click();
     }
 
@@ -191,7 +195,6 @@ public class TrainersPage extends NavTemplate implements URLable {
     }
 
     public boolean areAllColoursUnique() {
-        cellElements.clear();
         getAllTrainerColour();
 
         Set<WebElement> uniqueList = new HashSet<WebElement>(cellElements);
@@ -199,20 +202,38 @@ public class TrainersPage extends NavTemplate implements URLable {
     }
 
     public boolean areAllFieldsPassedOnToEditTrainersPage() {
-        EditTrainersPage editTrainersPage = new EditTrainersPage();
+        EditTrainersPage editTrainersPage;
         if (allTableRowsString().isEmpty()) {
             return false;
         } else {
-            for (int i = 1; i < allTableRowsString().size() - 1; i++) {
+            for (int i = 0; i < allTableRowsString().size() - 1; i++) {
 
-                submitTrainerByRow(i);
 
-                if (!(editTrainersPage.getFirstName() + " " + editTrainersPage.getLastName()).equals(allTableRowsString().get(i))) {
-                    System.out.println("-" + editTrainersPage.getFirstName() + " " + editTrainersPage.getLastName() + "-");
-                    System.out.println(allTableRowsString().get(i));
+
+                String trainerName = getTrainerFirstName(i) + " + " + getTrainerLastName(i);
+
+                editTrainersPage = submitTrainerByRow(i+1);
+
+                String editTrainerName = editTrainersPage.getFirstName() + " + " + editTrainersPage.getLastName();
+
+                if (!trainerName.equals(editTrainerName)) {
+                    System.out.println("-" + trainerName+ "-");
+                    System.out.println("-" + editTrainerName+ "-");
                     return false;
                 }
                 editTrainersPage.submitTrainer();
+
+                WebElement scroll = webDriver.findElement(By.tagName("body"));
+                for (int j = 0; j < i - 1; j++) {
+                    scroll.sendKeys(Keys.ARROW_DOWN);
+                    scroll.sendKeys(Keys.ARROW_DOWN);
+                    scroll.sendKeys(Keys.ARROW_DOWN);
+                }
+
+
+
+
+
             }
             return true;
         }
@@ -229,8 +250,8 @@ public class TrainersPage extends NavTemplate implements URLable {
     }
 
     private List<String> allTableRowsString() {
+        trElementString = new ArrayList<>();
         for (WebElement we : allTrainers) {
-//            System.out.println(we.getText().replaceAll("Edit", "").replaceAll("Delete", "").trim());
             trElementString.add(we.getText().replace("Edit", "").replace("Delete", "").trim());
         }
         return trElementString;
@@ -241,19 +262,46 @@ public class TrainersPage extends NavTemplate implements URLable {
     }
 
     public WebElement findElementByRowId(int rowID) {
-        return allTrainers.get( rowID);
+        return allTrainers.get(rowID);
     }
-//
+
     public EditTrainersPage submitTrainerByRow(int rowID) {
-        findElementByRowId(rowID).findElement(By.tagName("a")).click();
+        findElementByRowId(rowID).findElement(By.className("btn-primary")).click();
+
         return new EditTrainersPage();
 
 
-
     }
-    public String FindNamesByRowID(int rowID) {
-        return  allTableRowsString().get(rowID);
 
+    public boolean doesConfirmationBoxAppearOnDelete() {
+        try {
+            deleteTrainer();
+            webDriver.switchTo().alert().accept();
+            return true;
+
+        } catch (NoAlertPresentException e) {
+            return false;
+        }
     }
+
+    public boolean confirmDelete() {
+        try {
+            webDriver.switchTo().alert().accept();
+            return true;
+
+        } catch (NoAlertPresentException e) {
+            return false;
+        }
+    }
+
+    public boolean cancelDelete() {
+        try {
+            webDriver.switchTo().alert().dismiss();
+            return true;
+        } catch (NoAlertPresentException e) {
+            return false;
+        }
+    }
+
 
 }
