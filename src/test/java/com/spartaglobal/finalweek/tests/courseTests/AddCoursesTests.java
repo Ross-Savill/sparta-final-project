@@ -10,7 +10,6 @@ import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.LocalDate;
 
@@ -102,7 +101,7 @@ public class AddCoursesTests{
         @Test
         @DisplayName("Test getting 1st trainer id returns default value 'Mike Wazowski'")
         void testGettingTrainerIdReturnsDefaultValueMikeWazowski() {
-            Assertions.assertEquals("Mike Wazowski", addCoursePage.getTrainerID(1));
+            Assertions.assertEquals("Aayla Secura", addCoursePage.getTrainerID(1));
         }
 
         @Test
@@ -180,7 +179,7 @@ public class AddCoursesTests{
         @Test
         @DisplayName("Testing getting discipline returns default value C#")
         void testingGettingDisciplineReturnsDefaultValueC() {
-            Assertions.assertEquals("C#",  addCoursePage.getDiscipline());
+            Assertions.assertEquals("Java",  addCoursePage.getDiscipline());
         }
 
         @Test
@@ -451,9 +450,18 @@ public class AddCoursesTests{
         @Test
         @DisplayName("Test is submission successful")
         void testIsSubmissionSuccessful() {
-            CoursePageObject emptyCoursePageObject = new CoursePageObject();
-            CoursePageObject defaultCoursePageObject = new CoursePageObject(emptyCoursePageObject);
-            addCoursePage.enterAllFields(defaultCoursePageObject);
+            CoursePageObject coursePageObject = new CoursePageObject();
+            coursePageObject.setCourseName("Eng 92");
+            coursePageObject.setNumberOfTrainers(1);
+            coursePageObject.setRow(1);
+            coursePageObject.setTrainerID("Sheev Palpatine");
+            coursePageObject.setTrainerStartWeek(1);
+            coursePageObject.setTrainerEndWeek(7);
+            coursePageObject.setDiscipline("JavaSDET");
+            coursePageObject.setTypeOfCourse("Technology");
+            coursePageObject.setLocation("Naboo");
+            coursePageObject.setStartDate(LocalDate.of(2021, 9, 22));
+            addCoursePage.enterAllFields(coursePageObject);
             Assertions.assertTrue(addCoursePage.isSubmissionSuccessful());
         }
     }
