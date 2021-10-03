@@ -19,10 +19,14 @@ import java.util.Set;
 public class TrainersPage extends NavTemplate implements URLable {
 
 
+    @FindAll({@FindBy(tagName = "tr")})
+    List<WebElement> allTrainers;
 
 
-
-
+    private List<String> cellElementsString;
+    private List<WebElement> cellElements;
+    private List<WebElement> trElements;
+    private List<String> trElementString;
 
 
     @FindBy(id = "TrainerPageLink")
@@ -33,13 +37,6 @@ public class TrainersPage extends NavTemplate implements URLable {
 
     @FindBy(linkText = "Delete")
     WebElement deleteTrainerButton;
-
-    @FindAll({@FindBy(tagName = "tr")})
-    List<WebElement> allTrainers;
-    private List<String> cellElementsString;
-    private List<WebElement> cellElements;
-    private List<WebElement> trElements;
-    private List<String> trElementString;
 
 
     public TrainersPage() {
@@ -58,7 +55,6 @@ public class TrainersPage extends NavTemplate implements URLable {
 
 
     private List<String> iterateThroughTableRows(String cellName) {
-//        cellElementsString.clear();
         for (int i = 0; i < allTrainers.size() - 1; i++) {
             String newId = i + cellName;
             cellElementsString.add(TestBase.webDriver.findElement(By.id(newId)).getText());
@@ -73,9 +69,7 @@ public class TrainersPage extends NavTemplate implements URLable {
             String newId = i + cellName;
             cellElements.add(TestBase.webDriver.findElement(By.id(newId)));
         }
-
         return cellElements;
-
     }
 
     private List<WebElement> allTableRows() {
@@ -150,7 +144,6 @@ public class TrainersPage extends NavTemplate implements URLable {
     public EditTrainersPage clickEditTrainer() {
         editTrainerButton.click();
         return new EditTrainersPage();
-
     }
 
     public void clickDeleteTrainer() {
@@ -163,7 +156,7 @@ public class TrainersPage extends NavTemplate implements URLable {
 
     public boolean isTrainerFirstNameValid(int rowNo) {
 
-        if (TestBase.webDriver.findElement(By.id(rowNo + "trainer-firstname")).getText().matches("[A-Za-z0-9_-]+")) {
+        if (webDriver.findElement(By.id(rowNo + "trainer-firstname")).getText().matches("[A-Za-z0-9_-]+")) {
             return true;
         }
         return false;
@@ -171,7 +164,7 @@ public class TrainersPage extends NavTemplate implements URLable {
     }
 
     public boolean isTrainerLastNameValid(int rowNo) {
-        if (TestBase.webDriver.findElement(By.id(rowNo + "trainer-lastname")).getText().matches("[A-Za-z0-9_-]+")) {
+        if (webDriver.findElement(By.id(rowNo + "trainer-lastname")).getText().matches("[A-Za-z0-9_-]+")) {
             return true;
         }
         return false;
@@ -206,14 +199,27 @@ public class TrainersPage extends NavTemplate implements URLable {
     }
 
     public boolean areAllFieldsPassedOnToEditTrainersPage() {
-        for (String s : iterateThroughTableRows(("tr"))) {
-            System.out.println(s);
+        EditTrainersPage editTrainersPage = new EditTrainersPage();
+        if (allTableRowsString().isEmpty()) {
+            return false;
+        } else {
+            for (int i = 1; i < allTableRowsString().size() - 1; i++) {
+
+                submitTrainerByRow(i);
+
+                if (!(editTrainersPage.getFirstName() + " " + editTrainersPage.getLastName()).equals(allTableRowsString().get(i))) {
+                    System.out.println("-" + editTrainersPage.getFirstName() + " " + editTrainersPage.getLastName() + "-");
+                    System.out.println(allTableRowsString().get(i));
+                    return false;
+                }
+                editTrainersPage.submitTrainer();
+            }
+            return true;
         }
-        return false;
     }
 
 
-    public int findMyTrainerName(String firstname, String lastname) {
+    public int findByTrainerName(String firstname, String lastname) {
         for (int i = 0; i < allTableRowsString().size() - 1; i++) {
             if (allTableRowsString().get(i).contains(firstname + " " + lastname)) {
                 return i;
@@ -224,13 +230,30 @@ public class TrainersPage extends NavTemplate implements URLable {
 
     private List<String> allTableRowsString() {
         for (WebElement we : allTrainers) {
-            trElementString.add(we.getText().replaceAll("Edit", "").replaceAll("Delete", ""));
+//            System.out.println(we.getText().replaceAll("Edit", "").replaceAll("Delete", "").trim());
+            trElementString.add(we.getText().replace("Edit", "").replace("Delete", "").trim());
         }
         return trElementString;
     }
 
-    private WebElement findElement(int number, String cellName) {
-        return TestBase.webDriver.findElement(By.id(number + cellName));
+    public WebElement findElement(int number, String cellName) {
+        return webDriver.findElement(By.id(number + cellName));
+    }
+
+    public WebElement findElementByRowId(int rowID) {
+        return allTrainers.get( rowID);
+    }
+//
+    public EditTrainersPage submitTrainerByRow(int rowID) {
+        findElementByRowId(rowID).findElement(By.tagName("a")).click();
+        return new EditTrainersPage();
+
+
+
+    }
+    public String FindNamesByRowID(int rowID) {
+        return  allTableRowsString().get(rowID);
+
     }
 
 }

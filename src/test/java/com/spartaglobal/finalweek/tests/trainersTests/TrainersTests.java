@@ -3,18 +3,17 @@ package com.spartaglobal.finalweek.tests.trainersTests;
 import com.spartaglobal.finalweek.base.TestBase;
 import com.spartaglobal.finalweek.pages.LoginPage;
 import com.spartaglobal.finalweek.pages.NavTemplate;
+import com.spartaglobal.finalweek.pages.trainersPages.EditTrainersPage;
 import com.spartaglobal.finalweek.pages.trainersPages.TrainersPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import javax.naming.InitialContext;
-import java.util.Arrays;
 
 public class TrainersTests extends NavTemplate {
 
     private TrainersPage trainersPage;
+    private EditTrainersPage editTrainersPage = new EditTrainersPage();
 
     @BeforeEach
     public void setup() {
@@ -51,7 +50,7 @@ public class TrainersTests extends NavTemplate {
     @DisplayName("get All Trainer Elements")
     void getAllTrainerElements() {
 
-        for (WebElement we:trainersPage.getAllTrainerElements()) {
+        for (WebElement we : trainersPage.getAllTrainerElements()) {
             System.out.println(we.getText());
         }
 
@@ -98,7 +97,7 @@ public class TrainersTests extends NavTemplate {
     @Test
     @DisplayName("get Trainer Colour Element")
     void getTrainerColourElement() {
-        Assertions.assertEquals("background: rgb(80, 0, 102);", trainersPage.getTrainerColourElement(0).getAttribute("style"));
+        Assertions.assertEquals("background: rgb(0, 128, 0);", trainersPage.getTrainerColourElement(0).getAttribute("style"));
     }
 
     @Test
@@ -116,7 +115,7 @@ public class TrainersTests extends NavTemplate {
     @Test
     @DisplayName("get Trainer Colour")
     void getTrainerColour() {
-        Assertions.assertEquals("background: rgb(80, 0, 102);", trainersPage.getTrainerColour(0));
+        Assertions.assertEquals("background: rgb(9, 1, 121);", trainersPage.getTrainerColour(0));
     }
 
     @Test
@@ -134,17 +133,14 @@ public class TrainersTests extends NavTemplate {
     }
 
 
-//    @Test
-//    @DisplayName("click Delete Trainer")
-//    void clickDeleteTrainer() {
-//        System.out.println("");
-//    }
-//
-//    @Test
-//    @DisplayName("click Delete Trainer")
-//    void clickDeleteTrainer() {
-//
-//    }
+    @Test
+    @DisplayName("click Delete Trainer")
+    void clickDeleteTrainer() {
+        int initialSize = trainersPage.getAllTrainersFirstName().size();
+        trainersPage.getAllTrainersFirstName().clear();
+        trainersPage.clickDeleteTrainer();
+        Assertions.assertEquals(11, trainersPage.getAllTrainersFirstName().size() - 1);
+    }
 
 
     @Test
@@ -172,7 +168,6 @@ public class TrainersTests extends NavTemplate {
         Assertions.assertTrue(trainersPage.areAllTrainersLastNamesValid("trainer-lastname"));
     }
 
-
     @Test
     @DisplayName("are All Colours Unique")
     void areAllColoursUnique() {
@@ -183,7 +178,29 @@ public class TrainersTests extends NavTemplate {
     @DisplayName("find My Trainer Name")
     void findMyTrainerName() {
 
-        Assertions.assertEquals(0, trainersPage.findMyTrainerName("Mike", "Wazowski") - 1);
+        Assertions.assertEquals(0, trainersPage.findByTrainerName("Mike", "Wazowski") - 1);
+    }
+
+    @Test
+    @DisplayName("are All Fields Passed On To Edit Trainers Page")
+    void areAllFieldsPassedOnToEditTrainersPage() {
+        Assertions.assertTrue(trainersPage.areAllFieldsPassedOnToEditTrainersPage());
+    }
+
+    @Test
+    @DisplayName("submitTrainerByRow")
+    void submitTrainerByRow() {
+//        System.out.println("---------");
+//
+//        System.out.println(editTrainersPage.
+//                getFirstName() + "---------" + editTrainersPage.getLastName());
+//        System.out.println("---------");
+
+//        System.out.println(trainersPage.submitTrainerByRow(0).getFirstName() + " " + trainersPage.submitTrainerByRow(0).getFirstName());
+//        Assertions.assertEquals(editTrainersPage.
+//                        getFirstName()+" "+ editTrainersPage.getLastName()
+//                , trainersPage.submitTrainerByRow(3).getFirstName() + " " + trainersPage.submitTrainerByRow(3).getFirstName());
+
     }
 
 
