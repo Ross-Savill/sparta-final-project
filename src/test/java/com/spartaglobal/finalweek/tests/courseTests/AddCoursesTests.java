@@ -291,6 +291,19 @@ public class AddCoursesTests{
         void emptyTrainerEndWeekReturnsFalse() {
             Assertions.assertFalse(addCoursePage.isTrainerEndWeekEmpty(1));
         }
+
+        @Test
+        @DisplayName("empty Start Date returns true")
+        void emptyStartDateReturnsTrue() {
+            Assertions.assertTrue(addCoursePage.isStartDateEmpty());
+        }
+
+        @Test
+        @DisplayName("empty Start Date returns false")
+        void emptyStartDateReturnsFalse() {
+            addCoursePage.enterStartDate(LocalDate.now());
+            Assertions.assertFalse(addCoursePage.isStartDateEmpty());
+        }
     }
 
     @Nested
