@@ -247,6 +247,10 @@ public class AddCoursePage implements URLable {
         return getTrainerEndWeek(row).isEmpty();
     }
 
+    public boolean isStartDateEmpty(){
+        return getStartDate().isEmpty();
+    }
+
     public boolean isNumberOfTrainersValid(){
         int MAX_NUMBER_TRAINERS = 10;
         int MIN_NUMBER_TRAINERS = 1;
