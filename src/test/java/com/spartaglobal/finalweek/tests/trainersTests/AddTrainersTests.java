@@ -11,27 +11,19 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.support.PageFactory;
 
 public class AddTrainersTests extends NavTemplate {
-private LoginPage loginPage;
-private SchedulerPage schedulerPage;
-private TrainersPage trainersPage;
-private AddTrainersPage addTrainersPage;
+
+    private TrainersPage trainersPage;
+    private AddTrainersPage addTrainersPage;
 
     @BeforeEach
     public void setup() {
         TestBase.initialisation();
-        PageFactory.initElements(webDriver,this);
-        loginPage = new LoginPage();
-        schedulerPage = new SchedulerPage();
-        trainersPage = new TrainersPage();
-        addTrainersPage = new AddTrainersPage();
-
-        PropertiesLoader.getProperties.getProperty();
-        loginPage.login(username,password);
-        PageFactory.initElements(webDriver,schedulerPage);
-        schedulerPage.goToTrainersPage();
-        PageFactory.initElements(webDriver,trainersPage);
-        trainersPage.goToAddNewTrainersPage();
-        PageFactory.initElements(webDriver,addTrainersPage);
+        LoginPage loginPage = new LoginPage();
+        trainersPage = loginPage.login(
+                PropertiesLoader.getProperties().getProperty("Username"),
+                PropertiesLoader.getProperties().getProperty("Password")
+        ).goToTrainersPage();
+        addTrainersPage = trainersPage.clickAddTrainer();
     }
 
     @Test
@@ -43,16 +35,26 @@ private AddTrainersPage addTrainersPage;
     @Test
     @DisplayName("Check if Name is Valid")
     void checkNameIsValid() {
+        addTrainersPage.enterFirstName("FirstExample");
+        addTrainersPage.enterLastName("LastExample");
         Assertions.assertTrue(addTrainersPage.areAllFieldsValid());
     }
 
-    @Test
-    @DisplayName("Has the colour been entered?")
-    void checkColourHasChanged()
-    {
-        String oldColour = addTrainersPage.getColour();
-        Assertions.assertNotEquals(addTrainersPage.getColour(),oldColour);
-    }
+//    @Test
+//    @DisplayName("Has the colour been entered?")
+//    void checkColourHasChanged()
+//    {
+//        int rowID;
+//        String oldColour = addTrainersPage.getColour();
+//        addTrainersPage.enterFirstName("FirstExample");
+//        addTrainersPage.enterLastName("LastExample");
+//        addTrainersPage.setColour();
+//        addTrainersPage.submitTrainer();
+//        rowID = trainersPage.findMyTrainerName("FirstExample","LastExample");
+//        System.err.println(trainersPage.getTrainerColour(rowID));
+//
+//        Assertions.assertNotEquals(addTrainersPage.getColour(),oldColour);
+//    }
 
 
     @Test
@@ -60,16 +62,31 @@ private AddTrainersPage addTrainersPage;
     void checkSubmitSuccessful() {
         addTrainersPage.enterFirstName("FirstExample");
         addTrainersPage.enterLastName("LastExample");
-        addTrainersPage.setColour();
         Assertions.assertTrue(addTrainersPage.isSubmitSuccessful());
     }
 
     @Test
     @DisplayName("Check if Trainer was created")
-    void checkIfNewTrainerFirstNameEntered() {
-        Assertions.assertEquals(trainersPage.getFirstName(),"FirstExample");
+    void checkIfNewTrainerEntered() {
+        addTrainersPage.enterFirstName("FirstExample");
+        addTrainersPage.enterLastName("LastExample");
+        addTrainersPage.submitTrainer();
+        Assertions.assertNotEquals(-1,trainersPage.findMyTrainerName("FirstExample","LastExample"));
     }
 
+    @Test
+    @DisplayName("Check submit button does not work if first name isn't entered")
+    void checkIfSubmitIsNotSuccessfulWOFirstName() {
+        addTrainersPage.enterLastName("LastExample");
+        Assertions.assertFalse(addTrainersPage.isSubmitSuccessful());
+    }
+
+    @Test
+    @DisplayName("Check submit button does not work if last name isn't entered")
+    void checkIfSubmitIsNotSuccessfulWOLastName() {
+        addTrainersPage.enterFirstName("FirstExample");
+        Assertions.assertFalse(addTrainersPage.isSubmitSuccessful());
+    }
 
     @AfterEach
     public void tearDown(){

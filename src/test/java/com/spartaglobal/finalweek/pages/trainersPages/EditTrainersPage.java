@@ -2,6 +2,7 @@ package com.spartaglobal.finalweek.pages.trainersPages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
 import com.spartaglobal.finalweek.pages.NavTemplate;
+import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -9,13 +10,14 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.JavascriptExecutor;
 
 public class EditTrainersPage extends NavTemplate implements URLable {
+
     @FindBy(id = "edit-trainer-first-name")
     WebElement firstNameTextBox;
     @FindBy(id = "edit-trainer-last-name")
     WebElement lastNameTextBox;
     @FindBy(id = "trainer-hex")
     WebElement colourPicker;
-    @FindBy(className = "btn btn-primary")
+    @FindBy(className = "btn-primary")
     WebElement submitButton;
     @FindBy(id = "trainerPageLink")
     WebElement trainersPageButton;
@@ -29,32 +31,34 @@ public class EditTrainersPage extends NavTemplate implements URLable {
         return webDriver.getCurrentUrl();
     }
 
-    private String getFirstName(){
+    public String getFirstName(){
        return firstNameTextBox.getAttribute("value");
     }
 
-    private void enterFirstName(String firstName){
+    public void enterFirstName(String firstName){
+        firstNameTextBox.clear();
         firstNameTextBox.sendKeys(firstName);
     }
 
-    private String getLastName(){
+    public String getLastName(){
         return lastNameTextBox.getAttribute("value");
     }
 
-    private void enterLastName(String lastName){
+    public void enterLastName(String lastName){
+        lastNameTextBox.clear();
         lastNameTextBox.sendKeys(lastName);
     }
 
-    private String getColour(){
+    public String getColour(){
         return colourPicker.getAttribute("value");
     }
 
-    private void setColour(){
+    public void setColour(){
         JavascriptExecutor jse=(JavascriptExecutor)webDriver;
         jse.executeScript("document.getElementByid('EditorColorPicker1').value='#FFEEXX'");
     }
 
-    private void submitTrainer()
+    public void submitTrainer()
     {
         submitButton.click();
     }
@@ -64,50 +68,50 @@ public class EditTrainersPage extends NavTemplate implements URLable {
         return new TrainersPage();
     }
 
-    private boolean isSubmitSuccessful(){
+    public boolean isSubmitSuccessful(){
         submitTrainer();
-        if(getURL() == trainersPageURL) {
+        if(getURL().contains("http://localhost:8080/trainerPage")) {
             return true;
         }
         return false;
     }
 
-    private boolean isFirstNameEmpty(){
-        if(getFirstName() == null) {
+    public boolean isFirstNameEmpty(){
+        if(getFirstName() == "") {
             return true;
         }
         return false;
     }
 
-    private boolean isLastNameEmpty(){
-        if(getLastName() == null) {
+    public boolean isLastNameEmpty(){
+        if(getLastName() == "") {
             return true;
         }
         return false;
     }
 
-    private boolean areAllFieldsEmpty(){
+    public boolean areAllFieldsEmpty(){
         if(isFirstNameEmpty() == true && isLastNameEmpty() == true ) {
             return true;
         }
         return false;
     }
 
-    private boolean isFirstNameValid(){
-        if(getFirstName().matches("/^[a-z 0-9 ,.'-]+$/i")) {
+    public boolean isFirstNameValid(){
+        if(getFirstName().matches("^[a-z A-Z 0-9 ,.'-]+$")) {
             return true;
         }
         return false;
     }
 
-    private boolean isLastNameValid(){
-        if(getLastName().matches("/^[a-z 0-9 ,.'-]+$/i")) {
+    public boolean isLastNameValid(){
+        if(getLastName().matches("^[a-z A-Z 0-9 ,.'-]+$")) {
             return true;
         }
         return false;
     }
 
-    private boolean areAllFieldsValid(){
+    public boolean areAllFieldsValid(){
         if(isFirstNameValid() == true && isLastNameValid() == true ) {
             return true;
         }
