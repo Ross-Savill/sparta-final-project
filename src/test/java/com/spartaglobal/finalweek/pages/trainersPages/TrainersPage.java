@@ -207,33 +207,20 @@ public class TrainersPage extends NavTemplate implements URLable {
             return false;
         } else {
             for (int i = 0; i < allTableRowsString().size() - 1; i++) {
-
-
-
-                String trainerName = getTrainerFirstName(i) + " + " + getTrainerLastName(i);
-
+                String trainerName = getTrainerFirstName(i) + " " + getTrainerLastName(i);
                 editTrainersPage = submitTrainerByRow(i+1);
-
-                String editTrainerName = editTrainersPage.getFirstName() + " + " + editTrainersPage.getLastName();
-
+                String editTrainerName = editTrainersPage.getFirstName() + " " + editTrainersPage.getLastName();
                 if (!trainerName.equals(editTrainerName)) {
-                    System.out.println("-" + trainerName+ "-");
-                    System.out.println("-" + editTrainerName+ "-");
+
                     return false;
                 }
                 editTrainersPage.submitTrainer();
-
                 WebElement scroll = webDriver.findElement(By.tagName("body"));
                 for (int j = 0; j < i - 1; j++) {
                     scroll.sendKeys(Keys.ARROW_DOWN);
                     scroll.sendKeys(Keys.ARROW_DOWN);
                     scroll.sendKeys(Keys.ARROW_DOWN);
                 }
-
-
-
-
-
             }
             return true;
         }
