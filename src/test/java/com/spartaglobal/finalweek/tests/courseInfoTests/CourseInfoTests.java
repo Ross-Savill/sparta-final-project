@@ -21,7 +21,7 @@ public class CourseInfoTests extends NavTemplate {
 
     @BeforeEach
     public void setup() {
- //       ResetData.resetData();
+        ResetData.resetData();
         initialisation(); //initialise the web driver
         LoginPage loginPage = new LoginPage();
         SchedulerPage schedulerPage = loginPage.login(
