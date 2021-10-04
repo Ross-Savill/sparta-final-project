@@ -9,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.ByChained;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.LocalDate;
@@ -243,6 +244,68 @@ public class CoursePage implements URLable {
             return false;
         }
     }
+
+    public boolean isCourseNamePassedOntoEditPage(){
+        String courseName = webDriver.findElement(By.id("0course")).getText();
+        webDriver.findElement(By.linkText("Edit")).click();
+        String editCourseName = webDriver.findElement(By.id("course_name")).getAttribute("value");
+        webDriver.findElement(By.id("coursePageLink")).click();
+        return courseName.equals(editCourseName);
+    }
+
+    public boolean isDisciplinePassedOntoEditPage(){
+        String discipline = webDriver.findElement(By.id("0discipline")).getText();
+        webDriver.findElement(By.linkText("Edit")).click();
+        Select dropdownBox = new Select(webDriver.findElement(By.id("discipline_id")));
+        String editDiscipline = dropdownBox.getFirstSelectedOption().getText();
+        webDriver.findElement(By.id("coursePageLink")).click();
+        return discipline.equals(editDiscipline);
+    }
+
+    public boolean isCourseTypePassedOntoEditPage(){
+        String courseType = webDriver.findElement(By.id("0course_type")).getText();
+        webDriver.findElement(By.linkText("Edit")).click();
+        Select dropdownBox = new Select(webDriver.findElement(By.id("type_id")));
+        String editCourseType = dropdownBox.getFirstSelectedOption().getText();
+        webDriver.findElement(By.id("coursePageLink")).click();
+        return courseType.equals(editCourseType);
+    }
+
+    public boolean isLocationPassedOntoEditPage(){
+        String location = webDriver.findElement(By.id("0location")).getText();
+        webDriver.findElement(By.linkText("Edit")).click();
+        Select dropdownBox = new Select(webDriver.findElement(By.id("location_id")));
+        String editLocation = dropdownBox.getFirstSelectedOption().getText();
+        webDriver.findElement(By.id("coursePageLink")).click();
+        return location.equals(editLocation);
+    }
+
+    public boolean isStartDatePassedOntoEditPage(){
+        String startDate = webDriver.findElement(By.id("0start_date")).getText();
+        webDriver.findElement(By.linkText("Edit")).click();
+        String editStartDate = webDriver.findElement(By.id("start_date")).getAttribute("value");
+        webDriver.findElement(By.id("coursePageLink")).click();
+        return startDate.equals(editStartDate);
+    }
+
+    public boolean isTrainerPassedOntoEditPage(){
+        String trainer = webDriver.findElement(By.id("0trainer_name")).getText();
+        webDriver.findElement(By.linkText("Edit")).click();
+        Select dropdownBox = new Select(webDriver.findElement(By.id("trainer_id0")));
+        String editTrainer = dropdownBox.getFirstSelectedOption().getText();
+        webDriver.findElement(By.id("coursePageLink")).click();
+        return trainer.equals(editTrainer);
+    }
+
+    public boolean areAllFieldsPassedOntoEditCoursePage(){
+        return isCourseNamePassedOntoEditPage()
+                && isDisciplinePassedOntoEditPage()
+                && isCourseTypePassedOntoEditPage()
+                && isLocationPassedOntoEditPage()
+                && isStartDatePassedOntoEditPage()
+                && isTrainerPassedOntoEditPage();
+    }
+
 
     @Override
     public String getURL() {

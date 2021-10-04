@@ -227,19 +227,65 @@ public class CourseTests  {
         }
     }
 
-    @Test
-    @DisplayName("Test the EnterStartDate() method")
-    public void testEnterStartDate() throws InterruptedException {
-        String courseName = "Engineering 999";
-        LocalDate startDate = LocalDate.now();
+//    @Test
+//    @DisplayName("Test the EnterStartDate() method")
+//    public void testEnterStartDate() throws InterruptedException {
+//        String courseName = "Engineering 999";
+//        LocalDate startDate = LocalDate.now();
+//
+//        addCoursePage = coursePage.clickAddCourseButton();
+//        addCoursePage = new AddCoursePage();
+//        addCoursePage.enterCourseName(courseName);
+//        addCoursePage.enterStartDate(startDate);
+//        coursePage = addCoursePage.submitReturnsCoursePage();
+//    }
 
-        addCoursePage = coursePage.clickAddCourseButton();
-        addCoursePage = new AddCoursePage();
-        addCoursePage.enterCourseName(courseName);
-        addCoursePage.enterStartDate(startDate);
-        coursePage = addCoursePage.submitReturnsCoursePage();
+    @Nested
+    @DisplayName("Passed onto Edit Course Page Tests")
+    class passedOntoEditCoursePageTests {
+
+        @Test
+        @DisplayName("Test the 'course name' field is passed onto the EditCoursePage")
+        public void testCourseNameIsPassedOntoEditCoursePage() {
+            Assertions.assertTrue(coursePage.isCourseNamePassedOntoEditPage());
+        }
+
+        @Test
+        @DisplayName("Test the 'discipline' field is passed onto the EditCoursePage")
+        public void testDisciplineIsPassedOntoEditCoursePage() {
+            Assertions.assertTrue(coursePage.isDisciplinePassedOntoEditPage());
+        }
+
+        @Test
+        @DisplayName("Test the 'course type' field is passed onto the EditCoursePage")
+        public void testCourseTypeIsPassedOntoEditCoursePage() {
+            Assertions.assertTrue(coursePage.isCourseTypePassedOntoEditPage());
+        }
+
+        @Test
+        @DisplayName("Test the 'location' field is passed onto the EditCoursePage")
+        public void testLocationIsPassedOntoEditCoursePage() {
+            Assertions.assertTrue(coursePage.isLocationPassedOntoEditPage());
+        }
+
+        @Test
+        @DisplayName("Test the 'start date' field is passed onto the EditCoursePage")
+        public void testStartDateIsPassedOntoEditCoursePage() {
+            Assertions.assertTrue(coursePage.isStartDatePassedOntoEditPage());
+        }
+
+        @Test
+        @DisplayName("Test the 'trainer name' field is passed onto the EditCoursePage")
+        public void testTrainerIsPassedOntoEditCoursePage() {
+            Assertions.assertTrue(coursePage.isTrainerPassedOntoEditPage());
+        }
+
+        @Test
+        @DisplayName("Test that all fields are passed onto the edit course page")
+        public void testAllFieldsArePassedOntoEditCoursePage() {
+            Assertions.assertTrue(coursePage.areAllFieldsPassedOntoEditCoursePage());
+        }
     }
-
 
     @AfterEach
     public void tearDown(){
