@@ -190,10 +190,6 @@ public class EditLocationPageTests {
                 Assertions.assertTrue(editLocationPage.isDeleteSuccessful(dummyCentreName, centreNumOfRooms));
             }
 
-            @AfterEach
-            void tearDown() {
-                //TODO: Add removed centres
-            }
         }
     }
 
