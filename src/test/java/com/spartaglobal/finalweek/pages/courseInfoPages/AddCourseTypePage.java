@@ -14,6 +14,7 @@ import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
 public class AddCourseTypePage implements URLable {
     CourseInfoPage courseInfoPage;
+
     @FindBy(id = "course-type-name") WebElement courseTypeName;
     @FindBy(xpath = "//*[@id=\"add-course-type-form\"]/div[2]/input") WebElement submitButton;
 

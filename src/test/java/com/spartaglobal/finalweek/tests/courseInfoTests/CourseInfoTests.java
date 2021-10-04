@@ -5,6 +5,7 @@ import com.spartaglobal.finalweek.pages.NavTemplate;
 import com.spartaglobal.finalweek.pages.SchedulerPage;
 import com.spartaglobal.finalweek.pages.courseInfoPages.CourseInfoPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,6 +21,7 @@ public class CourseInfoTests extends NavTemplate {
 
     @BeforeEach
     public void setup() {
+        ResetData.resetData();
         initialisation(); //initialise the web driver
         LoginPage loginPage = new LoginPage();
         SchedulerPage schedulerPage = loginPage.login(
@@ -165,8 +167,9 @@ public class CourseInfoTests extends NavTemplate {
     @Test
     @DisplayName("clickEditDisciplineButton Test")
     void clickEditDisciplineButtonTest() {
-        courseInfoPage.clickEditCourseTypeButton("Technology");
-        Assertions.assertTrue(webDriver.getCurrentUrl().contains("http://localhost:8080/editCourseType/"));
+        courseInfoPage.clickEditDisciplineButton("Java");
+        System.out.println(webDriver.getCurrentUrl());
+        Assertions.assertTrue(webDriver.getCurrentUrl().contains("http://localhost:8080/editDiscipline/"));
     }
 
     @Test
