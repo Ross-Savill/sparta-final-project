@@ -1,11 +1,8 @@
 package com.spartaglobal.finalweek.pages.traineePages;
 
-import com.spartaglobal.finalweek.base.TestBase;
 import com.spartaglobal.finalweek.interfaces.URLable;
-import com.spartaglobal.finalweek.pages.NavTemplate;
-import com.spartaglobal.finalweek.pages.courseInfoPages.EditCourseTypePage;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -14,20 +11,15 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
 public class TraineesPage implements URLable {
 
-    @FindBy(id = "traineePageLink") WebElement addTraineeButton;
+    @FindBy(linkText = "Add Trainee") WebElement addTraineeButton;
     @FindBy(className = "accordion-button") WebElement courseFilterDropDownButton;
-    @FindBy(id = "course") List<WebElement> coursesWithinFilter;
-    @FindBy(css = "#\30 row > td:nth-child(4) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement editTraineeButton;
-    @FindBy(css = "#\\30 row > td:nth-child(5) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement deleteTraineeButton;
-    @FindBy(css = "#\\30 row > td:nth-child(6) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement addQualityGateButton;
+    public String filterAppliedURL;
 
     public TraineesPage() {
         PageFactory.initElements(webDriver, this);
@@ -86,7 +78,6 @@ public class TraineesPage implements URLable {
             WebElement firstNameString = allTraineeRows.get(i).findElement(By.id(i+"name"));
             allFirstNameStrings.add(firstNameString.getText());
         }
-        System.out.println(allFirstNameStrings);
         return allFirstNameStrings;
     }
 
@@ -263,6 +254,8 @@ public class TraineesPage implements URLable {
         for(WebElement courseElement : courseElements) {
             if(courseElement.getText().equals(courseName)) {
                 courseElement.click();
+                filterAppliedURL = webDriver.getCurrentUrl().replaceAll("%20","");
+                break;
             }
         }
     }
@@ -304,20 +297,20 @@ public class TraineesPage implements URLable {
         return null;
     }
 
-    public boolean isQualityGateStatusPassed(String rowID) {
-        return getTraineeQualityGateStatus(rowID).equals("Passed");
+    public boolean isQualityGateStatusPassed(String qgStatus) {
+        return qgStatus.equals("Passed");
     }
 
-    public boolean isQualityGateStatusPending(String rowID) {
-        return getTraineeQualityGateStatus(rowID).equals("Pending");
+    public boolean isQualityGateStatusPending(String qgStatus) {
+        return qgStatus.equals("Pending");
     }
 
-    public boolean isQualityGateStatusFailed(String rowID) {
-        return getTraineeQualityGateStatus(rowID).equals("Failed");
+    public boolean isQualityGateStatusFailed(String qgStatus) {
+        return qgStatus.equals("Failed");
     }
 
-    public boolean isQualityGateStatusFailedNeedsHelp(String rowID) {
-        return getTraineeQualityGateStatus(rowID).equals("Failed-Needs Help");
+    public boolean isQualityGateStatusFailedNeedsHelp(String qgStatus) {
+        return qgStatus.equals("Failed-Needs Help");
     }
 
     public boolean isTraineeFirstNameValid(String rowID) {
@@ -388,6 +381,41 @@ public class TraineesPage implements URLable {
             }
         }
         return true;
+    }
+
+//    public boolean areAllFieldsPassedOnToEditTraineesPage() {
+//        // Need Edit Page implemented for this method
+//    }
+
+    public boolean doesConfirmationBoxAppearOnDelete() {
+        int rowNumber = 0;
+        try {
+            clickDeleteTrainee(rowNumber+"row");
+            webDriver.switchTo().alert().accept();
+            return true;
+
+        } catch (NoAlertPresentException e) {
+            return false;
+        }
+    }
+
+    public boolean confirmDelete() {
+        try {
+            webDriver.switchTo().alert().accept();
+            return true;
+
+        } catch (NoAlertPresentException e) {
+            return false;
+        }
+    }
+
+    public boolean cancelDelete() {
+        try {
+            webDriver.switchTo().alert().dismiss();
+            return true;
+        } catch (NoAlertPresentException e) {
+            return false;
+        }
     }
 
     @Override
