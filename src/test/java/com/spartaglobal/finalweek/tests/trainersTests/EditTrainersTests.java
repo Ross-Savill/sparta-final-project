@@ -36,6 +36,8 @@ public class EditTrainersTests extends NavTemplate {
     @Test
     @DisplayName("Check if Name is Valid")
     void checkNameIsValid() {
+        editTrainersPage.enterFirstName("FirstExampleValid");
+        editTrainersPage.enterLastName("LastExampleValid");
         Assertions.assertTrue(editTrainersPage.areAllFieldsValid());
     }
 
@@ -43,7 +45,9 @@ public class EditTrainersTests extends NavTemplate {
 //    @DisplayName("Has the colour been entered?")
 //    void checkColourHasChanged()
 //    {
+//        trainersPage.clickEditTrainer();
 //        String oldColour = editTrainersPage.getColour();
+//        editTrainersPage.setColour();
 //        Assertions.assertNotEquals(editTrainersPage.getColour(),oldColour);
 //    }
 
@@ -51,8 +55,6 @@ public class EditTrainersTests extends NavTemplate {
     @Test
     @DisplayName("Check if submit is successful")
     void checkSubmitSuccessful() {
-        editTrainersPage.enterFirstName("FirstExample");
-        editTrainersPage.enterLastName("LastExample");
         Assertions.assertTrue(editTrainersPage.isSubmitSuccessful());
     }
 
@@ -68,6 +70,14 @@ public class EditTrainersTests extends NavTemplate {
     @DisplayName("Check submit button does not work if last name isn't entered")
     void checkIfSubmitIsNotSuccessfulWOLastName() {
         editTrainersPage.enterFirstName("FirstExample");
+        editTrainersPage.enterLastName("");
+        Assertions.assertFalse(editTrainersPage.isSubmitSuccessful());
+    }
+
+    @Test
+    @DisplayName("Check submit button does not work if last name isn't entered")
+    void checkIfSubmitIsNotSuccessfulAllFields() {
+        editTrainersPage.enterFirstName("");
         editTrainersPage.enterLastName("");
         Assertions.assertFalse(editTrainersPage.isSubmitSuccessful());
     }
