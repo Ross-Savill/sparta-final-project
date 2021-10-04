@@ -6,6 +6,7 @@ import com.spartaglobal.finalweek.pages.SchedulerPage;
 import com.spartaglobal.finalweek.pages.courseInfoPages.CourseInfoPage;
 import com.spartaglobal.finalweek.pages.courseInfoPages.EditCourseTypePage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -18,6 +19,7 @@ public class EditCourseTypeTests extends NavTemplate {
 
     @BeforeEach
     public void setup() {
+        ResetData.resetData();
         initialisation(); //initialise the web driver
         LoginPage loginPage = new LoginPage();
         SchedulerPage schedulerPage = loginPage.login(
