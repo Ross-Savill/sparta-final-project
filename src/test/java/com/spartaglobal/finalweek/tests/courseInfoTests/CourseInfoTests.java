@@ -167,8 +167,9 @@ public class CourseInfoTests extends NavTemplate {
     @Test
     @DisplayName("clickEditDisciplineButton Test")
     void clickEditDisciplineButtonTest() {
-        courseInfoPage.clickEditCourseTypeButton("Technology");
-        Assertions.assertTrue(webDriver.getCurrentUrl().contains("http://localhost:8080/editCourseType/"));
+        courseInfoPage.clickEditDisciplineButton("Java");
+        System.out.println(webDriver.getCurrentUrl());
+        Assertions.assertTrue(webDriver.getCurrentUrl().contains("http://localhost:8080/editDiscipline/"));
     }
 
     @Test
