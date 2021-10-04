@@ -2,12 +2,14 @@ package com.spartaglobal.finalweek.pages.courseInfoPages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
@@ -236,7 +238,8 @@ public class CourseInfoPage implements URLable {
     }
 
     public EditDisciplinePage clickEditDisciplineButton(String disciplineName) {
-        WebElement row = getCourseTypeWebElement(disciplineName);
+        WebElement row = getDisciplineElement(disciplineName);
+        scrollDown();
         row.findElement(new By.ByLinkText("Edit")).click();
         return new EditDisciplinePage();
     }
@@ -253,7 +256,8 @@ public class CourseInfoPage implements URLable {
     }
 
     public void clickDeleteDisciplineButton(String disciplineName) {
-        WebElement row = getCourseTypeWebElement(disciplineName);
+        WebElement row = getDisciplineElement(disciplineName);
+        scrollDown();
         row.findElement(new By.ByLinkText("Delete")).click();
     }
 
@@ -292,6 +296,13 @@ public class CourseInfoPage implements URLable {
 //    public boolean areAllFieldsPassedOnToEditDisciplinePage() {
 //        // TODO: 30/09/2021 Implement This
 //    }
+
+    private void scrollDown() {
+        WebElement scroll = webDriver.findElement(By.tagName("body"));
+        for (int i = 0; i < 25; i++) {
+            scroll.sendKeys(Keys.ARROW_DOWN);
+        }
+    }
 
     @Override
     public String getURL() {

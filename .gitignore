@@ -46,3 +46,4 @@ out/
 # Executables
 *.exe
 *.app
+*.sql
