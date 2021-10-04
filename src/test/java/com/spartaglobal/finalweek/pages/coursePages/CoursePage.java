@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
-public class CoursePage implements URLable {
+public class CoursePage extends NavTemplate implements URLable {
 
     @FindBy(id = "courseList")
     WebElement courseList;

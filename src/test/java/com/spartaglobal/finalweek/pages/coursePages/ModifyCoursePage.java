@@ -1,7 +1,7 @@
 package com.spartaglobal.finalweek.pages.coursePages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
-import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.pages.NavTemplate;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
-public class ModifyCoursePage implements URLable {
+public class ModifyCoursePage extends NavTemplate implements URLable {
     protected @FindBy(id = "course_name")
     WebElement courseName;
     protected @FindBy (className = "input-number")
