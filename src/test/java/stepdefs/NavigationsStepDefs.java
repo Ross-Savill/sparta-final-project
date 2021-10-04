@@ -20,21 +20,18 @@ import io.cucumber.java.en.When;
 
 public class NavigationsStepDefs {
 
-    NavTemplate page;
+    NavTemplate page = new NavTemplate();
     LoginPage loginPage;
-    SchedulerPage schedulerPage;
-    CentresPage centresPage;
-    TraineesPage traineesPage;
-    TrainersPage trainersPage;
-    CoursePage coursePage;
-    CourseInfoPage courseInfoPage;
-    AccountPage accountPage;
+
+    @Given("I am starting the process")
+    public void startProcess() {
+        TestBase.initialisation();
+    }
 
     @Given("I am logged in")
     public void iAmLoggedIn() {
-        TestBase.initialisation();
         loginPage = new LoginPage();
-        schedulerPage = loginPage.login(
+        page = loginPage.login(
                 PropertiesLoader.getProperties().getProperty("Username"),
                 PropertiesLoader.getProperties().getProperty("Password")
         );
@@ -42,41 +39,41 @@ public class NavigationsStepDefs {
 
     @Given("I go to the locations page")
     public void iClickOnTheLocationsPage() {
-        centresPage = page.goToCentresPage();
+        page = page.goToCentresPage();
     }
 
     @Given("I go to the scheduler page")
     public void goToSchedulerPage() {
-        schedulerPage = page.goToSchedulerPage();
+        page = page.goToSchedulerPage();
     }
 
     @Given("I go to the trainees page")
     public void goToTraineesPage() {
-        traineesPage = page.goToTraineesPage();
+        page = page.goToTraineesPage();
     }
 
     @Given("I go to the trainers page")
     public void goToTrainersPage() {
-        trainersPage = page.goToTrainersPage();
+        page = page.goToTrainersPage();
     }
 
     @Given("I go to the course page")
     public void goToCoursePage() {
-        coursePage = page.goToCoursesPage();
+        page = page.goToCoursesPage();
     }
 
     @Given("I go to the course info page")
     public void goToCourseInfoPage() {
-        courseInfoPage = page.goToCourseInfoPage();
+        page = page.goToCourseInfoPage();
     }
 
     @Given("I go to the account page")
     public void goToAccountPage() {
-        accountPage = page.goToAccountPage();
+        page = page.goToAccountPage();
     }
 
     @Given("I log out")
     public void logOut() {
-        loginPage = page.logOutOfSite();
+        page = page.logOutOfSite();
     }
 }
