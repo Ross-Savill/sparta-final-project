@@ -285,12 +285,21 @@ public class CourseInfoPage implements URLable {
         return disciplineName.matches("[a-zA-Z0-9-& #+]*");
     }
 
-//    public boolean areAllFieldsPassedOnToEditCourseTypePage() {
-//        // TODO: 30/09/2021 Implement This
-//    }
-//
+    public boolean areAllFieldsPassedOnToEditCourseTypePage() {
+        int rowEdit = 0;
+        String currentName = getCourseTypeName(rowEdit);
+        EditCourseTypePage editCourseTypePage = clickEditCourseTypeButton(currentName);
+
+        return editCourseTypePage.getCourseTypeName().equals(currentName);
+    }
+
+    // TODO: 04/10/2021 Uncomment this Method when EditDisciplinePage is Finished, may require addition of getCourseTypeName method
 //    public boolean areAllFieldsPassedOnToEditDisciplinePage() {
-//        // TODO: 30/09/2021 Implement This
+//        int rowEdit = 0;
+//        String currentName = getCourseTypeName(rowEdit);
+//        EditDisciplinePage editDisciplinePage = clickEditDisciplineButton(currentName);
+//
+//        return editDisciplinePage.getCourseTypeName().equals(currentName);
 //    }
 
     @Override

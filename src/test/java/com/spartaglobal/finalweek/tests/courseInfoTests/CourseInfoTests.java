@@ -3,6 +3,7 @@ package com.spartaglobal.finalweek.tests.courseInfoTests;
 import com.spartaglobal.finalweek.pages.LoginPage;
 import com.spartaglobal.finalweek.pages.NavTemplate;
 import com.spartaglobal.finalweek.pages.SchedulerPage;
+import com.spartaglobal.finalweek.pages.courseInfoPages.AddCourseTypePage;
 import com.spartaglobal.finalweek.pages.courseInfoPages.CourseInfoPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.junit.Assert;
@@ -206,8 +207,8 @@ public class CourseInfoTests extends NavTemplate {
     @Test
     @DisplayName("areCourseTypesUnique Invalid Test")
     void areCourseTypesUniqueInvalidTest() {
-        // TODO: 30/09/2021 Implement Test
-        // Need AddCourseTypePage to be implemented
+        addDuplicateMethod("Business");
+        Assertions.assertFalse(courseInfoPage.areCourseTypesUnique());
     }
 
     @Test
@@ -220,7 +221,7 @@ public class CourseInfoTests extends NavTemplate {
     @DisplayName("areDisciplinesUnique Invalid Test")
     void areDisciplinesUniqueInvalidTest() {
         // TODO: 30/09/2021 Implement Test
-        // Need AddCourseTypePage to be implemented
+        // Need AddDisciplinePage to be implemented
     }
 
     @ParameterizedTest
@@ -281,6 +282,12 @@ public class CourseInfoTests extends NavTemplate {
     @AfterEach
     public void tearDown(){
         webDriver.quit();
+    }
+
+    private void addDuplicateMethod(String name) {
+        AddCourseTypePage addCourseTypePage = courseInfoPage.clickAddCourseTypeButton();
+        addCourseTypePage.enterCourseTypeName(name);
+        addCourseTypePage.goToCourseInfoPage();
     }
 
 }
