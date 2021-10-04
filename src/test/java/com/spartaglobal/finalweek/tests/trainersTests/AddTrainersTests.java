@@ -44,7 +44,6 @@ public class AddTrainersTests extends NavTemplate {
     @DisplayName("Has the colour been entered?")
     void checkColourHasChanged()
     {
-        trainersPage.clickEditTrainer();
         String oldColour = addTrainersPage.getColour();
         addTrainersPage.setColour();
         Assertions.assertNotEquals(addTrainersPage.getColour(),oldColour);
