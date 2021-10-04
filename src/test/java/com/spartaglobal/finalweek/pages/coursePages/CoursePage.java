@@ -186,7 +186,7 @@ public class CoursePage implements URLable {
         int elementPosition = element.getLocation().getY();
         String js = String.format("window.scrollTo(0, %s)", elementPosition);
         ((JavascriptExecutor)webDriver).executeScript(js);
-        TimeUnit.SECONDS.sleep(1);
+        TimeUnit.MILLISECONDS.sleep(500);
     }
 
     public boolean areCourseNamesUnique(){
@@ -194,13 +194,27 @@ public class CoursePage implements URLable {
         return uniqueList.size() == allCourseNames.size();
     }
 
-    public void deleteCourse(String courseName){
-        getDeleteButton(courseName).click();
+    public CoursePage deleteCourse(String courseName) throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id((getCourseIndexByCourseName(courseName)) + "row")));
+        By deleteCourseHyperlink = By.linkText("Delete");
+        getDeleteButton(courseName, deleteCourseHyperlink).click();
+        return new CoursePage();
     }
 
-    private WebElement getDeleteButton(String courseName){
-        deleteCourseButton = getCoursesByCourseName(courseName).get(0).findElement(By.linkText("Delete"));
-        return deleteCourseButton;
+    private WebElement getDeleteButton(String courseName, By method) throws InterruptedException {
+        if(getCourseIndexByCourseName(courseName) < 5){
+            WebElement deleteButton;
+            deleteButton = getCoursesByCourseName(courseName).get(0).findElement(method); //By.linkText("Edit") | By.className("btn")
+            scroll(method, By.id((getCourseIndexByCourseName(courseName)) + "row"));
+            return deleteButton;
+        }
+        else {
+            scroll(By.linkText("Delete"), By.id((getCourseIndexByCourseName(courseName)) + "row"));
+            WebElement deleteButton;
+            deleteButton = getCoursesByCourseName(courseName).get(0).findElement(By.linkText("Delete"));
+            return deleteButton;
+        }
     }
 
     public boolean isCourseDeleted(String courseName){
@@ -221,7 +235,7 @@ public class CoursePage implements URLable {
             webDriver.switchTo().alert().accept();
             return true;
 
-        } catch (NoAlertPresentException e){
+        } catch (NoAlertPresentException | InterruptedException e){
             return false;
         }
     }
