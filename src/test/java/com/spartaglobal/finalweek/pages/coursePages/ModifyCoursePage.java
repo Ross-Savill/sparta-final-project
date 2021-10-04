@@ -33,8 +33,6 @@ public class ModifyCoursePage implements URLable {
     WebElement location;
     protected @FindBy(id = "start_date")
     WebElement startDate;
-    protected @FindBy (id = "inputButton")
-    WebElement submitButton;
 
     protected final int MAX_TRAINER_START_END_WEEK = 52;
     protected final int MIN_TRAINER_START_END_WEEK = 1;
@@ -263,23 +261,8 @@ public class ModifyCoursePage implements URLable {
                 alert.getText().equals("Sorry, the minimum value was reached");
     }
 
-    public boolean isSubmissionSuccessful(){
-        return submitReturnsCoursePage()
-                .getURL()
-                .equals(PropertiesLoader.getProperties().getProperty("coursesPageURL"));
-    }
-
     //TODO(1): Grab required attribute value?, or other ways to grab message "Please fill in this field."
     /*public String getEmptyErrorMessage(){
         return getCourseNameElement().getAttribute("required");
     }*/
-
-    public void clickSubmit(){
-        submitButton.click();
-    }
-
-    public CoursePage submitReturnsCoursePage(){
-        clickSubmit();
-        return new CoursePage();
-    }
 }

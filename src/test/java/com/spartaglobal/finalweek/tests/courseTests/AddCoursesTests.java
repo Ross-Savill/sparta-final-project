@@ -99,7 +99,7 @@ public class AddCoursesTests{
     class GettingAndSelectingTrainerID {
 
         @Test
-        @DisplayName("Test getting 1st trainer id returns default value 'Mike Wazowski'")
+        @DisplayName("Test getting 1st trainer id returns default value 'Aayla Secura'")
         void testGettingTrainerIdReturnsDefaultValueMikeWazowski() {
             Assertions.assertEquals("Aayla Secura", addCoursePage.getTrainerID(1));
         }
@@ -177,7 +177,7 @@ public class AddCoursesTests{
     class GettingAndSelectingDiscipline {
 
         @Test
-        @DisplayName("Testing getting discipline returns default value C#")
+        @DisplayName("Testing getting discipline returns default value Java")
         void testingGettingDisciplineReturnsDefaultValueC() {
             Assertions.assertEquals("Java",  addCoursePage.getDiscipline());
         }
