@@ -63,10 +63,6 @@ public class AddLocationPage extends NavTemplate implements URLable {
 
         return newCentreName.equals(locationName) && newCentreRooms == locationRooms;
 
-        //version that doesn't need a helper method but feels worse
-/*        String newCentreNameAndRooms = newCentre.get(0).getText().replace("\nEdit\nDelete","");
-        String roomsAsString = Integer.toString(locationRooms);
-        return (newCentreNameAndRooms.contains(locationName) && newCentreNameAndRooms.contains(roomsAsString));*/
     }
 
     public boolean isLocationNameEmpty(){
