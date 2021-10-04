@@ -76,10 +76,13 @@ public class EditLocationPage extends NavTemplate implements URLable {
 
     public boolean isUpdateSuccessful(String updatedLocationName, int updatedLocationNumOfRooms) {
 
-        List<WebElement> centres = webDriver.findElements(By.id("locationTable"));
+        WebElement table = webDriver.findElement(By.id("locationTable"));
+        List<WebElement> centres = table.findElements(By.tagName("tr"));
+
         for (WebElement centre:centres) {
             WebElement nameTextField = webDriver.findElement(By.id(centres.indexOf(centre)+"location_name"));
             WebElement numRoomsTextField = webDriver.findElement(By.id(centres.indexOf(centre)+"number_of_rooms"));
+
 
             if(updatedLocationName.equals(nameTextField.getText())
                     && updatedLocationNumOfRooms == Integer.parseInt(numRoomsTextField.getText())) {

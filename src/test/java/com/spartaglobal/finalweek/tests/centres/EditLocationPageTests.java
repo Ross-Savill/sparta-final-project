@@ -22,7 +22,7 @@ public class EditLocationPageTests {
     private EditLocationPage editLocationPage;
     private CentresPage centresPage;
     private AddLocationPage addLocationPage;
-    private final String centreName = "Hoth";
+    private final String centreName = "Naboo";
     private final int centreNumOfRooms = 5;
     private final String centreUrl = "http://localhost:8080/centres";
     private final String dummyCentreName = "You won't be able to delete me muhaha";
@@ -163,8 +163,8 @@ public class EditLocationPageTests {
                     editLocationPage = centresPage.clickEditCentreButton(centreName);
                 }
 
-                editLocationPage.enterLocationName("Hoth");
-                editLocationPage.enterNumOfRooms(5);
+                editLocationPage.enterLocationName(centreName);
+                editLocationPage.enterNumOfRooms(centreNumOfRooms);
                 editLocationPage.goToCentresPage();
             }
 
