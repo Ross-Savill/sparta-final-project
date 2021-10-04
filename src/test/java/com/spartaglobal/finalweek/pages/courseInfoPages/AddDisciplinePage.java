@@ -13,7 +13,8 @@ public class AddDisciplinePage extends NavTemplate implements URLable {
 
     @FindBy(id = "discipline-name") WebElement disciplineNameTextField;
     @FindBy(id = "discipline-duration") WebElement durationTextField;
-    @FindBy(className ="btn btn-primary") WebElement submitButton;
+    @FindBy(xpath="//input[@type='submit' and @class='btn btn-primary']") WebElement submitButton;
+
 
     public AddDisciplinePage() {
         PageFactory.initElements(webDriver, this);
@@ -53,16 +54,22 @@ public class AddDisciplinePage extends NavTemplate implements URLable {
     }
 
     public boolean isDisciplineDurationValid() {
-        int maxDuration = 1000;
-        int minDuration = 0;
-        int durationTextFieldAttribute = Integer.parseInt(durationTextField.getAttribute("value"));
+        String durationText = durationTextField.getAttribute("value");
+        String regex = "[0-9]+";
 
-        String regex = "[0-9]{3}+";
-        return (durationTextFieldAttribute>=minDuration && durationTextFieldAttribute<=maxDuration);
+        if(durationText.matches(regex)){
+            int maxDuration = 1000;
+            int minDuration = 0;
+            int durationTextInt= Integer.parseInt(durationTextField.getAttribute("value"));
+
+            return durationTextInt >= minDuration && durationTextInt<= maxDuration;
+        }
+        return false;
     }
 
+
     public boolean areAllFieldsValid() {
-        return (isDisciplineDurationValid()&&isDisciplineNameValid());
+        return ((isDisciplineDurationValid())&&(isDisciplineNameValid()));
     }
 
     public boolean isDisciplineNameEmpty() {

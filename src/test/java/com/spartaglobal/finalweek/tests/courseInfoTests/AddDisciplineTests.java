@@ -64,6 +64,15 @@ public class AddDisciplineTests extends NavTemplate {
         Assertions.assertTrue(addDisciplinePage.submitSuccessful());
     }
 
+    //How to make parameterised tests with two value sets
+    @Test
+    @DisplayName("Test if Name and Duration are Valid.")
+    void testIfAllFieldsAreValid(){
+        addDisciplinePage.enterDisciplineName("Ruby");
+        addDisciplinePage.enterDuration(50);
+        Assertions.assertTrue(addDisciplinePage.areAllFieldsValid());
+    }
+
     @ParameterizedTest
     @ValueSource (strings = {"Ruby", "Python12", "Java", "R2 D2"})
     @DisplayName("Discipline name must be letters only.")
@@ -75,7 +84,8 @@ public class AddDisciplineTests extends NavTemplate {
     @ParameterizedTest
     @ValueSource (ints = {200,1000, 1})
     @DisplayName("Duration Field must be numbers only.")
-    void testFieldIsNumbersOnly(){
+    void testFieldIsNumbersOnly(int numbers){
+        addDisciplinePage.enterDuration(numbers);
         Assertions.assertTrue(addDisciplinePage.isDisciplineDurationValid());
     }
 
@@ -89,7 +99,7 @@ public class AddDisciplineTests extends NavTemplate {
     }
 
     @ParameterizedTest
-    @ValueSource (strings = {"", "Python12"})
+    @ValueSource (strings = {"", "Python12","A"})
     @DisplayName("Check Discipline name is empty.")
     void testDisciplineNameIsEmpty(String names){
         addDisciplinePage.enterDisciplineName(names);
@@ -97,7 +107,7 @@ public class AddDisciplineTests extends NavTemplate {
     }
 
     @ParameterizedTest
-    @ValueSource (ints = { 1,2,3,5,1000 })
+    @ValueSource (ints = { -1,0,3,1000,-1000 })
     @DisplayName("Check Discipline Duration is empty.")
     void testDisciplineDurationIsEmpty(int durations){
         addDisciplinePage.enterDuration(durations);
