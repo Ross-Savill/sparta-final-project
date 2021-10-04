@@ -9,8 +9,10 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.ByChained;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
-public class CoursePage implements URLable {
+public class CoursePage extends NavTemplate implements URLable {
 
     @FindBy(id = "courseList")
     WebElement courseList;
@@ -48,9 +50,13 @@ public class CoursePage implements URLable {
     @FindBy(className = "btn-primary")
     WebElement addCourseButton;
     @FindBy(id = "CoursePageLink")
-    WebElement addCourseHyperLink;
+    WebElement addCourseHyperlink;
 
     WebElement editCourseButton;
+    WebElement editCourseHyperlink;
+
+    WebElement deleteCourseButton;
+    WebElement deleteCourseHyperlink;
 
     public List<WebElement> getAllCourses(){
         return this.allCourses;
@@ -144,20 +150,27 @@ public class CoursePage implements URLable {
     }
 
     public AddCoursePage clickAddCourseHyperlink(){
-        addCourseHyperLink.click();
+        addCourseHyperlink.click();
         return new AddCoursePage();
     }
 
     public EditCoursesPage clickEditCourseButton(String courseName) throws InterruptedException {
-        getEditButton(courseName).click();
+        By editButtonMethod = By.className("btn");
+        getEditButton(courseName, editButtonMethod).click();
         return new EditCoursesPage();
     }
 
-    private WebElement getEditButton(String courseName) throws InterruptedException {
+    public EditCoursesPage clickEditCourseHyperlink(String courseName) throws InterruptedException {
+        By editHyperlinkMethod = By.linkText("Edit");
+        getEditButton(courseName, editHyperlinkMethod).click();
+        return new EditCoursesPage();
+    }
+
+    private WebElement getEditButton(String courseName, By method) throws InterruptedException {
         if(getCourseIndexByCourseName(courseName) < 5){
             WebElement editButton;
-            editButton = getCoursesByCourseName(courseName).get(0).findElement(By.linkText("Edit"));
-            scroll(By.linkText("Edit"), By.id((getCourseIndexByCourseName(courseName)) + "row"));
+            editButton = getCoursesByCourseName(courseName).get(0).findElement(method); //By.linkText("Edit") | By.className("btn")
+            scroll(method, By.id((getCourseIndexByCourseName(courseName)) + "row"));
             return editButton;
         }
         else {
@@ -173,7 +186,7 @@ public class CoursePage implements URLable {
         int elementPosition = element.getLocation().getY();
         String js = String.format("window.scrollTo(0, %s)", elementPosition);
         ((JavascriptExecutor)webDriver).executeScript(js);
-        TimeUnit.SECONDS.sleep(1);
+        TimeUnit.MILLISECONDS.sleep(500);
     }
 
     public boolean areCourseNamesUnique(){
@@ -181,14 +194,27 @@ public class CoursePage implements URLable {
         return uniqueList.size() == allCourseNames.size();
     }
 
-    public void deleteCourse(String courseName){
-        getDeleteButton(courseName).click();
+    public CoursePage deleteCourse(String courseName) throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id((getCourseIndexByCourseName(courseName)) + "row")));
+        By deleteCourseHyperlink = By.linkText("Delete");
+        getDeleteButton(courseName, deleteCourseHyperlink).click();
+        return new CoursePage();
     }
 
-    private WebElement getDeleteButton(String courseName){
-        WebElement deleteButton;
-        deleteButton = getCoursesByCourseName(courseName).get(0).findElement(By.linkText("Delete"));
-        return deleteButton;
+    private WebElement getDeleteButton(String courseName, By method) throws InterruptedException {
+        if(getCourseIndexByCourseName(courseName) < 5){
+            WebElement deleteButton;
+            deleteButton = getCoursesByCourseName(courseName).get(0).findElement(method); //By.linkText("Edit") | By.className("btn")
+            scroll(method, By.id((getCourseIndexByCourseName(courseName)) + "row"));
+            return deleteButton;
+        }
+        else {
+            scroll(By.linkText("Delete"), By.id((getCourseIndexByCourseName(courseName)) + "row"));
+            WebElement deleteButton;
+            deleteButton = getCoursesByCourseName(courseName).get(0).findElement(By.linkText("Delete"));
+            return deleteButton;
+        }
     }
 
     public boolean isCourseDeleted(String courseName){
@@ -209,7 +235,7 @@ public class CoursePage implements URLable {
             webDriver.switchTo().alert().accept();
             return true;
 
-        } catch (NoAlertPresentException e){
+        } catch (NoAlertPresentException | InterruptedException e){
             return false;
         }
     }
@@ -232,6 +258,68 @@ public class CoursePage implements URLable {
             return false;
         }
     }
+
+    public boolean isCourseNamePassedOntoEditPage(){
+        String courseName = webDriver.findElement(By.id("0course")).getText();
+        webDriver.findElement(By.linkText("Edit")).click();
+        String editCourseName = webDriver.findElement(By.id("course_name")).getAttribute("value");
+        webDriver.findElement(By.id("coursePageLink")).click();
+        return courseName.equals(editCourseName);
+    }
+
+    public boolean isDisciplinePassedOntoEditPage(){
+        String discipline = webDriver.findElement(By.id("0discipline")).getText();
+        webDriver.findElement(By.linkText("Edit")).click();
+        Select dropdownBox = new Select(webDriver.findElement(By.id("discipline_id")));
+        String editDiscipline = dropdownBox.getFirstSelectedOption().getText();
+        webDriver.findElement(By.id("coursePageLink")).click();
+        return discipline.equals(editDiscipline);
+    }
+
+    public boolean isCourseTypePassedOntoEditPage(){
+        String courseType = webDriver.findElement(By.id("0course_type")).getText();
+        webDriver.findElement(By.linkText("Edit")).click();
+        Select dropdownBox = new Select(webDriver.findElement(By.id("type_id")));
+        String editCourseType = dropdownBox.getFirstSelectedOption().getText();
+        webDriver.findElement(By.id("coursePageLink")).click();
+        return courseType.equals(editCourseType);
+    }
+
+    public boolean isLocationPassedOntoEditPage(){
+        String location = webDriver.findElement(By.id("0location")).getText();
+        webDriver.findElement(By.linkText("Edit")).click();
+        Select dropdownBox = new Select(webDriver.findElement(By.id("location_id")));
+        String editLocation = dropdownBox.getFirstSelectedOption().getText();
+        webDriver.findElement(By.id("coursePageLink")).click();
+        return location.equals(editLocation);
+    }
+
+    public boolean isStartDatePassedOntoEditPage(){
+        String startDate = webDriver.findElement(By.id("0start_date")).getText();
+        webDriver.findElement(By.linkText("Edit")).click();
+        String editStartDate = webDriver.findElement(By.id("start_date")).getAttribute("value");
+        webDriver.findElement(By.id("coursePageLink")).click();
+        return startDate.equals(editStartDate);
+    }
+
+    public boolean isTrainerPassedOntoEditPage(){
+        String trainer = webDriver.findElement(By.id("0trainer_name")).getText();
+        webDriver.findElement(By.linkText("Edit")).click();
+        Select dropdownBox = new Select(webDriver.findElement(By.id("trainer_id0")));
+        String editTrainer = dropdownBox.getFirstSelectedOption().getText();
+        webDriver.findElement(By.id("coursePageLink")).click();
+        return trainer.equals(editTrainer);
+    }
+
+    public boolean areAllFieldsPassedOntoEditCoursePage(){
+        return isCourseNamePassedOntoEditPage()
+                && isDisciplinePassedOntoEditPage()
+                && isCourseTypePassedOntoEditPage()
+                && isLocationPassedOntoEditPage()
+                && isStartDatePassedOntoEditPage()
+                && isTrainerPassedOntoEditPage();
+    }
+
 
     @Override
     public String getURL() {

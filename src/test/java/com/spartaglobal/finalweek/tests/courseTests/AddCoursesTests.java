@@ -5,11 +5,13 @@ import com.spartaglobal.finalweek.pages.LoginPage;
 import com.spartaglobal.finalweek.pages.NavTemplate;
 import com.spartaglobal.finalweek.pages.coursePages.AddCoursePage;
 import com.spartaglobal.finalweek.pages.coursePages.CoursePage;
+import com.spartaglobal.finalweek.pages.coursePages.CoursePageObject;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.LocalDate;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
@@ -33,6 +35,8 @@ public class AddCoursesTests{
         
         coursePage = navTemplate.goToCoursesPage();
         coursePage = new CoursePage();
+
+        //TODO: Delete all courses on courses page.
 
         addCoursePage = coursePage.clickAddCourseButton();
         addCoursePage = new AddCoursePage();
@@ -95,9 +99,9 @@ public class AddCoursesTests{
     class GettingAndSelectingTrainerID {
 
         @Test
-        @DisplayName("Test getting 1st trainer id returns default value 'Mike Wazowski'")
+        @DisplayName("Test getting 1st trainer id returns default value 'Aayla Secura'")
         void testGettingTrainerIdReturnsDefaultValueMikeWazowski() {
-            Assertions.assertEquals("Mike Wazowski", addCoursePage.getTrainerID(1));
+            Assertions.assertEquals("Aayla Secura", addCoursePage.getTrainerID(1));
         }
 
         @Test
@@ -173,9 +177,9 @@ public class AddCoursesTests{
     class GettingAndSelectingDiscipline {
 
         @Test
-        @DisplayName("Testing getting discipline returns default value C#")
+        @DisplayName("Testing getting discipline returns default value Java")
         void testingGettingDisciplineReturnsDefaultValueC() {
-            Assertions.assertEquals("C#",  addCoursePage.getDiscipline());
+            Assertions.assertEquals("Java",  addCoursePage.getDiscipline());
         }
 
         @Test
@@ -224,6 +228,28 @@ public class AddCoursesTests{
     }
 
     @Nested
+    @DisplayName("Testing Getters and Enter methods for Start Date Field")
+    class GettingAndSelectingStartDate {
+
+        @Test
+        @DisplayName("GetStartDate returns todays date")
+        void getStartDateReturnsDateNow() {
+            LocalDate startDate = LocalDate.now();
+            addCoursePage.enterStartDate(startDate);
+            Assertions.assertEquals(startDate.toString(), addCoursePage.getStartDate());
+        }
+
+        @ParameterizedTest
+        @CsvSource(value = {"1997, 9, 22", "2021, 10, 2", "2021, 10, 26"})
+        @DisplayName("Test EnterStartDate() method returns 22/09/1997")
+        public void testEnterStartDate(int year, int month, int day) {
+            LocalDate startDate = LocalDate.of(year, month, day);
+            addCoursePage.enterStartDate(startDate);
+            Assertions.assertEquals(startDate.toString(), addCoursePage.getStartDate());
+        }
+    }
+
+    @Nested
     @DisplayName("Empty entries test")
     class EmptyTests {
 
@@ -264,6 +290,19 @@ public class AddCoursesTests{
         @DisplayName("empty trainer end week returns false")
         void emptyTrainerEndWeekReturnsFalse() {
             Assertions.assertFalse(addCoursePage.isTrainerEndWeekEmpty(1));
+        }
+
+        @Test
+        @DisplayName("empty Start Date returns true")
+        void emptyStartDateReturnsTrue() {
+            Assertions.assertTrue(addCoursePage.isStartDateEmpty());
+        }
+
+        @Test
+        @DisplayName("empty Start Date returns false")
+        void emptyStartDateReturnsFalse() {
+            addCoursePage.enterStartDate(LocalDate.now());
+            Assertions.assertFalse(addCoursePage.isStartDateEmpty());
         }
     }
 
@@ -401,6 +440,42 @@ public class AddCoursesTests{
             addCoursePage.enterNumberOfTrainers(0);
             addCoursePage.clickSubmit();
             Assertions.assertTrue(addCoursePage.isAlertDisplayed());
+        }
+    }
+
+    @Nested
+    @DisplayName("Testing submission")
+    class SubmissionTest {
+
+        @Test
+        @DisplayName("Test submit button navigates to courses page.")
+        void testSubmitButtonNavigatesToCoursesPage() {
+            CoursePageObject emptyCoursePageObject = new CoursePageObject();
+            CoursePageObject defaultCoursePageObject = new CoursePageObject(emptyCoursePageObject);
+            addCoursePage.enterAllFields(defaultCoursePageObject);
+            coursePage = addCoursePage.submitReturnsCoursePage();
+            coursePage = new CoursePage();
+            Assertions.assertEquals(
+                    PropertiesLoader.getProperties().getProperty("coursesPageURL"),
+                    coursePage.getURL());
+        }
+
+        @Test
+        @DisplayName("Test is submission successful")
+        void testIsSubmissionSuccessful() {
+            CoursePageObject coursePageObject = new CoursePageObject();
+            coursePageObject.setCourseName("Eng 92");
+            coursePageObject.setNumberOfTrainers(1);
+            coursePageObject.setRow(1);
+            coursePageObject.setTrainerID("Sheev Palpatine");
+            coursePageObject.setTrainerStartWeek(1);
+            coursePageObject.setTrainerEndWeek(7);
+            coursePageObject.setDiscipline("JavaSDET");
+            coursePageObject.setTypeOfCourse("Technology");
+            coursePageObject.setLocation("Naboo");
+            coursePageObject.setStartDate(LocalDate.of(2021, 9, 22));
+            addCoursePage.enterAllFields(coursePageObject);
+            Assertions.assertTrue(addCoursePage.isSubmissionSuccessful());
         }
     }
 

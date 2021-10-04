@@ -16,6 +16,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import java.time.LocalDate;
+import java.util.concurrent.TimeUnit;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
@@ -40,8 +41,7 @@ public class CourseTests  {
         navTemplate = new NavTemplate();
         coursePage = navTemplate.goToCoursesPage();
         coursePage = new CoursePage();
-//        addCoursePage = coursePage.clickAddCourseButton();
-//        addCoursePage = new AddCoursePage();
+
     }
 
     @Nested
@@ -65,15 +65,16 @@ public class CourseTests  {
         }
 
         @ParameterizedTest
-        @Disabled //needs methods from AddCoursePage()
         @ValueSource(strings = {"Engineering 101", "Data 100", "SDET Stream"})
         @DisplayName("Test DeleteCourse()")
-        public void testDeleteCourse(String courseName) {
+        public void testDeleteCourse(String courseName) throws InterruptedException {
+            addCoursePage = coursePage.clickAddCourseButton();
             //String courseName = "Engineering 101";
             LocalDate courseStartDate = LocalDate.now();
-//            addCoursePage.enterCourseName(courseName);
-//            addCoursePage.enterStartDate(courseStartDate);
-//            addCoursePage.clickSubmit();
+            addCoursePage.enterCourseName(courseName);
+            addCoursePage.enterStartDate(courseStartDate);
+            coursePage = addCoursePage.submitReturnsCoursePage();
+            coursePage = new CoursePage();
             coursePage.deleteCourse(courseName);
         }
     }
@@ -83,9 +84,19 @@ public class CourseTests  {
     class hyperlinkTests{
 
         @Test
-        @DisplayName("Test the AddCourseHyperlink")
+        @DisplayName("Test the addCourseHyperlink")
         public void testClickAddCourseHyperlink(){
             Assertions.assertEquals("http://localhost:8080/addCourse", coursePage.clickAddCourseHyperlink().getURL());
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"Jedi Training", "Engineering 87", "Engineering 90", "SDET 34",
+                "Engineering 51", "Sith Training", "Business 31", "Maintenance 12", "Padawan Training",
+                "SDET 54", "Business 65", "Engineering 62", "Business 12", "Hacking 4"}
+        )
+        @DisplayName("Test the clickEditCourseHyperlink()")
+        public void testClickEditCourseHyperlink(String courseName) throws InterruptedException {
+            Assertions.assertTrue(coursePage.clickEditCourseHyperlink(courseName).getURL().startsWith("http://localhost:8080/editCourse/"));
         }
     }
 
@@ -179,7 +190,7 @@ public class CourseTests  {
     @Disabled //needs methods from AddCoursePage()
     @ValueSource(strings = {"Engineering 101", "Data 100", "SDET Stream"})
     @DisplayName("Testing if I can tell when a course has been deleted")
-    public void testIsCourseDeleted(String courseToDelete){
+    public void testIsCourseDeleted(String courseToDelete) throws InterruptedException {
         //String courseToDelete = "Engineering 101";
         LocalDate courseStartDate = LocalDate.now();
 //        addCoursePage.enterCourseName(courseToDelete);
@@ -218,6 +229,65 @@ public class CourseTests  {
         }
     }
 
+//    @Test
+//    @DisplayName("Test the EnterStartDate() method")
+//    public void testEnterStartDate() throws InterruptedException {
+//        String courseName = "Engineering 999";
+//        LocalDate startDate = LocalDate.now();
+//
+//        addCoursePage = coursePage.clickAddCourseButton();
+//        addCoursePage = new AddCoursePage();
+//        addCoursePage.enterCourseName(courseName);
+//        addCoursePage.enterStartDate(startDate);
+//        coursePage = addCoursePage.submitReturnsCoursePage();
+//    }
+
+    @Nested
+    @DisplayName("Passed onto Edit Course Page Tests")
+    class passedOntoEditCoursePageTests {
+
+        @Test
+        @DisplayName("Test the 'course name' field is passed onto the EditCoursePage")
+        public void testCourseNameIsPassedOntoEditCoursePage() {
+            Assertions.assertTrue(coursePage.isCourseNamePassedOntoEditPage());
+        }
+
+        @Test
+        @DisplayName("Test the 'discipline' field is passed onto the EditCoursePage")
+        public void testDisciplineIsPassedOntoEditCoursePage() {
+            Assertions.assertTrue(coursePage.isDisciplinePassedOntoEditPage());
+        }
+
+        @Test
+        @DisplayName("Test the 'course type' field is passed onto the EditCoursePage")
+        public void testCourseTypeIsPassedOntoEditCoursePage() {
+            Assertions.assertTrue(coursePage.isCourseTypePassedOntoEditPage());
+        }
+
+        @Test
+        @DisplayName("Test the 'location' field is passed onto the EditCoursePage")
+        public void testLocationIsPassedOntoEditCoursePage() {
+            Assertions.assertTrue(coursePage.isLocationPassedOntoEditPage());
+        }
+
+        @Test
+        @DisplayName("Test the 'start date' field is passed onto the EditCoursePage")
+        public void testStartDateIsPassedOntoEditCoursePage() {
+            Assertions.assertTrue(coursePage.isStartDatePassedOntoEditPage());
+        }
+
+        @Test
+        @DisplayName("Test the 'trainer name' field is passed onto the EditCoursePage")
+        public void testTrainerIsPassedOntoEditCoursePage() {
+            Assertions.assertTrue(coursePage.isTrainerPassedOntoEditPage());
+        }
+
+        @Test
+        @DisplayName("Test that all fields are passed onto the edit course page")
+        public void testAllFieldsArePassedOntoEditCoursePage() {
+            Assertions.assertTrue(coursePage.areAllFieldsPassedOntoEditCoursePage());
+        }
+    }
 
     @AfterEach
     public void tearDown(){
