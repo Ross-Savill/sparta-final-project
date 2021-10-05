@@ -11,7 +11,7 @@ import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
 
 
-public class AccountPage implements URLable {
+public class AccountPage extends NavTemplate implements URLable {
 
     @FindBy(id = "newPassword")
     WebElement newPasswordTextField;

@@ -1,4 +1,4 @@
-package stepdefs;
+package com.spartaglobal.finalweek.cucumber.stepDefs;
 
 import com.spartaglobal.finalweek.pages.centresPages.AddLocationPage;
 import com.spartaglobal.finalweek.pages.centresPages.CentresPage;
