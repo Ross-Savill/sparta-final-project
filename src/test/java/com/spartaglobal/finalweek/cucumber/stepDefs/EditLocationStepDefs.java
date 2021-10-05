@@ -51,7 +51,7 @@ public class EditLocationStepDefs {
 
     @Then("The information on the table should be updated to reflect the information I entered")
     public void theInformationOnTheTableShouldBeUpdatedToReflectTheInformationIEntered() {
-        Assertions.assertTrue(editLocationPage.isUpdateSuccessful(changedName, changedNumOfRooms));
+        Assertions.assertTrue(centresPage.isUpdateSuccessful(changedName, changedNumOfRooms));
     }
 
     @When("I remove the locations name")
@@ -67,7 +67,7 @@ public class EditLocationStepDefs {
 
     @And("The list of locations should not update")
     public void theListOfLocationsShouldNotUpdate() {
-        Assertions.assertFalse(editLocationPage.isUpdateSuccessful(changedName, changedNumOfRooms));
+        Assertions.assertFalse(centresPage.isUpdateSuccessful(changedName, changedNumOfRooms));
     }
 
     @When("I remove the number of rooms")
@@ -97,7 +97,7 @@ public class EditLocationStepDefs {
 
     @And("The list of locations should no longer have the centre I want to delete")
     public void theListOfLocationsShouldNoLongerHaveTheCentreIWantToDelete(String name, String rooms) {
-        editLocationPage.isDeleteSuccessful(name, rooms);
+        centresPage.isDeleteSuccessful(name, rooms);
     }
 
 }
