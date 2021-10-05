@@ -2,9 +2,11 @@ package com.spartaglobal.finalweek.pages.traineePages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
 import com.spartaglobal.finalweek.pages.NavTemplate;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 
 import java.time.LocalDate;
 
@@ -19,65 +21,96 @@ public class AddTraineesPage extends NavTemplate implements URLable {
     @FindBy(id = "btn-primary")
     WebElement submitButton;
 
+    private Select addTraineesCourseDropdown = new Select(webDriver.findElement(By.id("edit-trainee-course-name")));
+
     public AddTraineesPage() {
         PageFactory.initElements(webDriver, this);
     }
 
-//    public void setCourseName() {
-//
-//    }
+    public void setCourseName(String courseName) {
+        courseNameDropDown.click();
+        addTraineesCourseDropdown.selectByVisibleText(courseName);
+    }
 
-//    public WebElement getCourseName() {
-//
-//    }
+    public String getCourseName() {
+        return addTraineesCourseDropdown.getFirstSelectedOption().getText();
+    }
 
-//    public void enterFirstName(String firstName) {
-//
-//    }
+    public void enterFirstName(String firstName) {
+        firstNameTextBox.clear();
+        firstNameTextBox.sendKeys(firstName);
+    }
 
-//    public WebElement getFirstName() {
-//
-//    }
+    public String getFirstName() {
+        return firstNameTextBox.getAttribute("value");
+    }
 
-//    public void enterLastName(String lastName) {
-//
-//    }
+    public String getLastName(){
+        return lastNameTextBox.getAttribute("value");
+    }
 
-//    public WebElement getLastName() {
-//
-//    }
+    public void enterLastName(String lastName){
+        lastNameTextBox.sendKeys(lastName);
+    }
 
-//    public boolean submitSuccessful() {
-//
-//    }
+    public void submitTrainee()
+    {
+        submitButton.click();
+    }
 
-//    public TraineesPage goToTraineesPage() {
-//
-//    }
+    public boolean isSubmitSuccessful(){
+        submitTrainee();
+        if(getURL().contains("http://localhost:8080/traineePage")) {
+            return true;
+        }
+        return false;
+    }
 
-//    public boolean isFirstNameEmpty() {
-//
-//    }
+    public TraineesPage goToTraineesPage() {
+        return new TraineesPage();
+    }
 
-//    public boolean isLastNameEmpty() {
-//
-//    }
+    public boolean isFirstNameEmpty(){
+        if(getFirstName() == "") {
+            return true;
+        }
+        return false;
+    }
 
-//    public boolean areFieldsEmpty() {
-//
-//    }
+    public boolean isLastNameEmpty(){
+        if(getLastName() == "") {
+            return true;
+        }
+        return false;
+    }
 
-//    public boolean isFirstNameValid() {
-//
-//    }
+    public boolean areAllFieldsEmpty(){
+        if(isFirstNameEmpty() == true && isLastNameEmpty() == true ) {
+            return true;
+        }
+        return false;
+    }
 
-//    public boolean isLastNameValid() {
-//
-//    }
+    public boolean isFirstNameValid(){
+        if(getFirstName().matches("^[a-z A-Z 0-9 ,.'-]+$")) {
+            return true;
+        }
+        return false;
+    }
 
-//    public boolean areFieldsEmpty() {
-//
-//    }
+    public boolean isLastNameValid(){
+        if(getLastName().matches("^[a-z A-Z 0-9 ,.'-]+$")) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean areAllFieldsValid(){
+        if(isFirstNameValid() == true && isLastNameValid() == true ) {
+            return true;
+        }
+        return false;
+    }
 
 
     //======================================================================

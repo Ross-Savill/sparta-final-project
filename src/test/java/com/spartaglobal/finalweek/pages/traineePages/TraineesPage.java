@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
@@ -116,6 +117,7 @@ public class TraineesPage implements URLable {
     public WebElement getTraineeFirstNameElement(String rowID) {
         List<WebElement> allTraineeRows = getAllTraineesElements();
         for(WebElement row : allTraineeRows) {
+            int rowNumber = 0;
             if(row.getAttribute("id").equals(rowID)) {
                 return row.findElement(By.id(allTraineeRows.indexOf(row)+"name"));
             }
@@ -260,6 +262,18 @@ public class TraineesPage implements URLable {
         }
     }
 
+    public boolean areCoursesUnique() {
+        List<String> allCourses = getCoursesStrings();
+        for(int i = 0; i < allCourses.size() - 1; i++) {
+            for(int j = 0; j < allCourses.size() - 1; j++) {
+                if(i != j && allCourses.get(i).equals(allCourses.get(j))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public AddTraineesPage clickAddTrainee() {
         addTraineeButton.click();
         return new AddTraineesPage();
@@ -371,21 +385,36 @@ public class TraineesPage implements URLable {
         return false;
     }
 
-    public boolean areCoursesUnique() {
-        List<String> allCourses = getCoursesStrings();
-        for(int i = 0; i < allCourses.size() - 1; i++) {
-            for(int j = 0; j < allCourses.size() - 1; j++) {
-                if(i != j && allCourses.get(i).equals(allCourses.get(j))) {
-                    return false;
+    public boolean areAllFieldsPassedOnToEditTraineesPage() {
+        String firstName = getTraineeFirstName("0row");
+        String lastName = getTraineeLastName("0row");
+        List<String> allCourseNames = getCoursesStrings();
+        for (String courseName : allCourseNames) {
+            applyCourseFilter(courseName);
+            List<WebElement> allTraineeRows = getAllTraineesElements();
+            if (allTraineeRows.get(0).getAttribute("class").equals("footable-empty")) {
+                continue;
+            } else {
+                int rowNumber = 0;
+                for (WebElement traineeRow : allTraineeRows) {
+                    if (traineeRow.findElement(By.id(rowNumber + "name")).getText().equals(firstName)
+                            && traineeRow.findElement(By.id(rowNumber + "surname")).getText().equals(lastName)) {
+                        traineeRow.findElement(By.linkText("Edit")).click();
+                        EditTraineesPage editTraineesPage = new EditTraineesPage();
+                        PageFactory.initElements(webDriver, editTraineesPage);
+                        Select editTraineesCourseDropdown = new Select(webDriver.findElement(By.id("edit-trainee-course-name")));
+                        if (editTraineesCourseDropdown.getFirstSelectedOption().getText().equals(courseName) &&
+                                editTraineesPage.firstNameTextBox.getAttribute("value").equals(firstName)
+                                && editTraineesPage.lastNameTextBox.getAttribute("value").equals(lastName)) {
+                            return true;
+                        }
+                    }
+                    rowNumber++;
                 }
             }
         }
-        return true;
+        return false;
     }
-
-//    public boolean areAllFieldsPassedOnToEditTraineesPage() {
-//        // Need Edit Page implemented for this method
-//    }
 
     public boolean doesConfirmationBoxAppearOnDelete() {
         int rowNumber = 0;
