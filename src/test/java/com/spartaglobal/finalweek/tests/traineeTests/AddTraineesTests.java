@@ -57,14 +57,14 @@ public class AddTraineesTests extends NavTemplate {
         Assertions.assertTrue(addTraineesPage.isSubmitSuccessful());
     }
 
-    @Test
-    @DisplayName("Check if Trainer was created")
-    void checkIfNewTrainerEntered() {
-        addTraineesPage.enterFirstName("FirstExample");
-        addTraineesPage.enterLastName("LastExample");
-        addTraineesPage.submitTrainee();
-        Assertions.assertNotEquals(-1,traineesPage.findByTraineeName("FirstExample","LastExample"));
-    }
+//    @Test
+//    @DisplayName("Check if Trainer was created")
+//    void checkIfNewTrainerEntered() {
+//        addTraineesPage.enterFirstName("FirstExample");
+//        addTraineesPage.enterLastName("LastExample");
+//        addTraineesPage.submitTrainee();
+//        Assertions.assertNotEquals(-1,traineesPage.findByTraineeName("FirstExample","LastExample"));
+//    }
 
     @Test
     @DisplayName("Check submit button does not work if first name isn't entered")
