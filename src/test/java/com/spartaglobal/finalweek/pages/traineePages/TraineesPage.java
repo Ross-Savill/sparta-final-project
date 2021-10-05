@@ -246,10 +246,13 @@ public class TraineesPage implements URLable {
         for(WebElement courseElement : courseElements) {
             courseStrings.add(courseElement.getText());
         }
+        courseFilterDropDownButton.click();
         return courseStrings;
     }
 
     public void applyCourseFilter(String courseName) {
+        WebDriverWait wait = new WebDriverWait(webDriver,10);
+        wait.until(ExpectedConditions.elementToBeClickable(courseFilterDropDownButton));
         courseFilterDropDownButton.click();
         WebElement filterBody = webDriver.findElement(By.className("accordion-body"));
         List<WebElement> courseElements = filterBody.findElements(By.id("course"));
