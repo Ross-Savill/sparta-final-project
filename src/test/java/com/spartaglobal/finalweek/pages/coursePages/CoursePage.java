@@ -174,9 +174,9 @@ public class CoursePage extends NavTemplate implements URLable {
             return editButton;
         }
         else {
-            scroll(By.linkText("Edit"), By.id((getCourseIndexByCourseName(courseName)) + "row"));
+            scroll(method, By.id((getCourseIndexByCourseName(courseName)) + "row"));
             WebElement editButton;
-            editButton = getCoursesByCourseName(courseName).get(0).findElement(By.linkText("Edit"));
+            editButton = getCoursesByCourseName(courseName).get(0).findElement(method);
             return editButton;
         }
     }
