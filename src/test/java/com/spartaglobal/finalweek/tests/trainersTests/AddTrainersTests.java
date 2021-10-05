@@ -40,21 +40,14 @@ public class AddTrainersTests extends NavTemplate {
         Assertions.assertTrue(addTrainersPage.areAllFieldsValid());
     }
 
-//    @Test
-//    @DisplayName("Has the colour been entered?")
-//    void checkColourHasChanged()
-//    {
-//        int rowID;
-//        String oldColour = addTrainersPage.getColour();
-//        addTrainersPage.enterFirstName("FirstExample");
-//        addTrainersPage.enterLastName("LastExample");
-//        addTrainersPage.setColour();
-//        addTrainersPage.submitTrainer();
-//        rowID = trainersPage.findMyTrainerName("FirstExample","LastExample");
-//        System.err.println(trainersPage.getTrainerColour(rowID));
-//
-//        Assertions.assertNotEquals(addTrainersPage.getColour(),oldColour);
-//    }
+    @Test
+    @DisplayName("Has the colour been entered?")
+    void checkColourHasChanged()
+    {
+        String oldColour = addTrainersPage.getColour();
+        addTrainersPage.setColour();
+        Assertions.assertNotEquals(addTrainersPage.getColour(),oldColour);
+    }
 
 
     @Test

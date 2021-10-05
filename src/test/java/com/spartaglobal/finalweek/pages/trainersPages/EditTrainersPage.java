@@ -4,10 +4,12 @@ import com.spartaglobal.finalweek.interfaces.URLable;
 import com.spartaglobal.finalweek.pages.NavTemplate;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.JavascriptExecutor;
 
 public class EditTrainersPage extends NavTemplate implements URLable {
 
@@ -55,7 +57,7 @@ public class EditTrainersPage extends NavTemplate implements URLable {
 
     public void setColour(){
         ((JavascriptExecutor) webDriver).executeScript("document.getElementById('trainer-hex').value='#FFEECC';");
-//        ((JavascriptExecutor) webDriver).executeScript("document.getElementById('trainer-hex').value='#FFEEXX';");
+
     }
 
     public void submitTrainer()
