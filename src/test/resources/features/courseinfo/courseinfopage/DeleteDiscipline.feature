@@ -7,8 +7,7 @@ Feature: AS A User, I WANT to be able to delete disciplines SO THAT I can remove
   Scenario: User wants to delete a discipline
     Given there is a discipline in the discipline table
     When I click the delete button for the discipline on the course info page
-    Then There should be a dialogue box confirming that you want to delete the discipline
-    And Nothing should be removed from the discipline table
+    Then There should be a dialogue box confirming that you want to delete the discipline and Nothing should be removed from the discipline table
 
   Scenario: User wants to cancel deleting a discipline
     Given there is a discipline in the discipline table

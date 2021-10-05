@@ -4,7 +4,7 @@ Feature: AS A User I WANT to be able to edit course types SO THAT I can keep cou
     Given I am using dummy data
     And I go to the course info page
 
-  Scenario: User clicks the Edit Course Type Button for a Specific Course
+  Scenario: User clicks the Edit Course Type Button for any Course Type
     Given There is a course type present
-    When I click the Edit Course Type Button for a specific course type
+    When I click the Edit Course Type Button for any course type
     Then I should be on the Edit Course Type Page for that course type

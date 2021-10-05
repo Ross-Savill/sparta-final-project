@@ -6,8 +6,7 @@ Feature: AS A User, I WANT to be able to delete course types SO THAT I can remov
     Scenario: User wants to delete a course type
       Given there is a course type in the course types table
       When I click the delete button for the course type on the course info page
-      Then There should be a dialogue box confirming that you want to delete the course type
-      And Nothing should be removed from the course type table
+      Then There should be a dialogue box confirming that you want to delete the course type and Nothing should be removed from the course type table
 
     Scenario: User wants to cancel deleting a course type
       Given there is a course type in the course types table
