@@ -2,9 +2,12 @@ package com.spartaglobal.finalweek.pages.courseInfoPages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
 import com.spartaglobal.finalweek.pages.NavTemplate;
+import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import java.util.List;
 
 public class EditDisciplinePage extends NavTemplate implements URLable {
 
@@ -18,37 +21,54 @@ public class EditDisciplinePage extends NavTemplate implements URLable {
         PageFactory.initElements(webDriver, this);
     }
 
-//    public void enterDisciplineName(String disciplineName) {
-//
-//    }
+    public void enterDisciplineName(String disciplineName) {
+        disciplineNameTextBox.clear();
+        disciplineNameTextBox.sendKeys(disciplineName);
+    }
 
-//    public void enterDuration(int duration) {
-//
-//    }
+    public void enterDuration(int duration) {
+        durationTextBox.clear();
+        String strDuration = String.valueOf(duration);
+        durationTextBox.sendKeys(strDuration);
+    }
 
-//    public void submitSuccessful() {
-//
-//    }
+    public boolean isSubmitSuccessful(){
+        submitButton.click();
+        return webDriver.getCurrentUrl().equals(PropertiesLoader.getProperties().getProperty("courseInfoPageURL"));
+    }
 
 //    public CourseInfoPage goToCourseInfoPage() {
 //
 //    }
 
-//    public void clickRemove() {
-//
-//    }
+    public void clickRemove() {
+        removeButton.click();
+    }
 
-//    public boolean isDisciplineNameValid() {
-//
-//    }
+    public boolean isDisciplineNameValid() {
+        String disciplineNameTextFieldAttribute = disciplineNameTextBox.getAttribute("value");
+        String durationReg = "[a-zA-Z]+";
+        return (disciplineNameTextFieldAttribute.matches(durationReg));
+    }
 
-//    public boolean isDisciplineDurationValid() {
-//
-//    }
+    public boolean isDisciplineDurationValid() {
+        String durationText = durationTextBox.getAttribute("value");
+        String regex = "[0-9]+";
 
-//    public boolean areAllFieldsValid() {
-//
-//    }
+        if(durationText.matches(regex)){
+            int maxDuration = 1000;
+            int minDuration = 0;
+            int durationTextInt= Integer.parseInt(durationTextBox.getAttribute("value"));
+
+            return durationTextInt >= minDuration && durationTextInt<= maxDuration;
+        }
+        return false;
+
+    }
+
+    public boolean areAllFieldsValid() {
+        return(isDisciplineNameValid()&&isDisciplineDurationValid());
+    }
 
 //    public boolean isDisciplineNameEmpty() {
 //
@@ -62,9 +82,18 @@ public class EditDisciplinePage extends NavTemplate implements URLable {
 //
 //    }
 
+    public String getDisciplineNameTextField() {
+        return disciplineNameTextBox.getAttribute("value");
+    }
+
+    public int getDurationTextField() {
+        return Integer.parseInt(durationTextBox.getAttribute("value"));
+    }
+
     @Override
     public String getURL() {
         return webDriver.getCurrentUrl();
     }
+
 
 }
