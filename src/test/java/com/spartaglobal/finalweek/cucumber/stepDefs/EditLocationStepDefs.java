@@ -1,4 +1,4 @@
-package stepdefs;
+package com.spartaglobal.finalweek.cucumber.stepDefs;
 
 import com.spartaglobal.finalweek.base.TestBase;
 import com.spartaglobal.finalweek.pages.LoginPage;
