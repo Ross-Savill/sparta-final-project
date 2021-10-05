@@ -48,7 +48,7 @@ public class AddLocationPageTests {
     void testEnteringNumberOfRoomsAndGettingValueInField() {
         String numberOfRoomsToEnter = "6";
         addLocationPage.enterNumberOfRooms(numberOfRoomsToEnter);
-        Assertions.assertEquals(numberOfRoomsToEnter, Integer.toString(addLocationPage.getNumberOfRooms()));
+        Assertions.assertEquals(numberOfRoomsToEnter, addLocationPage.getNumberOfRooms());
     }
 
 }
