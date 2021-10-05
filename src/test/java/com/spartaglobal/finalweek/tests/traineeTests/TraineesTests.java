@@ -7,6 +7,7 @@ import com.spartaglobal.finalweek.pages.SchedulerPage;
 import com.spartaglobal.finalweek.pages.coursePages.CoursePage;
 import com.spartaglobal.finalweek.pages.traineePages.TraineesPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -31,6 +32,7 @@ public class TraineesTests extends NavTemplate {
 
     @BeforeEach
     public void setup() {
+        ResetData.resetData();
         TestBase.initialisation();
         PageFactory.initElements(webDriver, this);
         loginPage = new LoginPage();

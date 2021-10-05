@@ -7,6 +7,7 @@ import com.spartaglobal.finalweek.pages.SchedulerPage;
 import com.spartaglobal.finalweek.pages.traineePages.EditTraineesPage;
 import com.spartaglobal.finalweek.pages.traineePages.TraineesPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -24,6 +25,7 @@ public class EditTraineesTests extends NavTemplate {
 
     @BeforeEach
     public void setup() {
+        ResetData.resetData();
         TestBase.initialisation();
         PageFactory.initElements(webDriver, this);
         loginPage = new LoginPage();
