@@ -140,8 +140,7 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        enterTrainerOneFeedback("feedback1");
-        enterTrainerTwoFeedback("feedback2");
+
 
         submitButton.click();
         TraineesPage traineesPage = new TraineesPage();

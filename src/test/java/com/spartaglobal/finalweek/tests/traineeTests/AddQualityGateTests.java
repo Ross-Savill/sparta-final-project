@@ -59,7 +59,6 @@ public class AddQualityGateTests extends NavTemplate {
     @DisplayName("get Trainee Id")
     void getTraineeId() {
         Assertions.assertEquals(18, addQualityGatePage.getTraineeId());
-
     }
 
 
