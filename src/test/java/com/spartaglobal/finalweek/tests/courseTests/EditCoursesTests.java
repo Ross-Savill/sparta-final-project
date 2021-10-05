@@ -6,7 +6,6 @@ import com.spartaglobal.finalweek.pages.NavTemplate;
 import com.spartaglobal.finalweek.pages.coursePages.CoursePage;
 import com.spartaglobal.finalweek.pages.coursePages.CoursePageObject;
 import com.spartaglobal.finalweek.pages.coursePages.EditCoursesPage;
-import com.spartaglobal.finalweek.pages.coursePages.ModifyCoursePage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -183,6 +182,25 @@ public class EditCoursesTests extends NavTemplate {
             editCoursePage.enterTrainerEndWeek(numberOfTrainers, trainerEndWeekNum);
             Assertions.assertEquals(trainerEndWeekNum, Integer.parseInt(editCoursePage.getTrainerEndWeek(numberOfTrainers)));
         }
+
+        @ParameterizedTest
+        @Disabled("Development Error: Edit page contains empty trainerIDs but add page does not")
+        @CsvSource(value = {"1, Aayla Secura", "2, Mike Wazowski", "3, JarJar Binks", "4, Kit Fisto",
+                "5, Mace Windu", "6, Ki-adi Mundi", "7, Luminara Unduli", "8, Plo Koon", "9, Eeth Koth", "10, Adi Gallia",
+                "11, Ima-gun Di", "12, Qui-gon Jinn", "13, Obi-Wan Kenobi", "14, Sheev Palpatine"})
+        @DisplayName("Testing get all trainer IDs match the default list of trainers")
+        void testingGetAllTrainerIDs(int i, String trainerID) {
+            String[] trainerIds = editCoursePage.getAllTrainerIDStrings();
+            Assertions.assertEquals(trainerID, trainerIds[i-1]);
+        }
+
+        @Test
+        @Disabled("Development Error: Edit page contains empty trainerIDs but add page does not. Length becomes 30.")
+        @DisplayName("Testing get all trainer IDs has a length of 14")
+        void testingGetAllTrainerIDsLength() {
+            String[] trainerIds = editCoursePage.getAllTrainerIDStrings();
+            Assertions.assertEquals(14, trainerIds.length);
+        }
     }
 
     @Nested
@@ -202,6 +220,21 @@ public class EditCoursesTests extends NavTemplate {
             System.out.println(editCoursePage.getDiscipline());
             Assertions.assertEquals("C#",  editCoursePage.getDiscipline());
         }
+
+        @ParameterizedTest
+        @CsvSource(value = {"0, Java", "1, C#", "2, DevOps", "3, JavaSDET", "4, C#SDET"})
+        @DisplayName("Testing get all course types match the default list of trainers")
+        void testingGetAllTrainerIDs(int i, String discipline) {
+            String[] disciplines = editCoursePage.getAllDisciplines();
+            Assertions.assertEquals(discipline, disciplines[i]);
+        }
+
+        @Test
+        @DisplayName("Testing get all course type has a length of 5")
+        void testingGetAllCourseTypesLength() {
+            String[] disciplines = editCoursePage.getAllDisciplines();
+            Assertions.assertEquals(5, disciplines.length);
+        }
     }
 
     @Nested
@@ -220,6 +253,21 @@ public class EditCoursesTests extends NavTemplate {
             editCoursePage.selectCourseType("Technology");
             Assertions.assertEquals("Technology",  editCoursePage.getCourseType());
         }
+
+        @ParameterizedTest
+        @CsvSource(value = {"0, Business", "1, Technology"})
+        @DisplayName("Testing get all course types match the default list of trainers")
+        void testingGetAllTrainerIDs(int i, String courseType) {
+            String[] courseTypes = editCoursePage.getAllCourseTypes();
+            Assertions.assertEquals(courseType, courseTypes[i]);
+        }
+
+        @Test
+        @DisplayName("Testing get all course type has a length of 2")
+        void testingGetAllCourseTypesLength() {
+            String[] courseTypes = editCoursePage.getAllCourseTypes();
+            Assertions.assertEquals(2, courseTypes.length);
+        }
     }
 
     @Nested
@@ -237,6 +285,21 @@ public class EditCoursesTests extends NavTemplate {
         void testingSelectMethods() {
             editCoursePage.selectLocation("Naboo");
             Assertions.assertEquals("Naboo",  editCoursePage.getLocation());
+        }
+
+        @ParameterizedTest
+        @CsvSource(value = {"0, Hoth", "1, Naboo", "2, Geonosis", "3, Kashyyyk", "4, Coruscant", "5, Mustafar"})
+        @DisplayName("Testing get all course types match the default list of trainers")
+        void testingGetAllTrainerIDs(int i, String location) {
+            String[] locations = editCoursePage.getAllLocations();
+            Assertions.assertEquals(location, locations[i]);
+        }
+
+        @Test
+        @DisplayName("Testing get all course type has a length of 6")
+        void testingGetAllCourseTypesLength() {
+            String[] locations = editCoursePage.getAllLocations();
+            Assertions.assertEquals(6, locations.length);
         }
     }
 
@@ -431,7 +494,7 @@ public class EditCoursesTests extends NavTemplate {
         void isAlertForMaxNumber() {
             editCoursePage.enterNumberOfTrainers(11);
             editCoursePage.clickSubmit();
-            Assertions.assertTrue(editCoursePage.isAlertDisplayed());
+            Assertions.assertTrue(editCoursePage.isMaxOrMinValueReachedAlertDisplayed());
         }
 
         @Test
@@ -439,7 +502,7 @@ public class EditCoursesTests extends NavTemplate {
         void isAlertForMinNumber() {
             editCoursePage.enterNumberOfTrainers(0);
             editCoursePage.clickSubmit();
-            Assertions.assertTrue(editCoursePage.isAlertDisplayed());
+            Assertions.assertTrue(editCoursePage.isMaxOrMinValueReachedAlertDisplayed());
         }
     }
 
