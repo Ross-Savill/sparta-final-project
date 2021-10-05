@@ -2,6 +2,7 @@ package com.spartaglobal.finalweek.pages.traineePages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
 import com.spartaglobal.finalweek.pages.NavTemplate;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,7 +18,7 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
 
     @FindBy(id = "traineeId")
     WebElement traineeId;
-    @FindBy(id = "qualityGateStatus")
+    @FindBy(id = "qualitygateStatus")
     WebElement qualityGateStatus;
     @FindBy(id = "trainerId1")
     WebElement trainerOneId;
@@ -29,16 +30,13 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
     WebElement trainerTwoFeedback;
     @FindBy(id = "date")
     WebElement date;
-    @FindBy(id = "btn-primary")
+    @FindBy(className = "btn-primary")
     WebElement submitButton;
 
 
     private Select qualityGateDropdown = new Select(qualityGateStatus);
     private Select trainer1 = new Select(trainerOneId);
-    private Select trainer1feedback = new Select(trainerOneFeedback);
     private Select trainer2 = new Select(qualityGateStatus);
-    private Select trainer2feedback = new Select(trainerTwoFeedback);
-    private Select formDate = new Select(date);
 
     public AddQualityGatePage() {
         PageFactory.initElements(webDriver, this);
@@ -55,7 +53,8 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
     }
 
     public int getTraineeId() {
-        return Integer.parseInt(traineeId.getText());
+
+        return Integer.parseInt(traineeId.getAttribute("value"));
     }
 
     public void setQualityGateStatus(String qualityGateStatusValue) {
@@ -72,7 +71,7 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
     }
 
     public String getQualityGateStatus() {
-        return qualityGateStatus.getText();
+        return qualityGateStatus.getAttribute("value");
     }
 
     public void setTrainerOneId(WebElement Id) {
@@ -81,12 +80,12 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
     }
 
     public WebElement getTrainerOneId() {
-        return trainerOneId;
+        return trainer1.getFirstSelectedOption();
+
     }
 
-    public void enterTrainerOneFeedback(String traineeOneFeedback) {
-        Select select = new Select(trainerOneId);
-        select.selectByVisibleText(traineeOneFeedback);
+    public void enterTrainerOneFeedback(String traineeOneFeedbackString) {
+        trainerOneFeedback.sendKeys(Keys.chord(traineeOneFeedbackString));
     }
 
     public WebElement getTrainerOneFeedback() {
@@ -99,9 +98,8 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
 
     }
 
-    public void enterTrainerTwoFeedback(String traineeTwoFeedback) {
-        Select select = new Select(trainerTwoId);
-        select.selectByVisibleText(traineeTwoFeedback);
+    public void enterTrainerTwoFeedback(String traineeTwoFeedbackString) {
+        trainerTwoFeedback.sendKeys(Keys.chord(traineeTwoFeedbackString));
     }
 
     public WebElement getTrainerTwoFeedback() {
@@ -110,13 +108,13 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
 
 
     public WebElement getTrainerTwoId() {
-        return trainerTwoId;
+        return trainer2.getFirstSelectedOption();
     }
 
-    public void setDate(LocalDate date0) {
-
+    public void setDate(LocalDate testDate) {
+        date.clear();
         WebElement setDate = date;
-        setDate.sendKeys(Keys.chord("12/12/2040"));
+        setDate.sendKeys(Keys.chord(testDate.toString()));
 
 
     }
@@ -133,22 +131,38 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
 
     public boolean isSubmitSuccessful() {
 
+        getTrainerOneFeedback();
+        getTrainerTwoFeedback();
+        enterTrainerOneFeedback("feedback1");
+        enterTrainerTwoFeedback("feedback2");
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        enterTrainerOneFeedback("feedback1");
+        enterTrainerTwoFeedback("feedback2");
 
-        qualityGateDropdown.getFirstSelectedOption().getText();
-        trainer1.getFirstSelectedOption().getText();
-        trainer1feedback.getFirstSelectedOption().getText();
-        trainer2.getFirstSelectedOption().getText();
-        trainer2feedback.getFirstSelectedOption().getText();
-        formDate.getFirstSelectedOption().getText();
-
+        submitButton.click();
         TraineesPage traineesPage = new TraineesPage();
-        System.out.println(traineesPage.getAllTraineesElements().get(0).getText());
+
+        WebElement scroll = webDriver.findElement(By.tagName("body"));
+            scroll.sendKeys(Keys.ARROW_DOWN);
+            scroll.sendKeys(Keys.ARROW_DOWN);
+            scroll.sendKeys(Keys.ARROW_DOWN);
+//        traineesPage.getq("1");
+        webDriver.findElement(By.id(1+"name")).click();
+
+        if(traineesPage.getQualityGateHistoryDetails("1").get(0).contains( getTrainerOneFeedback().getText())&&
+                traineesPage.getQualityGateHistoryDetails("1").get(0).contains(getTrainerTwoFeedback().getText())){
+            return true;
+        }
         return false;
 
     }
 
     public boolean isTrainerOneFeedbackEmpty() {
-        if (trainer1feedback.getFirstSelectedOption().getText().isBlank()) {
+        if (trainerOneFeedback.getText().isBlank()) {
             return true;
         }
         return false;
@@ -156,7 +170,7 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
     }
 
     public boolean isTrainerTwoFeedbackEmpty() {
-        if (trainer2feedback.getFirstSelectedOption().getText().isBlank()) {
+        if (trainerTwoFeedback.getText().isBlank()) {
             return true;
         }
         return false;
@@ -174,11 +188,11 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
     }
 
     public boolean isDateValid() {
-        return isValid(formDate.getFirstSelectedOption().getText());
+        return isValid(date.getText());
     }
 
     public boolean isDateEmpty() {
-        if (formDate.getFirstSelectedOption().getText().isBlank()) {
+        if (date.getText().isBlank()) {
 
             return true;
         }
@@ -186,17 +200,17 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
     }
 
     public boolean areAllFieldsValid() {
-        return isTrainerOneFeedbackEmpty()&&isTrainerTwoFeedbackEmpty()&&isDateValid()&&isDateEmpty();
+        return isTrainerOneFeedbackEmpty() && isTrainerTwoFeedbackEmpty() && isDateValid() && isDateEmpty();
 
     }
 
     public boolean areAllFieldsEmpty() {
         if (qualityGateDropdown.getFirstSelectedOption().getText().isBlank() &&
                 trainer1.getFirstSelectedOption().getText().isBlank() &&
-                trainer1feedback.getFirstSelectedOption().getText().isBlank() &&
+                trainerOneFeedback.getText().isBlank() &&
                 trainer2.getFirstSelectedOption().getText().isBlank() &&
-                trainer2feedback.getFirstSelectedOption().getText().isBlank() &&
-                formDate.getFirstSelectedOption().getText().isBlank()) {
+                trainerTwoFeedback.getText().isBlank() &&
+                date.getText().isBlank()) {
             return true;
         }
         return false;
