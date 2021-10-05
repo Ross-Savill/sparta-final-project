@@ -61,6 +61,7 @@ public class AccountPageTests extends NavTemplate {
     @Test
     @DisplayName("Test to see if Submit button is Clickable")
     void isSubmitButtonClickable(){
+
         Assertions.assertTrue(accountPage.submitSuccessful());
     }
 

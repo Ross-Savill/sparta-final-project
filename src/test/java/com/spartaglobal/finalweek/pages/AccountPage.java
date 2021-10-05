@@ -2,6 +2,7 @@ package com.spartaglobal.finalweek.pages;
 
 import com.spartaglobal.finalweek.base.TestBase;
 import com.spartaglobal.finalweek.interfaces.URLable;
+import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -42,7 +43,7 @@ public class AccountPage implements URLable {
 
     public boolean submitSuccessful(){
         submitButton.click();
-        return submitButton.isEnabled();
+        return webDriver.getCurrentUrl().equals(PropertiesLoader.getProperties().getProperty("courseInfoPageURL"));
     }
 
     public boolean isErrorMessageDisplayed(String password, String differentPassword){
