@@ -46,9 +46,9 @@ public class AddLocationPageTests {
     @Test
     @DisplayName("Test entering a number of rooms and getting the value in the field")
     void testEnteringNumberOfRoomsAndGettingValueInField() {
-        int numberOfRoomsToEnter = 6;
+        String numberOfRoomsToEnter = "6";
         addLocationPage.enterNumberOfRooms(numberOfRoomsToEnter);
-        Assertions.assertEquals(numberOfRoomsToEnter, addLocationPage.getNumberOfRooms());
+        Assertions.assertEquals(numberOfRoomsToEnter, Integer.toString(addLocationPage.getNumberOfRooms()));
     }
 
 }
@@ -56,7 +56,7 @@ public class AddLocationPageTests {
     @Test
     @DisplayName("Test submit is successful")
     void testSubmitIsSuccessful(){
-        Assertions.assertTrue(addLocationPage.isSubmitSuccessful("Do I get added?",10));
+        Assertions.assertTrue(addLocationPage.isSubmitSuccessful("Do I get added?","10"));
     }
 
 /*    @Nested

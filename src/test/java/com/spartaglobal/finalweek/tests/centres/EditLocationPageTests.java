@@ -23,7 +23,7 @@ public class EditLocationPageTests {
     private CentresPage centresPage;
     private AddLocationPage addLocationPage;
     private final String centreName = "Naboo";
-    private final int centreNumOfRooms = 5;
+    private final String centreNumOfRooms = "5";
     private final String centreUrl = "http://localhost:8080/centres";
     private final String dummyCentreName = "You won't be able to delete me muhaha";
 
@@ -124,7 +124,7 @@ public class EditLocationPageTests {
         class updateProcess {
 
             String updatedName = "ChangedName";
-            int updatedNumOfRooms = 10;
+            String updatedNumOfRooms = "10";
 
             @Test
             @DisplayName("Test update button goes to CentresPage on success")
@@ -142,14 +142,14 @@ public class EditLocationPageTests {
             @Test
             @DisplayName("Test updated rooms is on centres page")
             void testUpdatedRoomsIsOnCentresPage() {
-                editLocationPage.enterNumOfRooms(10);
+                editLocationPage.enterNumOfRooms("10");
                 centresPage = editLocationPage.goToCentresPage();
                 Assertions.assertTrue(editLocationPage.isUpdateSuccessful(centreName, updatedNumOfRooms));
             }
             @Test
             @DisplayName("Test updated fields are on centres page")
             void testUpdatedFieldsAreOnCentresPage() {
-                editLocationPage.enterNumOfRooms(10);
+                editLocationPage.enterNumOfRooms("10");
                 editLocationPage.enterLocationName("ChangedName");
                 centresPage = editLocationPage.goToCentresPage();
                 Assertions.assertTrue(editLocationPage.isUpdateSuccessful(updatedName,updatedNumOfRooms));
