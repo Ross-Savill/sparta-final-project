@@ -153,8 +153,8 @@ public class CentresPage extends NavTemplate implements URLable {
         this.clickButton(xOffset, yOffset, deleteButton);
     }
 
-    public boolean doesConfirmationBoxAppearOnDelete(String locationName) {
-        this.clickDeleteCentreButton(locationName);
+    public boolean doesConfirmationBoxAppearOnDelete() {
+        //this.clickDeleteCentreButton(locationName);
 
         try{
             webDriver.switchTo().alert();

@@ -7,6 +7,7 @@ import com.spartaglobal.finalweek.pages.centresPages.AddLocationPage;
 import com.spartaglobal.finalweek.pages.centresPages.CentresPage;
 import com.spartaglobal.finalweek.pages.centresPages.EditLocationPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -27,6 +28,8 @@ public class CentresPageTests {
     @BeforeEach
     public void setup() {
         TestBase.initialisation();
+        ResetData.resetData();
+
         LoginPage loginPage = new LoginPage();
 
         centresPage = loginPage.login(
@@ -211,7 +214,8 @@ public class CentresPageTests {
         @Test
         @DisplayName("Test confirmation box appears on delete")
         void testConfirmationBoxAppears() {
-            Assertions.assertTrue(centresPage.doesConfirmationBoxAppearOnDelete(dummyCentreName));
+            centresPage.clickDeleteCentreButton(dummyCentreName);
+            Assertions.assertTrue(centresPage.doesConfirmationBoxAppearOnDelete());
         }
 
         @Test
