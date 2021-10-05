@@ -192,7 +192,6 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
 
     public boolean isDateEmpty() {
         if (date.getText().isBlank()) {
-
             return true;
         }
         return false;

@@ -67,7 +67,6 @@ public class AddQualityGateTests extends NavTemplate {
     @ValueSource(strings = {"Failed", "Failed Needs help", "Passed"})
     void setQualityGateStatus(String string) {
         addQualityGatePage.setQualityGateStatus(string);
-
         Assertions.assertEquals(string, addQualityGatePage.getQualityGateStatus());
 
     }
