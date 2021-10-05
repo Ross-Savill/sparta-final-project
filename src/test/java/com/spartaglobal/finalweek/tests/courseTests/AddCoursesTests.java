@@ -36,7 +36,7 @@ public class AddCoursesTests{
         coursePage = navTemplate.goToCoursesPage();
         coursePage = new CoursePage();
 
-        //TODO: Delete all courses on courses page.
+        //TODO: Reset Database
 
         addCoursePage = coursePage.clickAddCourseButton();
         addCoursePage = new AddCoursePage();
@@ -170,6 +170,23 @@ public class AddCoursesTests{
             addCoursePage.enterTrainerEndWeek(numberOfTrainers, trainerEndWeekNum);
             Assertions.assertEquals(trainerEndWeekNum, Integer.parseInt(addCoursePage.getTrainerEndWeek(numberOfTrainers)));
         }
+
+        @ParameterizedTest
+        @CsvSource(value = {"1, Aayla Secura", "2, Mike Wazowski", "3, JarJar Binks", "4, Kit Fisto",
+                "5, Mace Windu", "6, Ki-adi Mundi", "7, Luminara Unduli", "8, Plo Koon", "9, Eeth Koth", "10, Adi Gallia",
+                "11, Ima-gun Di", "12, Qui-gon Jinn", "13, Obi-Wan Kenobi", "14, Sheev Palpatine"})
+        @DisplayName("Testing get all trainer IDs match the default list of trainers")
+        void testingGetAllTrainerIDs(int i, String trainerID) {
+            String[] trainerIds = addCoursePage.getAllTrainerIDStrings();
+            Assertions.assertEquals(trainerID, trainerIds[i-1]);
+        }
+
+        @Test
+        @DisplayName("Testing get all trainer IDs has a length of 14")
+        void testingGetAllTrainerIDsLength() {
+            String[] trainerIds = addCoursePage.getAllTrainerIDStrings();
+            Assertions.assertEquals(14, trainerIds.length);
+        }
     }
 
     @Nested
@@ -189,6 +206,21 @@ public class AddCoursesTests{
             System.out.println(addCoursePage.getDiscipline());
             Assertions.assertEquals("DevOps",  addCoursePage.getDiscipline());
         }
+
+        @ParameterizedTest
+        @CsvSource(value = {"0, Java", "1, C#", "2, DevOps", "3, JavaSDET", "4, C#SDET"})
+        @DisplayName("Testing get all course types match the default list of trainers")
+        void testingGetAllTrainerIDs(int i, String discipline) {
+            String[] disciplines = addCoursePage.getAllDisciplines();
+            Assertions.assertEquals(discipline, disciplines[i]);
+        }
+
+        @Test
+        @DisplayName("Testing get all course type has a length of 5")
+        void testingGetAllCourseTypesLength() {
+            String[] disciplines = addCoursePage.getAllDisciplines();
+            Assertions.assertEquals(5, disciplines.length);
+        }
     }
 
     @Nested
@@ -207,6 +239,21 @@ public class AddCoursesTests{
             addCoursePage.selectCourseType("Technology");
             Assertions.assertEquals("Technology",  addCoursePage.getCourseType());
         }
+
+        @ParameterizedTest
+        @CsvSource(value = {"0, Business", "1, Technology"})
+        @DisplayName("Testing get all course types match the default list of trainers")
+        void testingGetAllTrainerIDs(int i, String courseType) {
+            String[] courseTypes = addCoursePage.getAllCourseTypes();
+            Assertions.assertEquals(courseType, courseTypes[i]);
+        }
+
+        @Test
+        @DisplayName("Testing get all course type has a length of 2")
+        void testingGetAllCourseTypesLength() {
+            String[] courseTypes = addCoursePage.getAllCourseTypes();
+            Assertions.assertEquals(2, courseTypes.length);
+        }
     }
 
     @Nested
@@ -224,6 +271,21 @@ public class AddCoursesTests{
         void testingSelectMethods() {
             addCoursePage.selectLocation("Coruscant");
             Assertions.assertEquals("Coruscant",  addCoursePage.getLocation());
+        }
+
+        @ParameterizedTest
+        @CsvSource(value = {"0, Hoth", "1, Naboo", "2, Geonosis", "3, Kashyyyk", "4, Coruscant", "5, Mustafar"})
+        @DisplayName("Testing get all course types match the default list of trainers")
+        void testingGetAllTrainerIDs(int i, String location) {
+            String[] locations = addCoursePage.getAllLocations();
+            Assertions.assertEquals(location, locations[i]);
+        }
+
+        @Test
+        @DisplayName("Testing get all course type has a length of 6")
+        void testingGetAllCourseTypesLength() {
+            String[] locations = addCoursePage.getAllLocations();
+            Assertions.assertEquals(6, locations.length);
         }
     }
 
@@ -393,7 +455,7 @@ public class AddCoursesTests{
         }
     }
 
-    //TODO(2): Dependant on database having maximum of 1 course.
+    //TODO(2): Dependant on database having maximum of 1 course. Reset Database.
     /*@Nested
     @DisplayName("EmptyErrorMessage warning test")
     class EmptyWarningTests {
@@ -427,11 +489,27 @@ public class AddCoursesTests{
     class ValidEntriesTest {
 
         @Test
+        @DisplayName("Test Max value reached alert message")
+        void testMaxValueReachedAlertMessage() {
+            addCoursePage.enterNumberOfTrainers(11);
+            addCoursePage.clickSubmit();
+            Assertions.assertEquals("Sorry, the maximum value was reached", addCoursePage.getMaxOrMinValueReachedAlertMessage());
+        }
+
+        @Test
+        @DisplayName("Test Min value reached alert message")
+        void testMinValueReachedAlertMessage() {
+            addCoursePage.enterNumberOfTrainers(0);
+            addCoursePage.clickSubmit();
+            Assertions.assertEquals("Sorry, the minimum value was reached", addCoursePage.getMaxOrMinValueReachedAlertMessage());
+        }
+
+        @Test
         @DisplayName("Max value reached alert for above max number of trainers entry")
         void isAlertForMaxNumber() {
             addCoursePage.enterNumberOfTrainers(11);
             addCoursePage.clickSubmit();
-            Assertions.assertTrue(addCoursePage.isAlertDisplayed());
+            Assertions.assertTrue(addCoursePage.isMaxOrMinValueReachedAlertDisplayed());
         }
 
         @Test
@@ -439,7 +517,7 @@ public class AddCoursesTests{
         void isAlertForMinNumber() {
             addCoursePage.enterNumberOfTrainers(0);
             addCoursePage.clickSubmit();
-            Assertions.assertTrue(addCoursePage.isAlertDisplayed());
+            Assertions.assertTrue(addCoursePage.isMaxOrMinValueReachedAlertDisplayed());
         }
     }
 

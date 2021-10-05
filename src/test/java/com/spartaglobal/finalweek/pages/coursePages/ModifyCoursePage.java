@@ -122,6 +122,14 @@ public class ModifyCoursePage extends NavTemplate implements URLable {
         return selector.getFirstSelectedOption().getText();
     }
 
+    public String[] getAllTrainerIDStrings(){
+        return getTrainerIDElement(1)
+            .getText()
+            .replaceAll("  ", "")
+            .replaceAll("\n", ",")
+            .split(",");
+    }
+
     public String getTrainerStartWeek(int row){
         return getTrainerStartWeekElement(row).getAttribute("value");
     }
@@ -135,9 +143,25 @@ public class ModifyCoursePage extends NavTemplate implements URLable {
         return selector.getFirstSelectedOption().getText();
     }
 
+    public String[] getAllDisciplines(){
+        return getDisciplineElement()
+            .getText()
+            .replaceAll("  ", "")
+            .replaceAll("\n", ",")
+            .split(",");
+    }
+
     public String getCourseType(){
         Select selector = new Select(getCourseTypeElement());
         return selector.getFirstSelectedOption().getText();
+    }
+
+    public String[] getAllCourseTypes(){
+        return getCourseTypeElement()
+            .getText()
+            .replaceAll("  ", "")
+            .replaceAll("\n", ",")
+            .split(",");
     }
 
     public String getLocation(){
@@ -145,8 +169,22 @@ public class ModifyCoursePage extends NavTemplate implements URLable {
         return selector.getFirstSelectedOption().getText();
     }
 
+    public String[] getAllLocations(){
+        return getLocationElement()
+            .getText()
+            .replaceAll("  ", "")
+            .replaceAll("\n", ",")
+            .split(",");
+    }
+
     public String getStartDate(){
         return getStartDateElement().getAttribute("value");
+    }
+
+    public String getMaxOrMinValueReachedAlertMessage(){
+        Alert alert = new WebDriverWait(webDriver, 1)
+                .until(ExpectedConditions.alertIsPresent());
+        return  alert.getText();
     }
 
     public void enterCourseName(String courseName){
@@ -254,7 +292,7 @@ public class ModifyCoursePage extends NavTemplate implements URLable {
                 Integer.parseInt(getTrainerEndWeek(row)) >= MIN_TRAINER_START_END_WEEK;
     }
 
-    public boolean isAlertDisplayed(){
+    public boolean isMaxOrMinValueReachedAlertDisplayed(){
         Alert alert = new WebDriverWait(webDriver, 1)
                 .until(ExpectedConditions.alertIsPresent());
         return  alert.getText().equals("Sorry, the maximum value was reached")||
