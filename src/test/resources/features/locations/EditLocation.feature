@@ -33,7 +33,7 @@ Feature: AS A user I WANT to edit locations SO THAT we can expand the business
       Then I should receive an error about the value being non numeric on the edit page
       And The list of locations should not update
 
-      Scenario: I delete a location from the edit location page
-        When I click delete on the Delete button on the edit page
-        Then I should be returned to the centres page
-        And The list of locations should no longer have the centre I want to delete
+    Scenario: I delete a location from the edit location page
+      When I click delete on the Delete button on the edit page
+      Then I should be returned to the centres page
+      And The list of locations should no longer have the centre I want to delete

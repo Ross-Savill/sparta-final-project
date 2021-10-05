@@ -198,7 +198,7 @@ public class CentresPageTests {
     @DisplayName("Deleting centres")
     class delete {
         private final String dummyCentreName = "Delete Me!";
-        private final int dummyCentreRooms = 8;
+        private final String dummyCentreRooms = "8";
         AddLocationPage addLocationPage;
 
         @BeforeEach

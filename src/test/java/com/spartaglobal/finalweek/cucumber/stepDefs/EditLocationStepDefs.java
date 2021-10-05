@@ -1,4 +1,4 @@
-package stepdefs;
+package com.spartaglobal.finalweek.cucumber.stepDefs;
 
 import com.spartaglobal.finalweek.base.TestBase;
 import com.spartaglobal.finalweek.pages.LoginPage;
@@ -20,8 +20,8 @@ public class EditLocationStepDefs {
     private EditLocationPage editLocationPage;
     private AddLocationPage addLocationPage;
     private String changedName = "changedName";
-    private int changedNumOfRooms = 25;
-    private int testRooms = 101;
+    private String changedNumOfRooms = "25";
+    private String testRooms = "101";
 
     @When("I click on an Edit Location button for the {word} location")
     public void iClickOnAnEditLocationButtonForTheStringLocation(String locationName) {
@@ -51,16 +51,13 @@ public class EditLocationStepDefs {
 
     @Then("The information on the table should be updated to reflect the information I entered")
     public void theInformationOnTheTableShouldBeUpdatedToReflectTheInformationIEntered() {
-
         Assertions.assertTrue(editLocationPage.isUpdateSuccessful(changedName, changedNumOfRooms));
-
     }
 
     @When("I remove the locations name")
     public void iRemoveTheLocationsName() {
-
-        editLocationPage.enterLocationName("");
-
+        changedName = "";
+        editLocationPage.clearLocationNameTextFieldContents();
     }
 
     @Then("I should receive an error on the Edit Location page")
@@ -75,7 +72,7 @@ public class EditLocationStepDefs {
 
     @When("I remove the number of rooms")
     public void iRemoveTheNumberOfRooms() {
-        editLocationPage.enterNumOfRooms(Integer.parseInt(""));
+        editLocationPage.clearNumOfRoomsFieldContents();
     }
 
     @When("I enter a non numeric value in the rooms field")
@@ -99,7 +96,7 @@ public class EditLocationStepDefs {
     }
 
     @And("The list of locations should no longer have the centre I want to delete")
-    public void theListOfLocationsShouldNoLongerHaveTheCentreIWantToDelete(String name, int rooms) {
+    public void theListOfLocationsShouldNoLongerHaveTheCentreIWantToDelete(String name, String rooms) {
         editLocationPage.isDeleteSuccessful(name, rooms);
     }
 
