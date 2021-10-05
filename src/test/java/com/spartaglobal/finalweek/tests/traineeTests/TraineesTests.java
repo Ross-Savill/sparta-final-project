@@ -505,7 +505,6 @@ public class TraineesTests extends NavTemplate {
         @DisplayName("confirm Delete Test")
         void confirmDeleteTest() {
             Assertions.assertTrue(traineesPage.confirmDelete());
-
         }
 
         @Test
