@@ -205,6 +205,7 @@ public class TraineesPage implements URLable {
     }
 
     public List<String> getQualityGateHistoryDetails(String rowID) {
+
         WebElement traineesTable;
         WebElement tableBody;
         List<WebElement> allTraineeRows;
