@@ -56,8 +56,8 @@ public class EditTrainersPage extends NavTemplate implements URLable {
     }
 
     public void setColour(){
-        ((JavascriptExecutor) webDriver).executeScript("document.getElementById('trainer-hex').value='#FFEEXX';");
-        submitTrainer();
+        ((JavascriptExecutor) webDriver).executeScript("document.getElementById('trainer-hex').value='#FFEECC';");
+
     }
 
     public void submitTrainer()
