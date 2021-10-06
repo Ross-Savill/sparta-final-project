@@ -36,7 +36,7 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
 
     private Select qualityGateDropdown = new Select(qualityGateStatus);
     private Select trainer1 = new Select(trainerOneId);
-    private Select trainer2 = new Select(qualityGateStatus);
+    private Select trainer2 = new Select(trainerTwoId);
 
     public AddQualityGatePage() {
         PageFactory.initElements(webDriver, this);
@@ -185,7 +185,7 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
     }
 
     private boolean isValid(String dateStr) {
-        DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setLenient(false);
         try {
             sdf.parse(dateStr);
@@ -195,8 +195,8 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
         return true;
     }
 
-    public boolean isDateValid() {
-        return isValid(date.getText());
+    public boolean isDateValid(String dateStr) {
+        return isValid(dateStr);
     }
 
     public boolean isDateEmpty() {
@@ -207,7 +207,7 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
     }
 
     public boolean areAllFieldsValid() {
-        return isTrainerOneFeedbackEmpty() && isTrainerTwoFeedbackEmpty() && isDateValid() && isDateEmpty();
+        return isTrainerOneFeedbackEmpty() && isTrainerTwoFeedbackEmpty() && isDateValid(getDate().getAttribute("value")) && isDateEmpty();
 
     }
 
