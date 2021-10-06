@@ -1,6 +1,7 @@
 package com.spartaglobal.finalweek.pages.traineePages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
+import com.spartaglobal.finalweek.pages.NavTemplate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
@@ -16,7 +17,7 @@ import java.util.regex.Pattern;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
-public class TraineesPage implements URLable {
+public class TraineesPage extends NavTemplate implements URLable {
 
     @FindBy(linkText = "Add Trainee") WebElement addTraineeButton;
     @FindBy(className = "accordion-button") WebElement courseFilterDropDownButton;
@@ -329,6 +330,18 @@ public class TraineesPage implements URLable {
 
     public boolean isQualityGateStatusFailedNeedsHelp(String qgStatus) {
         return qgStatus.equals("Failed-Needs Help");
+    }
+
+    public boolean isTraineePresent(String firstName, String lastName) {
+        List<WebElement> allTraineeRows = getAllTraineesElements();
+        for(int i = 0; i < allTraineeRows.size(); i++) {
+            String firstNameInRow = allTraineeRows.get(i).findElement(By.id(i+"name")).getText();
+            String lastNameInRow = allTraineeRows.get(i).findElement(By.id(i+"surname")).getText();
+            if(firstName.equals(firstNameInRow) && lastName.equals(lastNameInRow)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isTraineeFirstNameValid(String rowID) {

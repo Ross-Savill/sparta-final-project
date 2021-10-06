@@ -493,6 +493,22 @@ public class TraineesTests extends NavTemplate {
         Assertions.assertTrue(traineesPage.areAllFieldsPassedOnToEditTraineesPage());
     }
 
+    @Test
+    @DisplayName("isTraineePresentTest")
+    void isTraineePresentTest() {
+        String presentFirstName = traineesPage.getTraineeFirstName("0row");
+        String presentLastName = traineesPage.getTraineeLastName("0row");
+        Assertions.assertTrue(traineesPage.isTraineePresent(presentFirstName, presentLastName));
+    }
+
+    @Test
+    @DisplayName("isTraineeNotPresentTest")
+    void isTraineeNotPresentTest() {
+        String presentFirstName = "NotFound";
+        String presentLastName = "NotHere";
+        Assertions.assertFalse(traineesPage.isTraineePresent(presentFirstName, presentLastName));
+    }
+
     @Nested
     @DisplayName("Trainee Page Delete Tests")
     class traineePageDeleteTests {
