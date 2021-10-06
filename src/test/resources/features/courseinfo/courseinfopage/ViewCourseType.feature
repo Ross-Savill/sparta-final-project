@@ -1,3 +1,4 @@
+@courseType
 Feature: AS A user, I WANT to be able to see Course Types SO THAT I have all the required information
   Background:
     Given I am using dummy data

@@ -18,7 +18,6 @@ public class CourseInfoPage extends NavTemplate implements URLable {
     @FindBy (id = "CourseTypePageLink") WebElement addCourseTypeButton;
     @FindBy (id = "disciplinePageLink") WebElement addDisciplineButton;
 
-
     public CourseInfoPage() {
         PageFactory.initElements(webDriver, this);
     }

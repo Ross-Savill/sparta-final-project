@@ -1,3 +1,4 @@
+@courseType
 Feature: AS A User, I WANT to be able to delete disciplines SO THAT I can remove unwanted disciplines
   Background:
   Background:
