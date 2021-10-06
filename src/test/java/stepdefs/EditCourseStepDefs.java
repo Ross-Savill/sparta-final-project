@@ -181,4 +181,9 @@ public class EditCourseStepDefs {
     public void iFillTheStartDate() {
         editCoursesPage.enterStartDate(LocalDate.now());
     }
+
+    @When("I clear the course name text field")
+    public void iClearTheCourseNameTextField() {
+        editCoursesPage.getCourseNameElement().clear();
+    }
 }

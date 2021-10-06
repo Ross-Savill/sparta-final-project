@@ -2,7 +2,8 @@
 Feature:  AS A user I WANT to be able to edit a new course SO THAT we can organise new courses for trainees
 
   Background:
-    Given I am starting the process
+    Given I am working with dummy data
+    And I am starting the process
     And I am logged in
     And I go to the course page
     And I go to the edit course page
@@ -56,6 +57,7 @@ Feature:  AS A user I WANT to be able to edit a new course SO THAT we can organi
       |"JarJar Binks"|"Test Course"|
 
   Scenario: User leaves the course name blank on the edit course page
+    When I clear the course name text field
     Then I should be prevented from submitting the form on the edit course page
       #TODO: Unable to get warning message from course name text field.
       #And I should receive a message warning me that the Course Name Text Field has been left blank

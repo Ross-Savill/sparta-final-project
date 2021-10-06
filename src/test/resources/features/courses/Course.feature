@@ -3,7 +3,8 @@ Feature: AS A user I WANT to be able to edit a new course SO THAT we can organis
   Transfer course info to edit course page
 
   Background:
-    Given I am starting the process
+    Given I am working with dummy data
+    And I am starting the process
     And I am logged in
     And I go to the course page
 
