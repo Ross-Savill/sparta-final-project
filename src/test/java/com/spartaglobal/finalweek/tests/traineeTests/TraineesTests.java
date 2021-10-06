@@ -40,7 +40,7 @@ public class TraineesTests extends NavTemplate {
         traineesPage = new TraineesPage();
         loginPage.login(username, password);
         PageFactory.initElements(webDriver, schedulerPage);
-        NavTemplate navTemplate = new NavTemplate();
+        navTemplate = new NavTemplate();
         traineesPage = navTemplate.goToTraineesPage();
     }
 
@@ -269,8 +269,6 @@ public class TraineesTests extends NavTemplate {
         @DisplayName("getCoursesElementsTest")
         void getCoursesElementsTest() {
             boolean allCoursesPresent = true;
-            navTemplate = new NavTemplate();
-            coursePage = new CoursePage();
             List<WebElement> traineePageCourses = traineesPage.getCoursesElements();
             List<String> traineePageCourseStrings = new ArrayList<>();
             for (WebElement traineeCourseCopy : traineePageCourses) {
@@ -278,7 +276,6 @@ public class TraineesTests extends NavTemplate {
             }
             List<String> coursesPageCourses = new ArrayList<>();
             navTemplate.goToCoursesPage();
-            PageFactory.initElements(webDriver, coursePage);
 
             WebElement courseTableBody = webDriver.findElement(By.tagName("tbody"));
             List<WebElement> courseTableRows = courseTableBody.findElements(By.tagName("tr"));
@@ -299,12 +296,9 @@ public class TraineesTests extends NavTemplate {
         @DisplayName("getCoursesStringsTest")
         void getCoursesStringsTest() {
             boolean allCoursesPresent = true;
-            navTemplate = new NavTemplate();
-            coursePage = new CoursePage();
             List<String> traineePageCourseStrings = traineesPage.getCoursesStrings();
             List<String> coursesPageCourses = new ArrayList<>();
             navTemplate.goToCoursesPage();
-            PageFactory.initElements(webDriver, coursePage);
 
             WebElement courseTableBody = webDriver.findElement(By.tagName("tbody"));
             List<WebElement> courseTableRows = courseTableBody.findElements(By.tagName("tr"));

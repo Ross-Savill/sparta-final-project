@@ -77,7 +77,7 @@ public class TraineesPage extends NavTemplate implements URLable {
         List<String> allFirstNameStrings = new ArrayList<>();
         List<WebElement> allTraineeRows = getAllTraineesElements();
 
-        for(int i = 0; i < allTraineeRows.size(); i++) {
+        for(int i = 0; i < allTraineeRows.size() - 1; i++) {
             WebElement firstNameString = allTraineeRows.get(i).findElement(By.id(i+"name"));
             allFirstNameStrings.add(firstNameString.getText());
         }
@@ -88,7 +88,7 @@ public class TraineesPage extends NavTemplate implements URLable {
         List<String> allLastNameStrings = new ArrayList<>();
         List<WebElement> allTraineeRows = getAllTraineesElements();
 
-        for(int i = 0; i < allTraineeRows.size(); i++) {
+        for(int i = 0; i < allTraineeRows.size() - 1; i++) {
             WebElement firstNameString = allTraineeRows.get(i).findElement(By.id(i+"surname"));
             allLastNameStrings.add(firstNameString.getText());
         }
@@ -99,7 +99,7 @@ public class TraineesPage extends NavTemplate implements URLable {
         List<String> allQualityGateStrings = new ArrayList<>();
         List<WebElement> allTraineeRows = getAllTraineesElements();
 
-        for(int i = 0; i < allTraineeRows.size(); i++) {
+        for(int i = 0; i < allTraineeRows.size() - 1; i++) {
             WebElement qualityGateString = allTraineeRows.get(i).findElement(By.id(i+"qgs"));
             allQualityGateStrings.add(qualityGateString.getText());
         }
