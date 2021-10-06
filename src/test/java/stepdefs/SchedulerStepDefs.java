@@ -27,7 +27,7 @@ public class SchedulerStepDefs {
         Assertions.assertTrue(schedulerPage.isClickablefirstGetCourse() && schedulerPage.isFirstCourseDisplayed());
     }
 
-    @After
+    @After("@scheduler")
     public void tearDown(){
         webDriver.quit();
     }
