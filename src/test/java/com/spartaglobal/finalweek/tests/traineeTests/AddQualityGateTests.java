@@ -153,6 +153,7 @@ public class AddQualityGateTests extends NavTemplate {
                 , "Kit Fisto", "Mace Windu", "Ki-adi Mundi", "Luminara Unduli", "Plo Koon", "Eeth Koth", "Adi Gallia"
                 , "Ima-gun Di", "Qui-gon Jinn", "Obi-Wan Kenobi", "Sheev Palpatine"};
         ArrayList<String> trainerIds = new ArrayList<>(Arrays.asList(arr));
+        System.out.println(addQualityGatePage.getTrainerTwoId().getText());
         Assertions.assertTrue(trainerIds.contains(addQualityGatePage.getTrainerTwoId().getText()));
     }
 
@@ -187,7 +188,7 @@ public class AddQualityGateTests extends NavTemplate {
     @Test
     @DisplayName("is Trainer One Feedback Empty")
     void isTrainerOneFeedbackEmpty() {
-        Assertions.assertFalse(addQualityGatePage.isTrainerOneFeedbackEmpty());
+        Assertions.assertTrue(addQualityGatePage.isTrainerOneFeedbackEmpty());
     }
 
 
@@ -202,7 +203,7 @@ public class AddQualityGateTests extends NavTemplate {
     @DisplayName("is Date Valid")
     void isDateValid() {
         addQualityGatePage.setDate(LocalDate.now());
-        Assertions.assertTrue(addQualityGatePage.isDateValid());
+        Assertions.assertTrue(addQualityGatePage.isDateValid(addQualityGatePage.getDate().getAttribute("value").trim()));
 
     }
 

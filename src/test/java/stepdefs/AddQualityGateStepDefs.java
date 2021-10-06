@@ -3,12 +3,14 @@
 
 package stepdefs;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.spartaglobal.finalweek.pages.traineePages.AddQualityGatePage;
 import com.spartaglobal.finalweek.pages.traineePages.TraineesPage;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.java.lu.a;
 import org.junit.jupiter.api.Assertions;
 
 import java.time.LocalDate;
@@ -75,7 +77,21 @@ public class AddQualityGateStepDefs {
 
     @Then("check trainer one's Feedback has been entered correctly")
     public void checkTrainerOneSFeedbackHasBeenEnteredCorrectly() {
+
         Assertions.assertEquals("feedback123", addQualityGatePage.getTrainerOneFeedback().getAttribute("value"));
+
+    }
+
+    @Then("check trainer one's Feedback is empty")
+    public void checkTrainerOneSFeedbackIsEmpty() {
+
+        Assertions.assertEquals("", addQualityGatePage.getTrainerOneFeedback().getAttribute("value"));
+
+    }
+    @Then("check trainer two's Feedback is empty")
+    public void checkTrainerTwoSFeedbackIsEmpty() {
+
+        Assertions.assertEquals("", addQualityGatePage.getTrainerOneFeedback().getAttribute("value"));
 
     }
 
@@ -110,7 +126,7 @@ public class AddQualityGateStepDefs {
 
     @Then("check if Date is valid")
     public void checkIfDateIsValid() {
-        Assertions.assertFalse(addQualityGatePage.isDateValid());
+        Assertions.assertFalse(addQualityGatePage.isDateValid(addQualityGatePage.getDate().getAttribute("value")));
     }
 
     @Then("check if Date is empty")
