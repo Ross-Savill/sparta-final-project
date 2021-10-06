@@ -37,9 +37,9 @@ public class EditDisciplinePage extends NavTemplate implements URLable {
         return webDriver.getCurrentUrl().equals(PropertiesLoader.getProperties().getProperty("courseInfoPageURL"));
     }
 
-//    public CourseInfoPage goToCourseInfoPage() {
-//
-//    }
+    public CourseInfoPage goToCourseInfoPage() {
+        return new CourseInfoPage();
+    }
 
     public void clickRemove() {
         removeButton.click();
@@ -70,17 +70,17 @@ public class EditDisciplinePage extends NavTemplate implements URLable {
         return(isDisciplineNameValid()&&isDisciplineDurationValid());
     }
 
-//    public boolean isDisciplineNameEmpty() {
-//
-//    }
+    public boolean isDisciplineNameEmpty() {
+        return disciplineNameTextBox.getText().isEmpty();
+    }
 
-//    public boolean isDisciplineDurationEmpty() {
-//
-//    }
+    public boolean isDisciplineDurationEmpty() {
+        return durationTextBox.getText().isEmpty();
+    }
 
-//    public boolean areAllFieldsEmpty() {
-//
-//    }
+    public boolean areAllFieldsEmpty() {
+        return isDisciplineNameEmpty()&&isDisciplineDurationEmpty();
+    }
 
     public String getDisciplineNameTextField() {
         return disciplineNameTextBox.getAttribute("value");
