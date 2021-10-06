@@ -1,6 +1,7 @@
 package stepdefs.courseinfopage;
 
 import com.spartaglobal.finalweek.pages.courseInfoPages.CourseInfoPage;
+import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -9,8 +10,10 @@ import org.junit.jupiter.api.Assertions;
 
 import java.util.List;
 
+import static com.spartaglobal.finalweek.base.TestBase.webDriver;
+
 public class CourseInfoPageStepDefs {
-    private final CourseInfoPage courseInfoPage = new CourseInfoPage();
+    private CourseInfoPage courseInfoPage = new CourseInfoPage();
     private String courseTypeName;
     private List<String> courseTypeNamesList;
     private String disciplineName;
@@ -43,5 +46,10 @@ public class CourseInfoPageStepDefs {
     @Then("I should see that discipline in the table")
     public void iShouldSeeThatDisciplineInTheTable() {
         Assertions.assertTrue(disciplineNamesList.contains(disciplineName));
+    }
+
+    @After
+    public void tearDown(){
+        webDriver.quit();
     }
 }

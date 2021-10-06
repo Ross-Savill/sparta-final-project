@@ -8,6 +8,7 @@ import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.NoSuchElementException;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
@@ -34,12 +35,20 @@ public class DeleteDisciplineStepDefs {
 
     @When("I click NO on the dialogue box")
     public void iClickNOOnTheDialogueBox() {
-        webDriver.findElement(new By.ByLinkText("No")).click();
+        try {
+            webDriver.findElement(new By.ByLinkText("No")).click();
+        } catch (NoSuchElementException e) {
+            Assertions.fail();
+        }
     }
 
     @When("I click YES on the dialogue box")
     public void iClickYESOnTheDialogueBox() {
-        webDriver.findElement(new By.ByLinkText("Yes")).click();
+        try {
+            webDriver.findElement(new By.ByLinkText("Yes")).click();
+        } catch (NoSuchElementException e) {
+            Assertions.fail();
+        }
     }
 
     @Then("The discipline should no long be present in the discipline table")

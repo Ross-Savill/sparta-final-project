@@ -1,6 +1,8 @@
 Feature: AS A User, I WANT be able to add a new course type successfully SO THAT I can update add/update the website
   Background:
     Given I am using dummy data
+    And I am starting the process
+    And I am logged in
     And I go to the course info page
     And I click the Add Course Type Button
 
