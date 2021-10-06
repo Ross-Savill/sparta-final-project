@@ -9,11 +9,10 @@ import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import net.bytebuddy.asm.Advice;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -28,7 +27,7 @@ public class AddCourseStepDefs {
     WebElement trainerID;
     WebElement courseType;
 
-    @After
+    @After("@addCourse")
     public void tearDown(){
         webDriver.quit();
     }
@@ -52,7 +51,7 @@ public class AddCourseStepDefs {
 
     @Then("A new course with the information I entered should be added to the database on the course page")
     public void aNewCourseWithTheInformationIEnteredShouldBeAddedToTheDatabaseOnTheCoursePage() {
-        //TODO: Waiting for Implementation.
+        //TODO: Not yet Implemented.
         List<WebElement> coursesWebElements = coursePage.getAllCoursesNames();
     }
 
@@ -63,7 +62,7 @@ public class AddCourseStepDefs {
     }
 
     //Should Fail therefore disable and provide reason.
-    @Then("I should not be navigated back to the course page")
+    @Then("I should not be navigated back to the course page from the add course page")
     public void iShouldNotBeNavigatedBackToTheCoursePage() {
         Assertions.assertFalse(addCoursePage.isSubmissionSuccessful());
     }
@@ -86,10 +85,10 @@ public class AddCourseStepDefs {
     public void iSelectTheTimeATrainerIsTeachingACourseOnTheAddCoursePage() {
         addCoursePage.selectDiscipline("Java");
         addCoursePage.enterTrainerStartWeek(1, 1);
-        addCoursePage.enterTrainerEndWeek(1, 12);
+        addCoursePage.enterTrainerEndWeek(1, 15);
     }
 
-    @Then("the difference between the start week and the end week should not exceed the length of the course")
+    @Then("the difference between the start week and the end week should not exceed the length of the course on the add course page")
     public void theDifferenceBetweenTheStartWeekAndTheEndWeekShouldNotExceedTheLengthOfTheCourse() {
         NavTemplate navTemplate = new NavTemplate();
 
