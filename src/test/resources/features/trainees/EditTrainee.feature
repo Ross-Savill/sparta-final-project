@@ -1,3 +1,4 @@
+@EditTraineesPage
 Feature: AS A user I WANT to edit trainees SO THAT they can be updated
 
   Background:
@@ -5,7 +6,7 @@ Feature: AS A user I WANT to edit trainees SO THAT they can be updated
     And I am starting the process
     And I am logged in
     And I go to the trainees page
-    And I click the Edit Trainee Button by the first trainee on the Trainees page
+    And I click the Edit Trainee Button for the first trainee on the Trainees page
 
     Scenario: I want to edit a trainee successfully on the Edit Trainee page
       Then I can submit edits on the Edit Trainee page and have them save correctly
