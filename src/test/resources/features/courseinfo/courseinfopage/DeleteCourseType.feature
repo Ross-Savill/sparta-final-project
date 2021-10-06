@@ -1,6 +1,8 @@
 Feature: AS A User, I WANT to be able to delete course types SO THAT I can remove unwanted course types
   Background:
     Given I am using dummy data
+    And I am starting the process
+    And I am logged in
     And I go to the course info page
 
     Scenario: User wants to delete a course type
