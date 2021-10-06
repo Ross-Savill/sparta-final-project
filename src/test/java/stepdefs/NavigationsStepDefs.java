@@ -14,6 +14,7 @@ import com.spartaglobal.finalweek.pages.coursePages.CoursePage;
 import com.spartaglobal.finalweek.pages.traineePages.TraineesPage;
 import com.spartaglobal.finalweek.pages.trainersPages.TrainersPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -22,6 +23,11 @@ public class NavigationsStepDefs {
 
     NavTemplate page = new NavTemplate();
     LoginPage loginPage;
+
+    @Given("I am working with dummy data")
+    public void resetData() {
+        ResetData.resetData();
+    }
 
     @Given("I am starting the process")
     public void startProcess() {
@@ -59,12 +65,12 @@ public class NavigationsStepDefs {
 
     @Given("I go to the course page")
     public void goToCoursePage() {
-        page = page.goToCoursesPage();
+        //page = page.goToCoursesPage();
     }
 
     @Given("I go to the course info page")
     public void goToCourseInfoPage() {
-        page = page.goToCourseInfoPage();
+        //page = page.goToCourseInfoPage();
     }
 
     @Given("I go to the account page")

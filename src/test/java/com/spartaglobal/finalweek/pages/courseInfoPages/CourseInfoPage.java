@@ -1,6 +1,7 @@
 package com.spartaglobal.finalweek.pages.courseInfoPages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
+import com.spartaglobal.finalweek.pages.NavTemplate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -9,20 +10,13 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
-import static com.spartaglobal.finalweek.base.TestBase.webDriver;
-
-public class CourseInfoPage implements URLable {
+public class CourseInfoPage extends NavTemplate implements URLable {
 
     @FindBy (id = "courseTypeTable") List<WebElement> courseTypeElements;
     @FindBy (id = "disciplineTable") List<WebElement> disciplinesElements;
     @FindBy (id = "CourseTypePageLink") WebElement addCourseTypeButton;
-    @FindBy (css = "#courseTypeTable > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement editCourseTypeButton;
-    @FindBy (css = "#courseTypeTable > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement deleteCourseTypeButton;
     @FindBy (id = "disciplinePageLink") WebElement addDisciplineButton;
-    @FindBy (css = "#disciplineTable > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement editDisciplineButton;
-    @FindBy (css = "#disciplineTable > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(4) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement deleteDisciplineButton;
 
 
     public CourseInfoPage() {
@@ -111,7 +105,6 @@ public class CourseInfoPage implements URLable {
 
     public WebElement getDisciplineElement(int rowID) {
         try {
-            String searchID = (rowID + "discipline");
             return(webDriver.findElement(new By.ById("disciplineTable"))).findElement(new By.ById(rowID + "row"));
         } catch (NoSuchElementException e) {
             return null;
@@ -268,12 +261,12 @@ public class CourseInfoPage implements URLable {
     }
 
     public boolean areCourseTypesUnique() {
-        Set<String> nameSet = new HashSet<String>(getCourseTypesNames());
+        Set<String> nameSet = new HashSet<>(getCourseTypesNames());
         return nameSet.size() >= getCourseTypesNames().size();
     }
 
     public boolean areDisciplinesUnique() {
-        Set<String> nameSet = new HashSet<String>(getDisciplineNames());
+        Set<String> nameSet = new HashSet<>(getDisciplineNames());
         return nameSet.size() >= getDisciplineNames().size();
     }
 

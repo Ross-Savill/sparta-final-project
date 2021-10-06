@@ -35,9 +35,21 @@ public class EditLocationPage extends NavTemplate implements URLable {
         return Integer.parseInt(locationNumRoomsTextField.getText());
     }
 
-    public void enterNumOfRooms(int numOfRooms) {
+    public void enterNumOfRooms(String numOfRooms) {
         locationNumRoomsTextField.clear();
-        locationNumRoomsTextField.sendKeys(Integer.toString(numOfRooms));
+        locationNumRoomsTextField.sendKeys(numOfRooms);
+    }
+
+    public void clearLocationNameTextFieldContents() {
+        this.clearBox(locationNameTextField);
+    }
+
+    public void clearNumOfRoomsFieldContents() {
+        this.clearBox(locationNumRoomsTextField);
+    }
+
+    private void clearBox(WebElement box) {
+       box.clear();
     }
 
     public CentresPage goToCentresPage(int xOffset, int yOffset) {
@@ -58,35 +70,6 @@ public class EditLocationPage extends NavTemplate implements URLable {
     public CentresPage clickDeleteButton(int xOffset, int yOffset) {
         getDeleteButton().click();
         return new CentresPage();
-    }
-
-    public boolean isDeleteSuccessful(String locationName, int numberOfRooms) {
-        List<WebElement> centres = webDriver.findElements(By.id("locationTable"));
-        for (WebElement centre:centres) {
-            WebElement nameTextField = webDriver.findElement(By.id(centres.indexOf(centre)+"location_name"));
-            WebElement numRoomsTextField = webDriver.findElement(By.id(centres.indexOf(centre)+"number_of_rooms"));
-
-            if(locationName.equals(nameTextField.getText())
-                    && numberOfRooms == Integer.parseInt(numRoomsTextField.getText())) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean isUpdateSuccessful(String updatedLocationName, int updatedLocationNumOfRooms) {
-
-        List<WebElement> centres = webDriver.findElements(By.id("locationTable"));
-        for (WebElement centre:centres) {
-            WebElement nameTextField = webDriver.findElement(By.id(centres.indexOf(centre)+"location_name"));
-            WebElement numRoomsTextField = webDriver.findElement(By.id(centres.indexOf(centre)+"number_of_rooms"));
-
-            if(updatedLocationName.equals(nameTextField.getText())
-                    && updatedLocationNumOfRooms == Integer.parseInt(numRoomsTextField.getText())) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

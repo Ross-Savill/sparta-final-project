@@ -69,7 +69,6 @@ public class CourseTests  {
         @DisplayName("Test DeleteCourse()")
         public void testDeleteCourse(String courseName) throws InterruptedException {
             addCoursePage = coursePage.clickAddCourseButton();
-            //String courseName = "Engineering 101";
             LocalDate courseStartDate = LocalDate.now();
             addCoursePage.enterCourseName(courseName);
             addCoursePage.enterStartDate(courseStartDate);
@@ -187,15 +186,16 @@ public class CourseTests  {
     }
 
     @ParameterizedTest
-    @Disabled //needs methods from AddCoursePage()
     @ValueSource(strings = {"Engineering 101", "Data 100", "SDET Stream"})
     @DisplayName("Testing if I can tell when a course has been deleted")
     public void testIsCourseDeleted(String courseToDelete) throws InterruptedException {
         //String courseToDelete = "Engineering 101";
         LocalDate courseStartDate = LocalDate.now();
-//        addCoursePage.enterCourseName(courseToDelete);
-//        addCoursePage.enterStartDate(courseStartDate);
-//        addCoursePage.clickSubmit();
+        addCoursePage = coursePage.clickAddCourseButton();
+        addCoursePage.enterCourseName(courseToDelete);
+        addCoursePage.enterStartDate(courseStartDate);
+        coursePage = addCoursePage.submitReturnsCoursePage();
+        coursePage = new CoursePage();
 
         boolean firstAttempt = coursePage.isCourseDeleted(courseToDelete);
         coursePage.deleteCourse(courseToDelete);
