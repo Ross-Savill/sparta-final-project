@@ -13,9 +13,9 @@ public class AddTraineesPage extends NavTemplate implements URLable {
     @FindBy(id = "trainee-course-name") WebElement courseNameDropDown;
     @FindBy(id = "trainee-first-name") WebElement firstNameTextBox;
     @FindBy(id = "trainee-last-name") WebElement lastNameTextBox;
-    @FindBy(id = "btn-primary") WebElement submitButton;
+    @FindBy(className = "btn-primary") WebElement submitButton;
 
-    private Select addTraineesCourseDropdown = new Select(webDriver.findElement(By.id("edit-trainee-course-name")));
+    private Select addTraineesCourseDropdown = new Select(webDriver.findElement(By.id("trainee-course-name")));
 
     public AddTraineesPage() {
         PageFactory.initElements(webDriver, this);
@@ -31,7 +31,6 @@ public class AddTraineesPage extends NavTemplate implements URLable {
     }
 
     public void enterFirstName(String firstName) {
-        firstNameTextBox.clear();
         firstNameTextBox.sendKeys(firstName);
     }
 
@@ -54,25 +53,27 @@ public class AddTraineesPage extends NavTemplate implements URLable {
 
     public boolean isSubmitSuccessful(){
         submitTrainee();
-        if(getURL().contains("http://localhost:8080/traineePage")) {
+        if(getFirstName().isBlank() && getLastName().isBlank()) {
             return true;
         }
         return false;
     }
 
     public TraineesPage goToTraineesPage() {
-        return new TraineesPage();
+        NavTemplate navTemplate = new NavTemplate();
+        return navTemplate.goToTraineesPage();
     }
 
     public boolean isFirstNameEmpty(){
-        if(getFirstName() == "") {
+        if(getFirstName().equals("")) {
             return true;
         }
+        System.out.println(getFirstName());
         return false;
     }
 
     public boolean isLastNameEmpty(){
-        if(getLastName() == "") {
+        if(getLastName().equals("")) {
             return true;
         }
         return false;

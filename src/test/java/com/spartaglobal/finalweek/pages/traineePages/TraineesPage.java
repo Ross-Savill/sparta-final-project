@@ -1,6 +1,7 @@
 package com.spartaglobal.finalweek.pages.traineePages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
+import com.spartaglobal.finalweek.pages.NavTemplate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
@@ -11,12 +12,13 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
-public class TraineesPage implements URLable {
+public class TraineesPage extends NavTemplate implements URLable {
 
     @FindBy(linkText = "Add Trainee") WebElement addTraineeButton;
     @FindBy(className = "accordion-button") WebElement courseFilterDropDownButton;
@@ -75,7 +77,7 @@ public class TraineesPage implements URLable {
         List<String> allFirstNameStrings = new ArrayList<>();
         List<WebElement> allTraineeRows = getAllTraineesElements();
 
-        for(int i = 0; i < allTraineeRows.size(); i++) {
+        for(int i = 0; i < allTraineeRows.size() - 1; i++) {
             WebElement firstNameString = allTraineeRows.get(i).findElement(By.id(i+"name"));
             allFirstNameStrings.add(firstNameString.getText());
         }
@@ -86,7 +88,7 @@ public class TraineesPage implements URLable {
         List<String> allLastNameStrings = new ArrayList<>();
         List<WebElement> allTraineeRows = getAllTraineesElements();
 
-        for(int i = 0; i < allTraineeRows.size(); i++) {
+        for(int i = 0; i < allTraineeRows.size() - 1; i++) {
             WebElement firstNameString = allTraineeRows.get(i).findElement(By.id(i+"surname"));
             allLastNameStrings.add(firstNameString.getText());
         }
@@ -97,7 +99,7 @@ public class TraineesPage implements URLable {
         List<String> allQualityGateStrings = new ArrayList<>();
         List<WebElement> allTraineeRows = getAllTraineesElements();
 
-        for(int i = 0; i < allTraineeRows.size(); i++) {
+        for(int i = 0; i < allTraineeRows.size() - 1; i++) {
             WebElement qualityGateString = allTraineeRows.get(i).findElement(By.id(i+"qgs"));
             allQualityGateStrings.add(qualityGateString.getText());
         }
@@ -331,6 +333,18 @@ public class TraineesPage implements URLable {
         return qgStatus.equals("Failed-Needs Help");
     }
 
+    public boolean isTraineePresent(String firstName, String lastName) {
+        List<WebElement> allTraineeRows = getAllTraineesElements();
+        for(int i = 0; i < allTraineeRows.size(); i++) {
+            String firstNameInRow = allTraineeRows.get(i).findElement(By.id(i+"name")).getText();
+            String lastNameInRow = allTraineeRows.get(i).findElement(By.id(i+"surname")).getText();
+            if(firstName.equals(firstNameInRow) && lastName.equals(lastNameInRow)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isTraineeFirstNameValid(String rowID) {
         List<WebElement> allTraineeRows = getAllTraineesElements();
         for(WebElement row : allTraineeRows) {
@@ -350,6 +364,16 @@ public class TraineesPage implements URLable {
                 Pattern regex = Pattern.compile("^[a-zA-Z0-9'-,.]+$");
                 String name = row.findElement(By.id(allTraineeRows.indexOf(row)+"surname")).getText();
                 return regex.matcher(name).find();
+            }
+        }
+        return false;
+    }
+
+    public boolean isTraineeQualityGateStatusValid(String rowID) {
+        String[] qualityGateStatusOptions = {"Passed", "Pending", "Failed", "Failed-Needs Help"};
+        for(String option : qualityGateStatusOptions) {
+            if(getTraineeQualityGateStatus(rowID).equals(option)) {
+                return true;
             }
         }
         return false;
@@ -379,14 +403,18 @@ public class TraineesPage implements URLable {
         return true;
     }
 
-    public boolean isTraineeQualityGateStatusValid(String rowID) {
+    public boolean areAllQualityGateStatusValid() {
+        boolean allQualityGateStatusValid = true;
+        List<WebElement> allTraineeRows = getAllTraineesElements();
         String[] qualityGateStatusOptions = {"Passed", "Pending", "Failed", "Failed-Needs Help"};
-        for(String option : qualityGateStatusOptions) {
-            if(getTraineeQualityGateStatus(rowID).equals(option)) {
-                return true;
+        for(WebElement row : allTraineeRows) {
+            String qgs = row.findElement(By.id(allTraineeRows.indexOf(row)+"qgs")).getText();
+            if(!Arrays.stream(qualityGateStatusOptions).anyMatch(qgs::equals)) {
+                allQualityGateStatusValid = false;
+                break;
             }
         }
-        return false;
+        return allQualityGateStatusValid;
     }
 
     public boolean areAllFieldsPassedOnToEditTraineesPage() {
@@ -426,7 +454,6 @@ public class TraineesPage implements URLable {
             clickDeleteTrainee(rowNumber+"row");
             webDriver.switchTo().alert().accept();
             return true;
-
         } catch (NoAlertPresentException e) {
             return false;
         }

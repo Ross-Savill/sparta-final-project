@@ -36,6 +36,14 @@ public class EditTraineesPage extends NavTemplate implements URLable {
         lastNameTextBox.sendKeys(lastName);
     }
 
+    public String getFirstName() {
+        return firstNameTextBox.getAttribute("value");
+    }
+
+    public String getLastName() {
+        return lastNameTextBox.getAttribute("value");
+    }
+
     public void clickSubmitButton() {
         submitButton.click();
     }

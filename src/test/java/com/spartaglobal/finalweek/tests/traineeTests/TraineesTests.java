@@ -7,6 +7,7 @@ import com.spartaglobal.finalweek.pages.SchedulerPage;
 import com.spartaglobal.finalweek.pages.coursePages.CoursePage;
 import com.spartaglobal.finalweek.pages.traineePages.TraineesPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -31,6 +32,7 @@ public class TraineesTests extends NavTemplate {
 
     @BeforeEach
     public void setup() {
+        ResetData.resetData();
         TestBase.initialisation();
         PageFactory.initElements(webDriver, this);
         loginPage = new LoginPage();
@@ -38,7 +40,7 @@ public class TraineesTests extends NavTemplate {
         traineesPage = new TraineesPage();
         loginPage.login(username, password);
         PageFactory.initElements(webDriver, schedulerPage);
-        NavTemplate navTemplate = new NavTemplate();
+        navTemplate = new NavTemplate();
         traineesPage = navTemplate.goToTraineesPage();
     }
 
@@ -267,8 +269,6 @@ public class TraineesTests extends NavTemplate {
         @DisplayName("getCoursesElementsTest")
         void getCoursesElementsTest() {
             boolean allCoursesPresent = true;
-            navTemplate = new NavTemplate();
-            coursePage = new CoursePage();
             List<WebElement> traineePageCourses = traineesPage.getCoursesElements();
             List<String> traineePageCourseStrings = new ArrayList<>();
             for (WebElement traineeCourseCopy : traineePageCourses) {
@@ -276,7 +276,6 @@ public class TraineesTests extends NavTemplate {
             }
             List<String> coursesPageCourses = new ArrayList<>();
             navTemplate.goToCoursesPage();
-            PageFactory.initElements(webDriver, coursePage);
 
             WebElement courseTableBody = webDriver.findElement(By.tagName("tbody"));
             List<WebElement> courseTableRows = courseTableBody.findElements(By.tagName("tr"));
@@ -297,12 +296,9 @@ public class TraineesTests extends NavTemplate {
         @DisplayName("getCoursesStringsTest")
         void getCoursesStringsTest() {
             boolean allCoursesPresent = true;
-            navTemplate = new NavTemplate();
-            coursePage = new CoursePage();
             List<String> traineePageCourseStrings = traineesPage.getCoursesStrings();
             List<String> coursesPageCourses = new ArrayList<>();
             navTemplate.goToCoursesPage();
-            PageFactory.initElements(webDriver, coursePage);
 
             WebElement courseTableBody = webDriver.findElement(By.tagName("tbody"));
             List<WebElement> courseTableRows = courseTableBody.findElements(By.tagName("tr"));
@@ -478,6 +474,12 @@ public class TraineesTests extends NavTemplate {
         }
 
         @Test
+        @DisplayName("areAllQualityGateStatusValidTest")
+        void areAllQualityGateStatusValidTest() {
+            Assertions.assertTrue(traineesPage.areAllQualityGateStatusValid());
+        }
+
+        @Test
         @DisplayName("isTraineeQualityGateStatusValidTest")
         void isTraineeQualityGateStatusValidTest() {
             int rowNumber = 0;
@@ -489,6 +491,22 @@ public class TraineesTests extends NavTemplate {
     @DisplayName("areAllFieldsPassedOnToEditTraineesPageTest")
     void areAllFieldsPassedOnToEditTraineesPageTest() {
         Assertions.assertTrue(traineesPage.areAllFieldsPassedOnToEditTraineesPage());
+    }
+
+    @Test
+    @DisplayName("isTraineePresentTest")
+    void isTraineePresentTest() {
+        String presentFirstName = traineesPage.getTraineeFirstName("0row");
+        String presentLastName = traineesPage.getTraineeLastName("0row");
+        Assertions.assertTrue(traineesPage.isTraineePresent(presentFirstName, presentLastName));
+    }
+
+    @Test
+    @DisplayName("isTraineeNotPresentTest")
+    void isTraineeNotPresentTest() {
+        String presentFirstName = "NotFound";
+        String presentLastName = "NotHere";
+        Assertions.assertFalse(traineesPage.isTraineePresent(presentFirstName, presentLastName));
     }
 
     @Nested
