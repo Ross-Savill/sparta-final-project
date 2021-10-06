@@ -111,12 +111,21 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
         return trainer2.getFirstSelectedOption();
     }
 
-    public void setDate(LocalDate testDate) {
-        date.clear();
-        WebElement setDate = date;
-        setDate.sendKeys(Keys.chord(testDate.toString()));
+    public void setDate(LocalDate inputDate) {
+        int day = inputDate.getDayOfMonth();
+        int month = inputDate.getMonthValue();
+        int year = inputDate.getYear();
+        String dayString = Integer.toString(day);
+        String monthString = Integer.toString(month);
+        if (day < 10) {
+            dayString = String.format("%02d", day);
+        }
 
+        if (month < 10) {
+            monthString = String.format("%02d", month);
+        }
 
+        date.sendKeys(dayString, monthString, Integer.toString(year));
     }
 
     public WebElement getDate() {
@@ -150,10 +159,10 @@ public class AddQualityGatePage extends NavTemplate implements URLable {
         scroll.sendKeys(Keys.ARROW_DOWN);
         scroll.sendKeys(Keys.ARROW_DOWN);
 //        traineesPage.getq("1");
-        webDriver.findElement(By.id(1+"name")).click();
+        webDriver.findElement(By.id(1 + "name")).click();
 
-        if(traineesPage.getQualityGateHistoryDetails("1").get(0).contains( getTrainerOneFeedback().getText())&&
-                traineesPage.getQualityGateHistoryDetails("1").get(0).contains(getTrainerTwoFeedback().getText())){
+        if (traineesPage.getQualityGateHistoryDetails("1").get(0).contains(getTrainerOneFeedback().getText()) &&
+                traineesPage.getQualityGateHistoryDetails("1").get(0).contains(getTrainerTwoFeedback().getText())) {
             return true;
         }
         return false;
