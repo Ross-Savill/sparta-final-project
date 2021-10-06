@@ -22,6 +22,7 @@ public class EditTraineesTests extends NavTemplate {
     private SchedulerPage schedulerPage;
     private TraineesPage traineesPage;
     private EditTraineesPage editTraineesPage;
+    private NavTemplate navTemplate;
 
     @BeforeEach
     public void setup() {
@@ -33,7 +34,7 @@ public class EditTraineesTests extends NavTemplate {
         traineesPage = new TraineesPage();
         loginPage.login(username, password);
         PageFactory.initElements(webDriver, schedulerPage);
-        NavTemplate navTemplate = new NavTemplate();
+        navTemplate = new NavTemplate();
         traineesPage = navTemplate.goToTraineesPage();
         editTraineesPage = traineesPage.clickEditTrainee("0row");
     }
@@ -64,6 +65,29 @@ public class EditTraineesTests extends NavTemplate {
             editTraineesPage.enterLastName("TestSurname");
             WebElement lastNameTextBox = webDriver.findElement(By.id("edit-trainee-last-name"));
             Assertions.assertEquals("TestSurname", lastNameTextBox.getAttribute("value"));
+        }
+    }
+
+    @Nested
+    @DisplayName("Test Getting Edit Trainee Name Fields")
+    class testGettingEditTraineeNameFields {
+
+        @Test
+        @DisplayName("getFirstNameTest")
+        void getFirstNameTest() {
+            traineesPage = navTemplate.goToTraineesPage();
+            String firstName = traineesPage.getTraineeFirstName("0row");
+            editTraineesPage = traineesPage.clickEditTrainee("0row");
+            Assertions.assertEquals(firstName, editTraineesPage.getFirstName());
+        }
+
+        @Test
+        @DisplayName("getLastNameTest")
+        void getLastNameTest() {
+            traineesPage = navTemplate.goToTraineesPage();
+            String lastName = traineesPage.getTraineeLastName("0row");
+            editTraineesPage = traineesPage.clickEditTrainee("0row");
+            Assertions.assertEquals(lastName, editTraineesPage.getLastName());
         }
     }
 

@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -368,6 +369,16 @@ public class TraineesPage extends NavTemplate implements URLable {
         return false;
     }
 
+    public boolean isTraineeQualityGateStatusValid(String rowID) {
+        String[] qualityGateStatusOptions = {"Passed", "Pending", "Failed", "Failed-Needs Help"};
+        for(String option : qualityGateStatusOptions) {
+            if(getTraineeQualityGateStatus(rowID).equals(option)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean areAllTraineesFirstNamesValid() {
         List<WebElement> allTraineeRows = getAllTraineesElements();
         Pattern regex = Pattern.compile("^[a-zA-Z0-9',.-]+$");
@@ -392,14 +403,18 @@ public class TraineesPage extends NavTemplate implements URLable {
         return true;
     }
 
-    public boolean isTraineeQualityGateStatusValid(String rowID) {
+    public boolean areAllQualityGateStatusValid() {
+        boolean allQualityGateStatusValid = true;
+        List<WebElement> allTraineeRows = getAllTraineesElements();
         String[] qualityGateStatusOptions = {"Passed", "Pending", "Failed", "Failed-Needs Help"};
-        for(String option : qualityGateStatusOptions) {
-            if(getTraineeQualityGateStatus(rowID).equals(option)) {
-                return true;
+        for(WebElement row : allTraineeRows) {
+            String qgs = row.findElement(By.id(allTraineeRows.indexOf(row)+"qgs")).getText();
+            if(!Arrays.stream(qualityGateStatusOptions).anyMatch(qgs::equals)) {
+                allQualityGateStatusValid = false;
+                break;
             }
         }
-        return false;
+        return allQualityGateStatusValid;
     }
 
     public boolean areAllFieldsPassedOnToEditTraineesPage() {
@@ -439,7 +454,6 @@ public class TraineesPage extends NavTemplate implements URLable {
             clickDeleteTrainee(rowNumber+"row");
             webDriver.switchTo().alert().accept();
             return true;
-
         } catch (NoAlertPresentException e) {
             return false;
         }

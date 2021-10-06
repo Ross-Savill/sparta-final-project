@@ -480,6 +480,12 @@ public class TraineesTests extends NavTemplate {
         }
 
         @Test
+        @DisplayName("areAllQualityGateStatusValidTest")
+        void areAllQualityGateStatusValidTest() {
+            Assertions.assertTrue(traineesPage.areAllQualityGateStatusValid());
+        }
+
+        @Test
         @DisplayName("isTraineeQualityGateStatusValidTest")
         void isTraineeQualityGateStatusValidTest() {
             int rowNumber = 0;

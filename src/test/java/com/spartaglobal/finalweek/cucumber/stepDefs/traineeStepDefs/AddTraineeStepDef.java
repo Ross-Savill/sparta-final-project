@@ -7,6 +7,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 
@@ -35,7 +36,7 @@ public class AddTraineeStepDef {
     @Then("I should find my trainee present on the Trainee Page")
     public void iShouldFindMyTraineePresentOnTheTraineePage() {
         traineesPage = addTraineesPage.goToTraineesPage();
-        Assert.assertTrue(traineesPage.isTraineePresent("StepDef", "FeatureTest"));
+        Assertions.assertTrue(traineesPage.isTraineePresent("StepDef", "FeatureTest"));
     }
 
     @When("I forget to enter a first name but enter a last name on the Add Trainee page")
@@ -64,7 +65,7 @@ public class AddTraineeStepDef {
 
     @Then("I should be stopped from submitting the Add Trainee page")
     public void iShouldBeStoppedFromSubmittingTheAddTraineePage() {
-        Assert.assertTrue(!addTraineesPage.getFirstName().equals("") || !addTraineesPage.getLastName().equals(""));
+        Assertions.assertTrue(!addTraineesPage.getFirstName().equals("") || !addTraineesPage.getLastName().equals(""));
     }
 
     @After("@AddTraineesPage")
