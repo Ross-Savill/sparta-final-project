@@ -7,10 +7,12 @@ import com.spartaglobal.finalweek.pages.coursePages.CoursePage;
 import com.spartaglobal.finalweek.pages.coursePages.CoursePageObject;
 import com.spartaglobal.finalweek.pages.coursePages.EditCoursesPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.WebElement;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 
 import java.time.LocalDate;
 
@@ -22,6 +24,7 @@ public class EditCoursesTests extends NavTemplate {
 
     @BeforeEach
     public void setup() {
+        ResetData.resetData();
         TestBase.initialisation();
         loginPage = new LoginPage();
 
