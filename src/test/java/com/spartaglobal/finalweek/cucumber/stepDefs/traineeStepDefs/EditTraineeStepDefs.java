@@ -41,7 +41,7 @@ public class EditTraineeStepDefs {
         Assertions.assertFalse(editTraineesPage.isSubmitSuccessful("StepDef%&", "TestingMethod"));
     }
 
-    @Then("I wil lbe stopped from submitting an invalid last name on the Edit Trainee page")
+    @Then("I will be stopped from submitting an invalid last name on the Edit Trainee page")
     public void iWilLbeStoppedFromSubmittingAnInvalidLastNameOnTheEditTraineePage() {
         Assertions.assertFalse(editTraineesPage.isSubmitSuccessful("StepDef", "TestingMethod%&"));
     }

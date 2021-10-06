@@ -21,4 +21,4 @@ Feature: AS A user I WANT to edit trainees SO THAT they can be updated
       Then I will be stopped from submitting an invalid first name on the Edit Trainee page
 
     Scenario: I want to be stopped from adding invalid characters to the last name field on the Edit Trainee Page
-      Then I wil lbe stopped from submitting an invalid last name on the Edit Trainee page
+      Then I will be stopped from submitting an invalid last name on the Edit Trainee page
