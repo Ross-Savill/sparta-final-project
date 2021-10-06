@@ -1,3 +1,4 @@
+@courseType
 Feature: AS A User, I WANT to be able to delete course types SO THAT I can remove unwanted course types
   Background:
     Given I am using dummy data

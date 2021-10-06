@@ -1,3 +1,4 @@
+@courseType
 Feature: AS A User, I WANT to be able to update existing course types SO THAT I can update an existing course.
   Background:
     Given I am using dummy data

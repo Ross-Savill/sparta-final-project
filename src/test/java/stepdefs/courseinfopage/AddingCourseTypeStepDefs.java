@@ -1,4 +1,4 @@
-package stepdefs;
+package stepdefs.courseinfopage;
 
 import com.spartaglobal.finalweek.pages.courseInfoPages.AddCourseTypePage;
 import com.spartaglobal.finalweek.pages.courseInfoPages.CourseInfoPage;
@@ -6,6 +6,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
+import org.openqa.selenium.support.PageFactory;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -15,10 +16,6 @@ import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 public class AddingCourseTypeStepDefs {
     private final CourseInfoPage courseInfoPage = new CourseInfoPage();
     private final AddCourseTypePage addCourseTypePage = new AddCourseTypePage();
-    @And("I click the Add Course Type Button")
-    public void iClickTheAddCourseTypeButton() {
-        courseInfoPage.clickAddCourseTypeButton();
-    }
 
     @When("I enter a valid name into the course type name field")
     public void iEnterAValidNameIntoTheCourseTypeNameField() {
@@ -49,11 +46,6 @@ public class AddingCourseTypeStepDefs {
     @Then("I should be stopped from adding a duplicate course name.")
     public void IShouldBeStoppedFromAddingADuplicateCourseName() {
         Assertions.assertTrue(courseInfoPage.areCourseTypesUnique());
-    }
-
-    @Then("I should be on the Add Course Type Page")
-    public void iShouldBeOnTheAddCourseTypePage() {
-        Assertions.assertEquals("http://localhost:8080/addCourseType", webDriver.getCurrentUrl());
     }
 
     @Then("I should be returned to the course type page and The new course type should be added")
