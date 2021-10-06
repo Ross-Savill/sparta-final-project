@@ -6,6 +6,7 @@ import com.spartaglobal.finalweek.pages.NavTemplate;
 import com.spartaglobal.finalweek.pages.traineePages.AddTraineesPage;
 import com.spartaglobal.finalweek.pages.traineePages.TraineesPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import org.junit.jupiter.api.*;
 
 public class AddTraineesTests extends NavTemplate {
@@ -16,6 +17,7 @@ public class AddTraineesTests extends NavTemplate {
     @BeforeEach
     public void setup()
     {
+        ResetData.resetData();
         TestBase.initialisation();
         LoginPage loginPage = new LoginPage();
         traineesPage = loginPage.login(
@@ -81,7 +83,6 @@ public class AddTraineesTests extends NavTemplate {
         addTraineesPage.enterFirstName("FirstExample");
         Assertions.assertFalse(addTraineesPage.isSubmitSuccessful());
     }
-
 
     @AfterEach
     public void tearDown(){

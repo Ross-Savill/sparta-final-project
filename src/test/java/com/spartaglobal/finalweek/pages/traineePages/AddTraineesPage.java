@@ -53,7 +53,7 @@ public class AddTraineesPage extends NavTemplate implements URLable {
 
     public boolean isSubmitSuccessful(){
         submitTrainee();
-        if(getURL().contains("http://localhost:8080/traineePage")) {
+        if(getFirstName().isBlank() && getLastName().isBlank()) {
             return true;
         }
         return false;
@@ -65,14 +65,15 @@ public class AddTraineesPage extends NavTemplate implements URLable {
     }
 
     public boolean isFirstNameEmpty(){
-        if(getFirstName() == "") {
+        if(getFirstName().equals("")) {
             return true;
         }
+        System.out.println(getFirstName());
         return false;
     }
 
     public boolean isLastNameEmpty(){
-        if(getLastName() == "") {
+        if(getLastName().equals("")) {
             return true;
         }
         return false;
