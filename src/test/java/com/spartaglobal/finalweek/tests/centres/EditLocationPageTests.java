@@ -6,6 +6,7 @@ import com.spartaglobal.finalweek.pages.centresPages.AddLocationPage;
 import com.spartaglobal.finalweek.pages.centresPages.CentresPage;
 import com.spartaglobal.finalweek.pages.centresPages.EditLocationPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,14 +23,15 @@ public class EditLocationPageTests {
     private EditLocationPage editLocationPage;
     private CentresPage centresPage;
     private AddLocationPage addLocationPage;
-    private final String centreName = "Hoth";
-    private final int centreNumOfRooms = 5;
+    private final String centreName = "Naboo";
+    private final String centreNumOfRooms = "7";
     private final String centreUrl = "http://localhost:8080/centres";
     private final String dummyCentreName = "You won't be able to delete me muhaha";
 
     @BeforeEach
     void setup() {
         TestBase.initialisation();
+        ResetData.resetData();
         LoginPage loginPage = new LoginPage();
         centresPage = loginPage.login(
                 PropertiesLoader.getProperties().getProperty("Username"),
@@ -124,7 +126,7 @@ public class EditLocationPageTests {
         class updateProcess {
 
             String updatedName = "ChangedName";
-            int updatedNumOfRooms = 10;
+            String updatedNumOfRooms = "10";
 
             @Test
             @DisplayName("Test update button goes to CentresPage on success")
@@ -137,22 +139,22 @@ public class EditLocationPageTests {
             void testUpdatedLocationNameIsOnCentresPage() {
                 editLocationPage.enterLocationName("ChangedName");
                 centresPage = editLocationPage.goToCentresPage();
-                Assertions.assertTrue(editLocationPage.isUpdateSuccessful(updatedName, centreNumOfRooms));
+                Assertions.assertTrue(centresPage.isUpdateSuccessful(updatedName, centreNumOfRooms));
             }
             @Test
             @DisplayName("Test updated rooms is on centres page")
             void testUpdatedRoomsIsOnCentresPage() {
-                editLocationPage.enterNumOfRooms(10);
+                editLocationPage.enterNumOfRooms("10");
                 centresPage = editLocationPage.goToCentresPage();
-                Assertions.assertTrue(editLocationPage.isUpdateSuccessful(centreName, updatedNumOfRooms));
+                Assertions.assertTrue(centresPage.isUpdateSuccessful(centreName, updatedNumOfRooms));
             }
             @Test
             @DisplayName("Test updated fields are on centres page")
             void testUpdatedFieldsAreOnCentresPage() {
-                editLocationPage.enterNumOfRooms(10);
+                editLocationPage.enterNumOfRooms("10");
                 editLocationPage.enterLocationName("ChangedName");
                 centresPage = editLocationPage.goToCentresPage();
-                Assertions.assertTrue(editLocationPage.isUpdateSuccessful(updatedName,updatedNumOfRooms));
+                Assertions.assertTrue(centresPage.isUpdateSuccessful(updatedName,updatedNumOfRooms));
             }
 
             @AfterEach
@@ -163,8 +165,8 @@ public class EditLocationPageTests {
                     editLocationPage = centresPage.clickEditCentreButton(centreName);
                 }
 
-                editLocationPage.enterLocationName("Hoth");
-                editLocationPage.enterNumOfRooms(5);
+                editLocationPage.enterLocationName(centreName);
+                editLocationPage.enterNumOfRooms(centreNumOfRooms);
                 editLocationPage.goToCentresPage();
             }
 
@@ -187,7 +189,7 @@ public class EditLocationPageTests {
             @DisplayName("Test centre is removed on CentresPage if deleted on EditLocationPage")
             void testCentreIsRemovedOnCentresPageIfDeletedOnEditLocationPage() {
                 centresPage = editLocationPage.clickDeleteButton();
-                Assertions.assertTrue(editLocationPage.isDeleteSuccessful(dummyCentreName, centreNumOfRooms));
+                Assertions.assertTrue(centresPage.isDeleteSuccessful(dummyCentreName, centreNumOfRooms));
             }
 
         }
@@ -195,7 +197,7 @@ public class EditLocationPageTests {
 
     @AfterEach
     void tearDown() {
-        webDriver.quit();
+        //webDriver.quit();
     }
 
 }

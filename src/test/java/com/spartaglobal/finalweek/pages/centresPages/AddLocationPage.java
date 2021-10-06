@@ -31,6 +31,11 @@ public class AddLocationPage extends NavTemplate implements URLable {
         return centres.size() - 1;
     }
 
+    public void clickSubmit(){
+        submitButton.click();
+        //return new CentresPage();
+    }
+
     public AddLocationPage(){
         PageFactory.initElements(webDriver, this);
     }
@@ -39,19 +44,19 @@ public class AddLocationPage extends NavTemplate implements URLable {
         nameTextField.sendKeys(locationName);
     }
 
-    public void enterNumberOfRooms(int enterNumberOfRooms){
-        numRoomsTextField.sendKeys(Integer.toString(enterNumberOfRooms));
+    public void enterNumberOfRooms(String enterNumberOfRooms){
+        numRoomsTextField.sendKeys(enterNumberOfRooms);
     }
 
     public String getLocationName(){
         return nameTextField.getAttribute("value");
     }
 
-    public int getNumberOfRooms(){
-        return Integer.parseInt(numRoomsTextField.getAttribute("value"));
+    public String getNumberOfRooms(){
+        return numRoomsTextField.getAttribute("value");
     }
 
-    public boolean isSubmitSuccessful(String locationName, int locationRooms){
+    public boolean isSubmitSuccessful(String locationName, String locationRooms){
 
         enterLocationName(locationName);
         enterNumberOfRooms(locationRooms);
@@ -59,9 +64,9 @@ public class AddLocationPage extends NavTemplate implements URLable {
 
         int lastIndexFromTable = getLastIndexFromTable();
         String newCentreName = webDriver.findElement(By.id( lastIndexFromTable+"location_name")).getText();
-        int newCentreRooms = Integer.parseInt(webDriver.findElement(By.id(lastIndexFromTable+"number_of_rooms")).getText());
+        String newCentreRooms = webDriver.findElement(By.id(lastIndexFromTable+"number_of_rooms")).getText();
 
-        return newCentreName.equals(locationName) && newCentreRooms == locationRooms;
+        return newCentreName.equals(locationName) && newCentreRooms.equals(locationRooms);
 
     }
 

@@ -153,8 +153,8 @@ public class CentresPage extends NavTemplate implements URLable {
         this.clickButton(xOffset, yOffset, deleteButton);
     }
 
-    public boolean doesConfirmationBoxAppearOnDelete(String locationName) {
-        this.clickDeleteCentreButton(locationName);
+    public boolean doesConfirmationBoxAppearOnDelete() {
+        //this.clickDeleteCentreButton(locationName);
 
         try{
             webDriver.switchTo().alert();
@@ -198,6 +198,30 @@ public class CentresPage extends NavTemplate implements URLable {
         webDriver.switchTo().alert().accept();
         return true;
 
+    }
+
+    private boolean isSuccessful(String locationName, String numberOfRooms, boolean update) {
+        WebElement table = webDriver.findElement(By.id("locationTable"));
+        List<WebElement> centres = table.findElement(By.tagName("tbody")).findElements(By.tagName("tr"));
+
+        for (WebElement centre:centres) {
+            WebElement nameTextField = webDriver.findElement(By.id(centres.indexOf(centre)+"location_name"));
+            WebElement numRoomsTextField = webDriver.findElement(By.id(centres.indexOf(centre)+"number_of_rooms"));
+
+            if(locationName.equals(nameTextField.getText())
+                    && numberOfRooms.equals(numRoomsTextField.getText())) {
+                return update;
+            }
+        }
+        return !update;
+    }
+
+    public boolean isDeleteSuccessful(String locationName, String numberOfRooms) {
+        return isSuccessful(locationName, numberOfRooms, false);
+    }
+
+    public boolean isUpdateSuccessful(String updatedLocationName, String updatedLocationNumOfRooms) {
+        return isSuccessful(updatedLocationName, updatedLocationNumOfRooms, true);
     }
 
     public boolean areAllFieldsPassedOnToEditCentrePage(String locationName) {
