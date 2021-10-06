@@ -38,6 +38,7 @@ public class AddQualityGateTests extends NavTemplate {
     }
 
 
+
     @Test
     @DisplayName("enter Trainee Id")
     void enterTraineeId() {
@@ -159,7 +160,7 @@ public class AddQualityGateTests extends NavTemplate {
     @Test
     @DisplayName("set Date")
     void setDate() {
-//        addQualityGatePage.setDate();
+        addQualityGatePage.setDate(LocalDate.now());
     }
 
     @Test
