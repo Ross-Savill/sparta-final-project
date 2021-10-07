@@ -16,7 +16,7 @@ public class ResetData {
 
         {
             try {
-                reader = new BufferedReader(new FileReader("C:\\Users\\joshu\\Documents\\Work\\Sparta Global\\Week 10 & 12 - Final Project\\sparta-final-project\\src\\test\\resources\\courseorganisationFinal .sql"));
+                reader = new BufferedReader(new FileReader("src/test/resources/courseorganisationFinal.sql"));
                 sr.runScript(reader);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
