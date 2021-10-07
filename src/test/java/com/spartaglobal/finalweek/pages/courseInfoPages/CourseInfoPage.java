@@ -268,6 +268,11 @@ public class CourseInfoPage extends NavTemplate implements URLable {
     public void clickDeleteDisciplineButton(String disciplineName) {
         WebElement row = getDisciplineElement(disciplineName);
         scrollDown();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         row.findElement(new By.ByLinkText("Delete")).click();
     }
 
