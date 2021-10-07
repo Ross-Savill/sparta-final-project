@@ -4,6 +4,7 @@ import com.spartaglobal.finalweek.pages.traineePages.AddQualityGatePage;
 import com.spartaglobal.finalweek.pages.traineePages.TraineesPage;
 import com.spartaglobal.finalweek.pages.trainersPages.EditTrainersPage;
 import com.spartaglobal.finalweek.pages.trainersPages.TrainersPage;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -23,7 +24,7 @@ public class TrainersStepDefs {
 
 
 
-    @After("@AddQualityGate")
+    @After("@TrainersPage")
     public void tearDown() {
         webDriver.quit();
     }
@@ -88,7 +89,7 @@ public class TrainersStepDefs {
 
     @Then("get trainer firstName")
     public void getTrainerFirstName() {
-        Assertions.assertEquals("Mike", trainersPage.getTrainerFirstName(0));
+        Assertions.assertEquals("Aayla", trainersPage.getTrainerFirstName(0));
 
     }
 
@@ -189,5 +190,10 @@ public class TrainersStepDefs {
     public void checkCancellationPopup() {
         Assertions.assertTrue(trainersPage.cancelDelete());
 
+    }
+
+    @Given("I Want To reset the database")
+    public void iWantToResetTheDatabase() {
+        ResetData.resetData();
     }
 }

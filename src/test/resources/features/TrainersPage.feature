@@ -3,6 +3,8 @@ Feature: AS A User I WANT be able to view Edit Add and delete my trainers
 
   Background:
     Given I am starting the process
+    Given I Want To reset the database
+
     And I am logged in
     And I go to the trainers page
 
@@ -91,7 +93,7 @@ Feature: AS A User I WANT be able to view Edit Add and delete my trainers
 
 
   Scenario:  are All Fields Passed On To Edit Trainers Page
-   Then check fields are passed
+    Then check fields are passed
 
   Scenario:  submitTrainerByRow
     Given  I am on the trainer page
