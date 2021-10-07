@@ -22,6 +22,7 @@ public class EditDisciplineStepdefs {
     private EditDisciplinePage editDisciplinePage;
     private static final String discipline = "Java";
 
+
     @Given("I am on the course info page")
     public void iAmOnTheCourseInfoPage() {
         TestBase.initialisation();

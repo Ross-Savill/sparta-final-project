@@ -25,6 +25,7 @@ public class EditDisciplinePage extends NavTemplate implements URLable {
     public void enterDisciplineName(String disciplineName) {
         disciplineNameTextBox.clear();
         disciplineNameTextBox.sendKeys(disciplineName);
+
     }
 
     public void enterDuration(int duration) {

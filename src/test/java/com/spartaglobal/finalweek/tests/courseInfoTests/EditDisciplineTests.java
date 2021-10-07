@@ -27,6 +27,7 @@ public class EditDisciplineTests extends NavTemplate {
         ResetData.resetData();
         TestBase.initialisation();
 
+
         loginPage = new LoginPage();
         schedulerPage = loginPage.login(userName,password);
         courseInfoPage = schedulerPage.goToCourseInfoPage();
