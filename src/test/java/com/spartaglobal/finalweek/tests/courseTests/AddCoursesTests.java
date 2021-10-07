@@ -38,8 +38,6 @@ public class AddCoursesTests{
         coursePage = navTemplate.goToCoursesPage();
         coursePage = new CoursePage();
 
-        //TODO: Reset Database
-
         addCoursePage = coursePage.clickAddCourseButton();
         addCoursePage = new AddCoursePage();
     }

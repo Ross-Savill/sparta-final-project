@@ -65,7 +65,7 @@ public class NavigationsStepDefs {
 
     @Given("I go to the course page")
     public void goToCoursePage() {
-        //page = page.goToCoursesPage();
+        page = page.goToCoursesPage();
     }
 
     @Given("I go to the course info page")

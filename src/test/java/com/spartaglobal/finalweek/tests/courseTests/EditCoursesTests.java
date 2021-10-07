@@ -187,7 +187,6 @@ public class EditCoursesTests extends NavTemplate {
         }
 
         @ParameterizedTest
-        @Disabled("Development Error: Edit page contains empty trainerIDs but add page does not")
         @CsvSource(value = {"1, Aayla Secura", "2, Mike Wazowski", "3, JarJar Binks", "4, Kit Fisto",
                 "5, Mace Windu", "6, Ki-adi Mundi", "7, Luminara Unduli", "8, Plo Koon", "9, Eeth Koth", "10, Adi Gallia",
                 "11, Ima-gun Di", "12, Qui-gon Jinn", "13, Obi-Wan Kenobi", "14, Sheev Palpatine"})
@@ -198,7 +197,6 @@ public class EditCoursesTests extends NavTemplate {
         }
 
         @Test
-        @Disabled("Development Error: Edit page contains empty trainerIDs but add page does not. Length becomes 30.")
         @DisplayName("Testing get all trainer IDs has a length of 14")
         void testingGetAllTrainerIDsLength() {
             String[] trainerIds = editCoursePage.getAllTrainerIDStrings();
