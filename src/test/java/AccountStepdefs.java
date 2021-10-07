@@ -50,7 +50,7 @@ public class AccountStepdefs {
 
     @Then("my password is updated.")
     public void myPasswordIsUpdated() {
-        Assertions.assertFalse(accountPage.submitSuccessful());
+        Assertions.assertFalse(accountPage.passwordChangedSuccessfully());
     }
 
     @When("I input the new password in ‘New Password’ field")
@@ -65,6 +65,6 @@ public class AccountStepdefs {
 
     @Then("the password isn’t updated.")
     public void thePasswordIsnTUpdated() {
-        Assertions.assertTrue(accountPage.submitSuccessful());
+        Assertions.assertTrue(accountPage.passwordChangedSuccessfully());
     }
 }

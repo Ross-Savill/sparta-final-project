@@ -40,10 +40,14 @@ public class AccountPage implements URLable {
     public String getConfirmPasswordTextField() {
         return webDriver.findElement(By.id("confirmPassword")).getAttribute("value");
     }
+    public boolean submitClickable(){
+        return submitButton.isEnabled();
+    }
 
-    public boolean submitSuccessful(){
+    public boolean passwordChangedSuccessfully(){
         submitButton.click();
-        return webDriver.getCurrentUrl().equals(PropertiesLoader.getProperties().getProperty("courseInfoPageURL"));
+        WebElement passwordChangedTxt = webDriver.findElement(By.id("passwordUpdated"));
+        return passwordChangedTxt.isDisplayed();
     }
 
     public boolean isErrorMessageDisplayed(String password, String differentPassword){
