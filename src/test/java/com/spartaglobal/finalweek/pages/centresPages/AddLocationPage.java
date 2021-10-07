@@ -40,6 +40,10 @@ public class AddLocationPage extends NavTemplate implements URLable {
         PageFactory.initElements(webDriver, this);
     }
 
+    public void clickSubmit(){
+        submitButton.click();
+    }
+
     public void enterLocationName(String locationName){
         nameTextField.sendKeys(locationName);
     }

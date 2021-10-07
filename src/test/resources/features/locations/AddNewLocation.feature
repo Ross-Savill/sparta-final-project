@@ -32,4 +32,6 @@ Feature: AS A user I WANT to add new locations SO THAT we can expand the busines
 
     Scenario: I enter a location name that already exists
       When I enter a location name that already exists
-      Then The the database should not accept a duplicate
+      And a different number of rooms
+      And I click the Submit button on the Add Location page
+      Then The submission on the add page should fail
