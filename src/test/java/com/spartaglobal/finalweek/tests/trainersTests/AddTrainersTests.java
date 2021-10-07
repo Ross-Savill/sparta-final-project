@@ -7,6 +7,7 @@ import com.spartaglobal.finalweek.pages.SchedulerPage;
 import com.spartaglobal.finalweek.pages.trainersPages.AddTrainersPage;
 import com.spartaglobal.finalweek.pages.trainersPages.TrainersPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.support.PageFactory;
 
@@ -17,6 +18,7 @@ public class AddTrainersTests extends NavTemplate {
 
     @BeforeEach
     public void setup() {
+        ResetData.resetData();
         TestBase.initialisation();
         LoginPage loginPage = new LoginPage();
         trainersPage = loginPage.login(
