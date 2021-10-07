@@ -301,7 +301,8 @@ public class CourseInfoPage extends NavTemplate implements URLable {
 
     private void scrollDown() {
         WebElement scroll = webDriver.findElement(By.tagName("body"));
-        for (int i = 0; i < 25; i++) {
+        int scrollDownPage=6;
+        for (int i = 0; i < scrollDownPage; i++) {
             scroll.sendKeys(Keys.ARROW_DOWN);
         }
     }

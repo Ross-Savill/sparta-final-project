@@ -55,7 +55,6 @@ public class AddDisciplineTests extends NavTemplate {
         Assertions.assertEquals(duration,addDisciplinePage.getDurationTextField());
     }
 
-
     @Test
     @DisplayName("Check Submission Button is Clickable.")
     void testSubmissionIsClicked(){
