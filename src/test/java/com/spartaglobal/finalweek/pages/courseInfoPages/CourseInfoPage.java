@@ -299,7 +299,7 @@ public class CourseInfoPage implements URLable {
 
     private void scrollDown() {
         WebElement scroll = webDriver.findElement(By.tagName("body"));
-        int scrollDownPage=12;
+        int scrollDownPage=6;
         for (int i = 0; i < scrollDownPage; i++) {
             scroll.sendKeys(Keys.ARROW_DOWN);
         }

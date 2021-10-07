@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class EditDisciplinePage extends NavTemplate implements URLable {
 
@@ -52,6 +53,7 @@ public class EditDisciplinePage extends NavTemplate implements URLable {
     }
 
     public boolean isDisciplineDurationValid() {
+        webDriver.manage().timeouts().implicitlyWait(3 , TimeUnit.SECONDS);
         String durationText = durationTextBox.getAttribute("value");
         String regex = "[0-9]+";
 
