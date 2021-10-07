@@ -271,8 +271,8 @@ public class CourseInfoTests extends NavTemplate {
     @Test
     @DisplayName("areAllFieldsPassedOnToEditCourseTypePage Test")
     void areAllFieldsPassedOnToEditCourseTypePageTest() {
-        // TODO: 01/10/2021 Implement Test
-        //Need Edit Course Type Page to be implemented
+        courseInfoPage.clickEditCourseTypeButton("Business");
+        Assertions.assertTrue(courseInfoPage.areAllFieldsPassedOnToEditCourseTypePage());
     }
 
     @Test

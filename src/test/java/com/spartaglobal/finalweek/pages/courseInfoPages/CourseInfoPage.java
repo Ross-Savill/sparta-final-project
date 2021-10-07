@@ -2,6 +2,7 @@ package com.spartaglobal.finalweek.pages.courseInfoPages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
 import com.spartaglobal.finalweek.pages.NavTemplate;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -18,6 +19,7 @@ public class CourseInfoPage extends NavTemplate implements URLable {
     @FindBy (id = "CourseTypePageLink") WebElement addCourseTypeButton;
     @FindBy (id = "disciplinePageLink") WebElement addDisciplineButton;
 
+    private String sentCourseType = "";
     public CourseInfoPage() {
         PageFactory.initElements(webDriver, this);
     }
@@ -224,6 +226,7 @@ public class CourseInfoPage extends NavTemplate implements URLable {
     }
 
     public EditCourseTypePage clickEditCourseTypeButton(String courseTypeName) {
+        sentCourseType = courseTypeName;
         WebElement row = getCourseTypeWebElement(courseTypeName);
         row.findElement(new By.ByLinkText("Edit")).click();
         return new EditCourseTypePage();
@@ -281,10 +284,17 @@ public class CourseInfoPage extends NavTemplate implements URLable {
         return disciplineName.matches("[a-zA-Z0-9-& #+]*");
     }
 
-//    public boolean areAllFieldsPassedOnToEditCourseTypePage() {
-//        // TODO: 30/09/2021 Implement This
-//    }
-//
+    public boolean areAllFieldsPassedOnToEditCourseTypePage() {
+        EditCourseTypePage editCourseTypePage = new EditCourseTypePage();
+        boolean passedOn;
+        if (sentCourseType == null || sentCourseType.isBlank()) {
+            passedOn = false;
+        } else {
+            passedOn = sentCourseType.equals(editCourseTypePage.getCourseTypeName().getAttribute("value"));
+        }
+        return passedOn;
+    }
+
 //    public boolean areAllFieldsPassedOnToEditDisciplinePage() {
 //        // TODO: 30/09/2021 Implement This
 //    }
