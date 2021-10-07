@@ -35,6 +35,10 @@ public class AddLocationPage extends NavTemplate implements URLable {
         PageFactory.initElements(webDriver, this);
     }
 
+    public void clickSubmit(){
+        submitButton.click();
+    }
+
     public void enterLocationName(String locationName){
         nameTextField.sendKeys(locationName);
     }
@@ -47,8 +51,8 @@ public class AddLocationPage extends NavTemplate implements URLable {
         return nameTextField.getAttribute("value");
     }
 
-    public int getNumberOfRooms(){
-        return Integer.parseInt(numRoomsTextField.getAttribute("value"));
+    public String getNumberOfRooms(){
+        return numRoomsTextField.getAttribute("value");
     }
 
     public boolean isSubmitSuccessful(String locationName, String locationRooms){
