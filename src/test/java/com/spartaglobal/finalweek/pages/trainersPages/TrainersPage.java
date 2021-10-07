@@ -10,6 +10,7 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -25,8 +26,10 @@ import java.util.concurrent.TimeUnit;
 public class TrainersPage extends NavTemplate implements URLable {
 
 
-    @FindAll({@FindBy(tagName = "tr")})
-    List<WebElement> allTrainers;
+//    @FindBy(tagName = "tbody")
+    @FindBy(how = How.TAG_NAME , using="tbody")
+//    List<WebElement> allTrainers;
+    WebElement allTrainers;
 
 
     private List<String> cellElementsString;
@@ -58,7 +61,7 @@ public class TrainersPage extends NavTemplate implements URLable {
 
     private List<String> iterateThroughTableRows(String cellName) {
         cellElementsString = new ArrayList<>();
-        for (int i = 0; i < allTrainers.size() - 1; i++) {
+        for (int i = 0; i < allTableRows().size() - 1; i++) {
             String newId = i + cellName;
             cellElementsString.add(webDriver.findElement(By.id(newId)).getText());
 
@@ -70,7 +73,7 @@ public class TrainersPage extends NavTemplate implements URLable {
     private List<WebElement> iterateThroughTableRowsReturnElements(String cellName) {
         cellElements = new ArrayList<>();
 
-        for (int i = 0; i < allTrainers.size() - 1; i++) {
+        for (int i = 0; i < allTableRows().size() - 1; i++) {
             String newId = i + cellName;
             cellElements.add(webDriver.findElement(By.id(newId)));
         }
@@ -78,9 +81,10 @@ public class TrainersPage extends NavTemplate implements URLable {
     }
 
     private List<WebElement> allTableRows() {
+
         trElements = new ArrayList<>();
 
-        for (WebElement we : allTrainers) {
+        for (WebElement we : allTrainers.findElements(By.tagName("tr"))) {
             trElements.add(we);
         }
         return trElements;
@@ -207,11 +211,11 @@ public class TrainersPage extends NavTemplate implements URLable {
             return false;
         } else {
             for (int i = 0; i < allTableRowsString().size() - 1; i++) {
+
                 String trainerName = getTrainerFirstName(i) + " " + getTrainerLastName(i);
-                editTrainersPage = submitTrainerByRow(i+1);
+                editTrainersPage = submitTrainerByRow(i );
                 String editTrainerName = editTrainersPage.getFirstName() + " " + editTrainersPage.getLastName();
                 if (!trainerName.equals(editTrainerName)) {
-
                     return false;
                 }
                 editTrainersPage.submitTrainer();
@@ -238,7 +242,7 @@ public class TrainersPage extends NavTemplate implements URLable {
 
     private List<String> allTableRowsString() {
         trElementString = new ArrayList<>();
-        for (WebElement we : allTrainers) {
+        for (WebElement we : allTableRows()) {
             trElementString.add(we.getText().replace("Edit", "").replace("Delete", "").trim());
         }
         return trElementString;
@@ -249,7 +253,7 @@ public class TrainersPage extends NavTemplate implements URLable {
     }
 
     public WebElement findElementByRowId(int rowID) {
-        return allTrainers.get(rowID);
+        return allTableRows().get(rowID);
     }
 
     public EditTrainersPage submitTrainerByRow(int rowID) {

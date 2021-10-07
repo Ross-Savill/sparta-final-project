@@ -39,13 +39,13 @@ public class TrainersTests extends NavTemplate {
     @Test
     @DisplayName("get All Trainers First Name Elements")
     void getAllTrainersFirstNameElements() {
-        Assertions.assertEquals(14, trainersPage.getAllTrainersFirstNameElements().size());
+        Assertions.assertEquals(13, trainersPage.getAllTrainersFirstNameElements().size());
     }
 
     @Test
     @DisplayName("get All Trainers Last Name Elements")
     void getAllTrainersLastNameElements() {
-        Assertions.assertEquals(14, trainersPage.getAllTrainersLastNameElements().size());
+        Assertions.assertEquals(13, trainersPage.getAllTrainersLastNameElements().size());
     }
 
     @Test
@@ -54,32 +54,32 @@ public class TrainersTests extends NavTemplate {
 
 
 
-        Assertions.assertEquals(15, trainersPage.getAllTrainerElements().size());
+        Assertions.assertEquals(14, trainersPage.getAllTrainerElements().size());
     }
 
     @Test
     @DisplayName("get All Trainer Colour Elements")
     void getAllTrainerColourElements() {
-        Assertions.assertEquals(14, trainersPage.getAllTrainerColourElements().size());
+        Assertions.assertEquals(13, trainersPage.getAllTrainerColourElements().size());
     }
 
     @Test
     @DisplayName("get All Trainers First Name")
     void getAllTrainersFirstName() {
-        Assertions.assertEquals(14, trainersPage.getAllTrainersFirstName().size());
+        Assertions.assertEquals(13, trainersPage.getAllTrainersFirstName().size());
 
     }
 
     @Test
     @DisplayName("get All Trainers Last Name")
     void getAllTrainersLastName() {
-        Assertions.assertEquals(14, trainersPage.getAllTrainersLastName().size());
+        Assertions.assertEquals(13, trainersPage.getAllTrainersLastName().size());
     }
 
     @Test
     @DisplayName("get All Trainer Colour")
     void getAllTrainerColour() {
-        Assertions.assertEquals(14, trainersPage.getAllTrainerColour().size());
+        Assertions.assertEquals(13, trainersPage.getAllTrainerColour().size());
     }
 
     @Test
@@ -138,7 +138,7 @@ public class TrainersTests extends NavTemplate {
     void clickDeleteTrainer() {
         trainersPage.getAllTrainersFirstName().clear();
         trainersPage.deleteTrainer();
-        Assertions.assertEquals(12, trainersPage.getAllTrainersFirstName().size() - 1);
+        Assertions.assertEquals(11, trainersPage.getAllTrainersFirstName().size() - 1);
     }
 
 
@@ -177,7 +177,7 @@ public class TrainersTests extends NavTemplate {
     @DisplayName("find My Trainer Name")
     void findMyTrainerName() {
 
-        Assertions.assertEquals(1, trainersPage.findByTrainerName("Mike", "Wazowski") - 1);
+        Assertions.assertEquals(0, trainersPage.findByTrainerName("Mike", "Wazowski") - 1);
     }
 
     @Test
@@ -192,8 +192,10 @@ public class TrainersTests extends NavTemplate {
     void submitTrainerByRow() {
 
         String trainerName = trainersPage.getTrainerFirstName(0) + " + " + trainersPage.getTrainerLastName(0);
-        editTrainersPage = trainersPage.submitTrainerByRow(1);
+        System.out.println(trainerName);
+        editTrainersPage = trainersPage.submitTrainerByRow(0);
         String editTrainerName = editTrainersPage.getFirstName() + " + " + editTrainersPage.getLastName();
+        System.out.println(editTrainerName);
         Assertions.assertEquals(trainerName, editTrainerName);
 
     }

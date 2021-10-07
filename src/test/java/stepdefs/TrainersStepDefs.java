@@ -159,7 +159,6 @@ public class TrainersStepDefs {
     @Given("I am on the trainer page")
     public void iAmOnTheTrainerPage() {
          trainerName = trainersPage.getTrainerFirstName(0) + " + " + trainersPage.getTrainerLastName(0);
-
     }
 
     @When("edit is clicked")
