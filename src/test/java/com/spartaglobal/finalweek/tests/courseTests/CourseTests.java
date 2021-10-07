@@ -29,6 +29,7 @@ public class CourseTests  {
 
     @BeforeEach
     public void setup() {
+        ResetData.resetData();
         TestBase.initialisation(); //initialise the web driver
         loginPage = new LoginPage();
         schedulerPage = loginPage.login(
