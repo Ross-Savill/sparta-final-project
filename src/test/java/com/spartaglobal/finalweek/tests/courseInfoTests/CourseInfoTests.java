@@ -290,7 +290,7 @@ public class CourseInfoTests extends NavTemplate {
 
     @AfterEach
     public void tearDown(){
-//        webDriver.quit();
+        webDriver.quit();
     }
 
 }
