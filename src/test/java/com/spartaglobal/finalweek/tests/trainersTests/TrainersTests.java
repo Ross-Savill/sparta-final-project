@@ -6,6 +6,7 @@ import com.spartaglobal.finalweek.pages.NavTemplate;
 import com.spartaglobal.finalweek.pages.trainersPages.EditTrainersPage;
 import com.spartaglobal.finalweek.pages.trainersPages.TrainersPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebElement;
 
@@ -25,6 +26,7 @@ public class TrainersTests extends NavTemplate {
                 PropertiesLoader.getProperties().getProperty("Username"),
                 PropertiesLoader.getProperties().getProperty("Password")
         ).goToTrainersPage();
+        ResetData.resetData();
     }
 
     @Test
@@ -37,67 +39,65 @@ public class TrainersTests extends NavTemplate {
     @Test
     @DisplayName("get All Trainers First Name Elements")
     void getAllTrainersFirstNameElements() {
-        Assertions.assertEquals(12, trainersPage.getAllTrainersFirstNameElements().size());
+        Assertions.assertEquals(14, trainersPage.getAllTrainersFirstNameElements().size());
     }
 
     @Test
     @DisplayName("get All Trainers Last Name Elements")
     void getAllTrainersLastNameElements() {
-        Assertions.assertEquals(12, trainersPage.getAllTrainersLastNameElements().size());
+        Assertions.assertEquals(14, trainersPage.getAllTrainersLastNameElements().size());
     }
 
     @Test
     @DisplayName("get All Trainer Elements")
     void getAllTrainerElements() {
 
-        for (WebElement we : trainersPage.getAllTrainerElements()) {
-            System.out.println(we.getText());
-        }
 
-        Assertions.assertEquals(12, trainersPage.getAllTrainerElements().size());
+
+        Assertions.assertEquals(15, trainersPage.getAllTrainerElements().size());
     }
 
     @Test
     @DisplayName("get All Trainer Colour Elements")
     void getAllTrainerColourElements() {
-        Assertions.assertEquals(12, trainersPage.getAllTrainerColourElements().size());
+        Assertions.assertEquals(14, trainersPage.getAllTrainerColourElements().size());
     }
 
     @Test
     @DisplayName("get All Trainers First Name")
     void getAllTrainersFirstName() {
-        Assertions.assertEquals(12, trainersPage.getAllTrainersFirstName().size());
+        Assertions.assertEquals(14, trainersPage.getAllTrainersFirstName().size());
 
     }
 
     @Test
     @DisplayName("get All Trainers Last Name")
     void getAllTrainersLastName() {
-        Assertions.assertEquals(12, trainersPage.getAllTrainersLastName().size());
+        Assertions.assertEquals(14, trainersPage.getAllTrainersLastName().size());
     }
 
     @Test
     @DisplayName("get All Trainer Colour")
     void getAllTrainerColour() {
-        Assertions.assertEquals(12, trainersPage.getAllTrainerColour().size());
+        Assertions.assertEquals(14, trainersPage.getAllTrainerColour().size());
     }
 
     @Test
     @DisplayName("get Trainer First Name Element")
     void getTrainerFirstNameElement() {
-        Assertions.assertEquals("Mike", trainersPage.getTrainerFirstNameElement(0).getText());
+        Assertions.assertEquals("Aayla", trainersPage.getTrainerFirstNameElement(0).getText());
     }
 
     @Test
     @DisplayName("get Trainer Last Name Element")
     void getTrainerLastNameElement() {
-        Assertions.assertEquals("Wazowski", trainersPage.getTrainerLastNameElement(0).getText());
+        Assertions.assertEquals("Secura", trainersPage.getTrainerLastNameElement(0).getText());
     }
 
     @Test
     @DisplayName("get Trainer Colour Element")
     void getTrainerColourElement() {
-        Assertions.assertEquals("background: rgb(0, 128, 0);", trainersPage.getTrainerColourElement(0).getAttribute("style"));
+        Assertions.assertEquals("background: rgb(9, 1, 121);", trainersPage.getTrainerColourElement(0).getAttribute("style"));
     }
 
     @Test
@@ -109,7 +109,7 @@ public class TrainersTests extends NavTemplate {
     @Test
     @DisplayName("get Trainer Last Name")
     void getTrainerLastName() {
-        Assertions.assertEquals("Wazowski", trainersPage.getTrainerLastName(0));
+        Assertions.assertEquals("Secura", trainersPage.getTrainerLastName(0));
     }
 
     @Test
@@ -136,10 +136,9 @@ public class TrainersTests extends NavTemplate {
     @Test
     @DisplayName("click Delete Trainer")
     void clickDeleteTrainer() {
-        int initialSize = trainersPage.getAllTrainersFirstName().size();
         trainersPage.getAllTrainersFirstName().clear();
         trainersPage.deleteTrainer();
-        Assertions.assertEquals(11, trainersPage.getAllTrainersFirstName().size() - 1);
+        Assertions.assertEquals(12, trainersPage.getAllTrainersFirstName().size() - 1);
     }
 
 
@@ -178,7 +177,7 @@ public class TrainersTests extends NavTemplate {
     @DisplayName("find My Trainer Name")
     void findMyTrainerName() {
 
-        Assertions.assertEquals(0, trainersPage.findByTrainerName("Mike", "Wazowski") - 1);
+        Assertions.assertEquals(1, trainersPage.findByTrainerName("Mike", "Wazowski") - 1);
     }
 
     @Test
