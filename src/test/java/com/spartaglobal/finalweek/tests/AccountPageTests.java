@@ -10,6 +10,8 @@ import org.junit.jupiter.api.*;
 
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class AccountPageTests extends NavTemplate {
 
     private static String userName = PropertiesLoader.getProperties().getProperty("Username");
@@ -26,14 +28,16 @@ public class AccountPageTests extends NavTemplate {
 
     @BeforeEach
     public void setup() {
+//        ResetData.resetData();
         TestBase.initialisation();
+
         webDriver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
         loginPage = new LoginPage();
         schedulerPage = loginPage.login(userName,password);
 
         schedulerPage = new SchedulerPage();
-        NavTemplate navTemplate = new NavTemplate();
+
 
         accountPage = schedulerPage.goToAccountPage();
         accountPage = new AccountPage();
@@ -61,23 +65,23 @@ public class AccountPageTests extends NavTemplate {
     @Test
     @DisplayName("Test to see if Submit button is Clickable")
     void isSubmitButtonClickable(){
-        Assertions.assertTrue(accountPage.submitSuccessful());
+        assertTrue(accountPage.submitClickable());
     }
 
     @Test
-    @DisplayName("Test to see if Submit button is Clickable")
+    @DisplayName("Different passwords check.")
     void testErrorMessageIsDisplayed(){
         String differentPassword = "qwerty";
-        Assertions.assertTrue(accountPage.isErrorMessageDisplayed(password1,differentPassword));
+        assertTrue(accountPage.isErrorMessageDisplayed(password1,differentPassword));
     }
 
     @Test
-    @DisplayName("Test if passwords Match when passwords match")
+    @DisplayName("Test if passwords Match.")
     void testIfPasswordsMatch(){
         accountPage.enterNewPassword(password1);
         accountPage.enterConfirmPassword(password1);
 
-        Assertions.assertTrue(accountPage.isMatchingPassword());
+        assertTrue(accountPage.isMatchingPassword());
     }
 
     @Test
@@ -95,7 +99,7 @@ public class AccountPageTests extends NavTemplate {
         accountPage.enterNewPassword(password1);
         accountPage.enterConfirmPassword(password1);
 
-        Assertions.assertTrue(accountPage.areBothFieldsFilled());
+        assertTrue(accountPage.areBothFieldsFilled());
     }
 
     @Test
@@ -114,6 +118,15 @@ public class AccountPageTests extends NavTemplate {
         accountPage.enterConfirmPassword(password1);
 
         Assertions.assertFalse(accountPage.areBothFieldsFilled());
+    }
+
+    @Test
+    @DisplayName("Test if passwords are filled when values are passed in both fields.")
+    void isPasswordChangesSuccessful(){
+        accountPage.enterNewPassword(password1);
+        accountPage.enterConfirmPassword(password1);
+
+        Assertions.assertTrue(accountPage.passwordChangedSuccessfully());
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.spartaglobal.finalweek.pages;
 
 import com.spartaglobal.finalweek.base.TestBase;
 import com.spartaglobal.finalweek.interfaces.URLable;
+import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -39,10 +40,14 @@ public class AccountPage extends NavTemplate implements URLable {
     public String getConfirmPasswordTextField() {
         return webDriver.findElement(By.id("confirmPassword")).getAttribute("value");
     }
-
-    public boolean submitSuccessful(){
-        submitButton.click();
+    public boolean submitClickable(){
         return submitButton.isEnabled();
+    }
+
+    public boolean passwordChangedSuccessfully(){
+        submitButton.click();
+        WebElement passwordChangedTxt = webDriver.findElement(By.id("passwordUpdated"));
+        return passwordChangedTxt.isDisplayed();
     }
 
     public boolean isErrorMessageDisplayed(String password, String differentPassword){
