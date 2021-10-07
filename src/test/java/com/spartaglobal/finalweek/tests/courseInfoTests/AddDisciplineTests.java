@@ -7,6 +7,7 @@ import com.spartaglobal.finalweek.pages.SchedulerPage;
 import com.spartaglobal.finalweek.pages.courseInfoPages.AddDisciplinePage;
 import com.spartaglobal.finalweek.pages.courseInfoPages.CourseInfoPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -26,6 +27,7 @@ public class AddDisciplineTests extends NavTemplate {
 
     @BeforeEach
     public void setup() {
+        ResetData.resetData();
         TestBase.initialisation();
 
         loginPage = new LoginPage();

@@ -5,6 +5,7 @@ import com.spartaglobal.finalweek.pages.LoginPage;
 import com.spartaglobal.finalweek.pages.centresPages.AddLocationPage;
 import com.spartaglobal.finalweek.pages.centresPages.CentresPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -18,6 +19,7 @@ public class AddLocationPageTests {
 
     @BeforeEach
     public void setup() {
+        ResetData.resetData();
         TestBase.initialisation();
         LoginPage loginPage = new LoginPage();
 
