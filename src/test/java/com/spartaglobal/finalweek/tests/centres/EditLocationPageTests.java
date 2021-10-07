@@ -197,7 +197,7 @@ public class EditLocationPageTests {
 
     @AfterEach
     void tearDown() {
-        //webDriver.quit();
+        webDriver.quit();
     }
 
 }
