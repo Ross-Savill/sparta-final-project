@@ -6,6 +6,7 @@ import com.spartaglobal.finalweek.pages.LoginPage;
 import com.spartaglobal.finalweek.pages.NavTemplate;
 import com.spartaglobal.finalweek.pages.SchedulerPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
+import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import org.junit.jupiter.api.*;
 
 import java.util.concurrent.TimeUnit;
@@ -28,7 +29,7 @@ public class AccountPageTests extends NavTemplate {
 
     @BeforeEach
     public void setup() {
-//        ResetData.resetData();
+        ResetData.resetData();
         TestBase.initialisation();
 
         webDriver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
