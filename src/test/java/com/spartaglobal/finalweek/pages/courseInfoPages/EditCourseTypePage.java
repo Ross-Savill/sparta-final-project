@@ -52,4 +52,7 @@ public class EditCourseTypePage extends NavTemplate implements URLable {
         return webDriver.getCurrentUrl();
     }
 
+    public WebElement getCourseTypeName() {
+        return courseTypeName;
+    }
 }

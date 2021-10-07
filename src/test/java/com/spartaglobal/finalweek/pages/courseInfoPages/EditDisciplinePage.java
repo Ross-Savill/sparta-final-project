@@ -2,9 +2,13 @@ package com.spartaglobal.finalweek.pages.courseInfoPages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
 import com.spartaglobal.finalweek.pages.NavTemplate;
+import com.spartaglobal.finalweek.util.PropertiesLoader;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class EditDisciplinePage extends NavTemplate implements URLable {
 
@@ -18,53 +22,81 @@ public class EditDisciplinePage extends NavTemplate implements URLable {
         PageFactory.initElements(webDriver, this);
     }
 
-//    public void enterDisciplineName(String disciplineName) {
-//
-//    }
+    public void enterDisciplineName(String disciplineName) {
+        disciplineNameTextBox.clear();
+        disciplineNameTextBox.sendKeys(disciplineName);
 
-//    public void enterDuration(int duration) {
-//
-//    }
+    }
 
-//    public void submitSuccessful() {
-//
-//    }
+    public void enterDuration(int duration) {
+        durationTextBox.clear();
+        String strDuration = String.valueOf(duration);
+        durationTextBox.sendKeys(strDuration);
+    }
 
-//    public CourseInfoPage goToCourseInfoPage() {
-//
-//    }
+    public boolean isSubmitSuccessful(){
+        submitButton.click();
+        return webDriver.getCurrentUrl().equals(PropertiesLoader.getProperties().getProperty("courseInfoPageURL"));
+    }
 
-//    public void clickRemove() {
-//
-//    }
+    public CourseInfoPage goToCourseInfoPage() {
+        return new CourseInfoPage();
+    }
 
-//    public boolean isDisciplineNameValid() {
-//
-//    }
+    public void clickRemove() {
+        removeButton.click();
+    }
 
-//    public boolean isDisciplineDurationValid() {
-//
-//    }
+    public boolean isDisciplineNameValid() {
+        String disciplineNameTextFieldAttribute = disciplineNameTextBox.getAttribute("value");
+        String durationReg = "[a-zA-Z]+";
+        return (disciplineNameTextFieldAttribute.matches(durationReg));
+    }
 
-//    public boolean areAllFieldsValid() {
-//
-//    }
+    public boolean isDisciplineDurationValid() {
+        webDriver.manage().timeouts().implicitlyWait(3 , TimeUnit.SECONDS);
+        String durationText = durationTextBox.getAttribute("value");
+        String regex = "[0-9]+";
 
-//    public boolean isDisciplineNameEmpty() {
-//
-//    }
+        if(durationText.matches(regex)){
+            int maxDuration = 1000;
+            int minDuration = 0;
+            int durationTextInt= Integer.parseInt(durationTextBox.getAttribute("value"));
 
-//    public boolean isDisciplineDurationEmpty() {
-//
-//    }
+            return durationTextInt >= minDuration && durationTextInt<= maxDuration;
+        }
+        return false;
 
-//    public boolean areAllFieldsEmpty() {
-//
-//    }
+    }
+
+    public boolean areAllFieldsValid() {
+        return(isDisciplineNameValid()&&isDisciplineDurationValid());
+    }
+
+    public boolean isDisciplineNameEmpty() {
+        return disciplineNameTextBox.getText().isEmpty();
+    }
+
+    public boolean isDisciplineDurationEmpty() {
+        return durationTextBox.getText().isEmpty();
+    }
+
+    public boolean areAllFieldsEmpty() {
+        return isDisciplineNameEmpty()&&isDisciplineDurationEmpty();
+    }
+
+    public String getDisciplineNameTextField() {
+        return disciplineNameTextBox.getAttribute("value");
+    }
+
+    public int getDurationTextField() {
+        return Integer.parseInt(durationTextBox.getAttribute("value"));
+    }
 
     @Override
     public String getURL() {
         return webDriver.getCurrentUrl();
     }
+
 
 }

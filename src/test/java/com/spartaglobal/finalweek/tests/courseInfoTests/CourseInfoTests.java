@@ -4,6 +4,8 @@ import com.spartaglobal.finalweek.pages.LoginPage;
 import com.spartaglobal.finalweek.pages.NavTemplate;
 import com.spartaglobal.finalweek.pages.SchedulerPage;
 import com.spartaglobal.finalweek.pages.courseInfoPages.CourseInfoPage;
+import com.spartaglobal.finalweek.pages.courseInfoPages.EditCourseTypePage;
+import com.spartaglobal.finalweek.pages.courseInfoPages.EditDisciplinePage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
 import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import org.junit.Assert;
@@ -15,9 +17,12 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class CourseInfoTests extends NavTemplate {
     private CourseInfoPage courseInfoPage;
+    private EditCourseTypePage editCourseTypePage;
+    private EditDisciplinePage editDisciplinePage;
 
     @BeforeEach
     public void setup() {
@@ -271,16 +276,18 @@ public class CourseInfoTests extends NavTemplate {
     @Test
     @DisplayName("areAllFieldsPassedOnToEditCourseTypePage Test")
     void areAllFieldsPassedOnToEditCourseTypePageTest() {
-        // TODO: 01/10/2021 Implement Test
-        //Need Edit Course Type Page to be implemented
+        courseInfoPage.clickEditCourseTypeButton("Business");
+        Assertions.assertTrue(courseInfoPage.areAllFieldsPassedOnToEditCourseTypePage());
     }
 
     @Test
     @DisplayName("areAllFieldsPassedOnToEditDisciplinePage Test")
     void areAllFieldsPassedOnToEditDisciplinePageTest() {
-        // TODO: 01/10/2021 Implement Test
-        //Need Edit Discipline Page to be implemented
+        webDriver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        editDisciplinePage = courseInfoPage.clickEditDisciplineButton("Java");
+        Assertions.assertTrue(courseInfoPage.areAllFieldsPassedOnToEditDisciplinePage());
     }
+
     @AfterEach
     public void tearDown(){
         webDriver.quit();

@@ -1,6 +1,8 @@
 package com.spartaglobal.finalweek.pages.courseInfoPages;
 
 import com.spartaglobal.finalweek.interfaces.URLable;
+import com.spartaglobal.finalweek.pages.NavTemplate;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -11,19 +13,16 @@ import org.openqa.selenium.support.PageFactory;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static com.spartaglobal.finalweek.base.TestBase.webDriver;
-
-public class CourseInfoPage implements URLable {
+public class CourseInfoPage extends NavTemplate implements URLable {
 
     @FindBy (id = "courseTypeTable") List<WebElement> courseTypeElements;
     @FindBy (id = "disciplineTable") List<WebElement> disciplinesElements;
     @FindBy (id = "CourseTypePageLink") WebElement addCourseTypeButton;
-    @FindBy (css = "#courseTypeTable > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement editCourseTypeButton;
-    @FindBy (css = "#courseTypeTable > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement deleteCourseTypeButton;
     @FindBy (id = "disciplinePageLink") WebElement addDisciplineButton;
-    @FindBy (css = "#disciplineTable > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement editDisciplineButton;
-    @FindBy (css = "#disciplineTable > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(4) > div:nth-child(1) > button:nth-child(1) > a:nth-child(1)") WebElement deleteDisciplineButton;
 
+    private String sentCourseType = "";
+    private String sentDiscipline = "";
+    private int sentDuration = 0;
 
     public CourseInfoPage() {
         PageFactory.initElements(webDriver, this);
@@ -111,7 +110,6 @@ public class CourseInfoPage implements URLable {
 
     public WebElement getDisciplineElement(int rowID) {
         try {
-            String searchID = (rowID + "discipline");
             return(webDriver.findElement(new By.ById("disciplineTable"))).findElement(new By.ById(rowID + "row"));
         } catch (NoSuchElementException e) {
             return null;
@@ -232,15 +230,27 @@ public class CourseInfoPage implements URLable {
     }
 
     public EditCourseTypePage clickEditCourseTypeButton(String courseTypeName) {
+        sentCourseType = courseTypeName;
         WebElement row = getCourseTypeWebElement(courseTypeName);
         row.findElement(new By.ByLinkText("Edit")).click();
         return new EditCourseTypePage();
     }
 
     public EditDisciplinePage clickEditDisciplineButton(String disciplineName) {
+        sentDiscipline = disciplineName;
+        sentDuration = Integer.parseInt(getDisciplineElement(0).findElement(new By.ById("0duration")).getText().replaceAll("[^0-9]", ""));
+
         WebElement row = getDisciplineElement(disciplineName);
+        WebElement editButton = row.findElement(new By.ByLinkText("Edit"));
         scrollDown();
-        row.findElement(new By.ByLinkText("Edit")).click();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        editButton.click();
+
         return new EditDisciplinePage();
     }
 
@@ -258,6 +268,11 @@ public class CourseInfoPage implements URLable {
     public void clickDeleteDisciplineButton(String disciplineName) {
         WebElement row = getDisciplineElement(disciplineName);
         scrollDown();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         row.findElement(new By.ByLinkText("Delete")).click();
     }
 
@@ -268,12 +283,12 @@ public class CourseInfoPage implements URLable {
     }
 
     public boolean areCourseTypesUnique() {
-        Set<String> nameSet = new HashSet<String>(getCourseTypesNames());
+        Set<String> nameSet = new HashSet<>(getCourseTypesNames());
         return nameSet.size() >= getCourseTypesNames().size();
     }
 
     public boolean areDisciplinesUnique() {
-        Set<String> nameSet = new HashSet<String>(getDisciplineNames());
+        Set<String> nameSet = new HashSet<>(getDisciplineNames());
         return nameSet.size() >= getDisciplineNames().size();
     }
 
@@ -289,17 +304,31 @@ public class CourseInfoPage implements URLable {
         return disciplineName.matches("[a-zA-Z0-9-& #+]*");
     }
 
-//    public boolean areAllFieldsPassedOnToEditCourseTypePage() {
-//        // TODO: 30/09/2021 Implement This
-//    }
-//
-//    public boolean areAllFieldsPassedOnToEditDisciplinePage() {
-//        // TODO: 30/09/2021 Implement This
-//    }
+    public boolean areAllFieldsPassedOnToEditCourseTypePage() {
+        EditCourseTypePage editCourseTypePage = new EditCourseTypePage();
+        boolean passedOn;
+        if (sentCourseType == null || sentCourseType.isBlank()) {
+            passedOn = false;
+        } else {
+            passedOn = sentCourseType.equals(editCourseTypePage.getCourseTypeName().getAttribute("value"));
+        }
+        return passedOn;
+    }
+
+    public boolean areAllFieldsPassedOnToEditDisciplinePage() {
+        boolean passedOn;
+        if ((sentDiscipline == null || sentDiscipline.isBlank()) && (sentDuration == 0)) {
+            passedOn = false;
+        } else {
+            passedOn = ((sentDiscipline.equals(webDriver.findElement(new By.ById("discipline-name")).getAttribute("value")) && (sentDuration == Integer.parseInt(webDriver.findElement(new By.ById("discipline-duration")).getAttribute("value")))));
+        }
+        return passedOn;
+    }
 
     private void scrollDown() {
         WebElement scroll = webDriver.findElement(By.tagName("body"));
-        for (int i = 0; i < 25; i++) {
+        int scrollDownPage=6;
+        for (int i = 0; i < scrollDownPage; i++) {
             scroll.sendKeys(Keys.ARROW_DOWN);
         }
     }
