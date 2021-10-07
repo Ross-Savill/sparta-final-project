@@ -197,7 +197,7 @@ public class TrainersPage extends NavTemplate implements URLable {
     public boolean areAllColoursUnique() {
         getAllTrainerColour();
 
-        Set<WebElement> uniqueList = new HashSet<WebElement>(cellElements);
+        Set<WebElement> uniqueList = new HashSet<>(iterateThroughTableRowsReturnElements("Hex"));
         return uniqueList.size() == cellElements.size();
     }
 

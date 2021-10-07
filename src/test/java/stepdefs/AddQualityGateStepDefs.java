@@ -3,14 +3,12 @@
 
 package stepdefs;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.spartaglobal.finalweek.pages.traineePages.AddQualityGatePage;
 import com.spartaglobal.finalweek.pages.traineePages.TraineesPage;
 import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.java.lu.a;
 import org.junit.jupiter.api.Assertions;
 
 import java.time.LocalDate;
