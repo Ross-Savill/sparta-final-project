@@ -11,6 +11,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class CourseInfoPage extends NavTemplate implements URLable {
 
@@ -20,6 +21,9 @@ public class CourseInfoPage extends NavTemplate implements URLable {
     @FindBy (id = "disciplinePageLink") WebElement addDisciplineButton;
 
     private String sentCourseType = "";
+    private String sentDiscipline = "";
+    private int sentDuration = 0;
+
     public CourseInfoPage() {
         PageFactory.initElements(webDriver, this);
     }
@@ -233,9 +237,20 @@ public class CourseInfoPage extends NavTemplate implements URLable {
     }
 
     public EditDisciplinePage clickEditDisciplineButton(String disciplineName) {
+        sentDiscipline = disciplineName;
+        sentDuration = Integer.parseInt(getDisciplineElement(0).findElement(new By.ById("0duration")).getText().replaceAll("[^0-9]", ""));
+
         WebElement row = getDisciplineElement(disciplineName);
+        WebElement editButton = row.findElement(new By.ByLinkText("Edit"));
         scrollDown();
-        row.findElement(new By.ByLinkText("Edit")).click();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        editButton.click();
+
         return new EditDisciplinePage();
     }
 
@@ -253,6 +268,11 @@ public class CourseInfoPage extends NavTemplate implements URLable {
     public void clickDeleteDisciplineButton(String disciplineName) {
         WebElement row = getDisciplineElement(disciplineName);
         scrollDown();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         row.findElement(new By.ByLinkText("Delete")).click();
     }
 
@@ -295,9 +315,15 @@ public class CourseInfoPage extends NavTemplate implements URLable {
         return passedOn;
     }
 
-//    public boolean areAllFieldsPassedOnToEditDisciplinePage() {
-//        // TODO: 30/09/2021 Implement This
-//    }
+    public boolean areAllFieldsPassedOnToEditDisciplinePage() {
+        boolean passedOn;
+        if ((sentDiscipline == null || sentDiscipline.isBlank()) && (sentDuration == 0)) {
+            passedOn = false;
+        } else {
+            passedOn = ((sentDiscipline.equals(webDriver.findElement(new By.ById("discipline-name")).getAttribute("value")) && (sentDuration == Integer.parseInt(webDriver.findElement(new By.ById("discipline-duration")).getAttribute("value")))));
+        }
+        return passedOn;
+    }
 
     private void scrollDown() {
         WebElement scroll = webDriver.findElement(By.tagName("body"));
