@@ -77,14 +77,14 @@ public class AddTrainersPage extends NavTemplate implements URLable {
     }
 
     public boolean isFirstNameEmpty(){
-        if(getFirstName() == "") {
+        if(getFirstName().equals("")) {
             return true;
         }
         return false;
     }
 
     public boolean isLastNameEmpty(){
-        if(getLastName() == "") {
+        if(getLastName().equals("")) {
             return true;
         }
         return false;
