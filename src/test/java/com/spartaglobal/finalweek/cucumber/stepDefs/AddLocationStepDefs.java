@@ -2,10 +2,10 @@ package com.spartaglobal.finalweek.cucumber.stepDefs;
 
 import com.spartaglobal.finalweek.pages.centresPages.AddLocationPage;
 import com.spartaglobal.finalweek.pages.centresPages.CentresPage;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.After;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebDriver;
 
@@ -13,9 +13,9 @@ public class AddLocationStepDefs {
 
     private CentresPage centresPage = new CentresPage();
     private AddLocationPage addLocationPage;
-    private String name = "New Location";
-    private String rooms = "9";
-    private String roomsOfDuplicateName = "1";
+    private final String name = "New Location";
+    private final String rooms = "9";
+    private final String roomsOfDuplicateName = "1";
     private WebDriver webDriver;
 
     @Given("I click on the Add Location button")
@@ -69,13 +69,16 @@ public class AddLocationStepDefs {
 
         addLocationPage = centresPage.clickAddCentreButton();
         addLocationPage.enterLocationName(name);
+
+    }
+
+    @And("a different number of rooms")
+    public void differentNumberOfRooms(){
         addLocationPage.enterNumberOfRooms(roomsOfDuplicateName);
-        addLocationPage.clickSubmit();
-        centresPage = addLocationPage.goToCentresPage();
     }
 
     @Then("The the database should not accept a duplicate")
-    public void databaseShouldNotAcceptDuplicates(){
+    public void databaseShouldNotAcceptADuplicates(){
         Assertions.assertFalse(centresPage.isUpdateSuccessful(name,roomsOfDuplicateName));
     }
 

@@ -1,4 +1,4 @@
-package stepdefs.courseinfopage;
+package com.spartaglobal.finalweek.cucumber.stepDefs.courseinfopage;
 
 import com.spartaglobal.finalweek.pages.courseInfoPages.AddCourseTypePage;
 import com.spartaglobal.finalweek.pages.courseInfoPages.CourseInfoPage;
@@ -6,7 +6,6 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
-import org.openqa.selenium.support.PageFactory;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;

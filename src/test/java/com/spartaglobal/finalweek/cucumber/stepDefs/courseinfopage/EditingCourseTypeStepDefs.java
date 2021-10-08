@@ -1,12 +1,8 @@
-package stepdefs.courseinfopage;
+package com.spartaglobal.finalweek.cucumber.stepDefs.courseinfopage;
 
 import com.spartaglobal.finalweek.pages.courseInfoPages.CourseInfoPage;
 import com.spartaglobal.finalweek.pages.courseInfoPages.EditCourseTypePage;
-import com.spartaglobal.finalweek.util.dbmanager.ResetData;
-import io.cucumber.java.an.E;
-import io.cucumber.java.bs.A;
 import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;

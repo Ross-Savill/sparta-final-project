@@ -1,7 +1,7 @@
 
 
 
-package stepdefs;
+package com.spartaglobal.finalweek.cucumber.stepDefs;
 
 import com.spartaglobal.finalweek.pages.traineePages.AddQualityGatePage;
 import com.spartaglobal.finalweek.pages.traineePages.TraineesPage;

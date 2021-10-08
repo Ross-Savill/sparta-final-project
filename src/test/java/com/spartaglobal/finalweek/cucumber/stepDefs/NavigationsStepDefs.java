@@ -1,23 +1,11 @@
-package stepdefs;
+package com.spartaglobal.finalweek.cucumber.stepDefs;
 
 import com.spartaglobal.finalweek.base.TestBase;
-import com.spartaglobal.finalweek.interfaces.URLable;
-import com.spartaglobal.finalweek.pages.AccountPage;
 import com.spartaglobal.finalweek.pages.LoginPage;
 import com.spartaglobal.finalweek.pages.NavTemplate;
-import com.spartaglobal.finalweek.pages.SchedulerPage;
-import com.spartaglobal.finalweek.pages.centresPages.AddLocationPage;
-import com.spartaglobal.finalweek.pages.centresPages.CentresPage;
-import com.spartaglobal.finalweek.pages.centresPages.EditLocationPage;
-import com.spartaglobal.finalweek.pages.courseInfoPages.CourseInfoPage;
-import com.spartaglobal.finalweek.pages.coursePages.CoursePage;
-import com.spartaglobal.finalweek.pages.traineePages.TraineesPage;
-import com.spartaglobal.finalweek.pages.trainersPages.TrainersPage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
 import com.spartaglobal.finalweek.util.dbmanager.ResetData;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.When;
 
 public class NavigationsStepDefs {
 
