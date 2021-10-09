@@ -32,5 +32,4 @@ public class TestBase {
         webDriver.manage().window().maximize();
         webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
-
 }
