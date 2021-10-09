@@ -31,11 +31,6 @@ public class AddLocationPage extends NavTemplate implements URLable {
         return centres.size() - 1;
     }
 
-    public void clickSubmit(){
-        submitButton.click();
-        //return new CentresPage();
-    }
-
     public AddLocationPage(){
         PageFactory.initElements(webDriver, this);
     }

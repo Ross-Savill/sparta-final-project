@@ -1,3 +1,5 @@
+package com.spartaglobal.finalweek.cucumber.stepDefs;
+
 import com.spartaglobal.finalweek.base.TestBase;
 import com.spartaglobal.finalweek.pages.AccountPage;
 import com.spartaglobal.finalweek.pages.LoginPage;
@@ -24,13 +26,6 @@ public class AccountStepdefs {
     private String password2 = "anotherPassword";
     private String emptyPassword;
 
-    @Given("I am logged in")
-    public void iAmLoggedIn() {
-        TestBase.initialisation();
-        loginPage = new LoginPage();
-        schedulerPage = loginPage.login(userName,password);
-        schedulerPage = new SchedulerPage();
-    }
 
     @And("I click change password")
     public void iClickChangePassword() {

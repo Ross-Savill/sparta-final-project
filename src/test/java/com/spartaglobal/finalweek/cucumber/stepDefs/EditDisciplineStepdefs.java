@@ -1,11 +1,10 @@
-package stepdefs;
+package com.spartaglobal.finalweek.cucumber.stepDefs;
 import com.spartaglobal.finalweek.base.TestBase;
 import com.spartaglobal.finalweek.pages.LoginPage;
 import com.spartaglobal.finalweek.pages.SchedulerPage;
 import com.spartaglobal.finalweek.pages.courseInfoPages.CourseInfoPage;
 import com.spartaglobal.finalweek.pages.courseInfoPages.EditDisciplinePage;
 import com.spartaglobal.finalweek.util.PropertiesLoader;
-import com.spartaglobal.finalweek.util.dbmanager.ResetData;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

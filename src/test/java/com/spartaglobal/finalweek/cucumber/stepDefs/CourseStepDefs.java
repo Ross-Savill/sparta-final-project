@@ -1,4 +1,4 @@
-package stepdefs;
+package com.spartaglobal.finalweek.cucumber.stepDefs;
 
 import com.spartaglobal.finalweek.pages.coursePages.CoursePage;
 import io.cucumber.java.After;

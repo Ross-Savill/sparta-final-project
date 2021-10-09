@@ -1,7 +1,5 @@
-package stepdefs;
+package com.spartaglobal.finalweek.cucumber.stepDefs;
 
-import com.spartaglobal.finalweek.pages.traineePages.AddQualityGatePage;
-import com.spartaglobal.finalweek.pages.traineePages.TraineesPage;
 import com.spartaglobal.finalweek.pages.trainersPages.EditTrainersPage;
 import com.spartaglobal.finalweek.pages.trainersPages.TrainersPage;
 import com.spartaglobal.finalweek.util.dbmanager.ResetData;
@@ -10,8 +8,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
-
-import java.util.ArrayList;
 
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
 

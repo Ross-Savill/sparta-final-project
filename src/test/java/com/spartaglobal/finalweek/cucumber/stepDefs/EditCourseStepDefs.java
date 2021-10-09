@@ -1,4 +1,4 @@
-package stepdefs;
+package com.spartaglobal.finalweek.cucumber.stepDefs;
 
 import com.spartaglobal.finalweek.pages.NavTemplate;
 import com.spartaglobal.finalweek.pages.courseInfoPages.CourseInfoPage;
@@ -10,7 +10,6 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Tag;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import static com.spartaglobal.finalweek.base.TestBase.webDriver;
